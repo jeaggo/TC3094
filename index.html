@@ -149,6 +149,7 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
   <span class="clock" id="clock" title="Tiempo restante de la sesión">--:--</span>
   <button class="tbtn" id="btnPause">Pausar reloj</button>
   <button class="tbtn" id="btnRules">Reglas y guía</button>
+  <button class="tbtn" id="btnLog">Bitácora</button>
   <button class="tbtn" id="btnEnd">Terminar partida</button>
   <button class="tbtn" id="btnReset">Nueva partida</button>
 </header>
@@ -229,7 +230,7 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
     </div>
     <h3 style="font-size:20px; margin:20px 0 10px">Estudiantes</h3>
     <div id="teamRows"></div>
-    <div class="mfoot"><button class="primary" id="btnStart">Empezar la partida</button></div>
+    <div class="mfoot"><button class="ghost" id="btnCancelSetup">Cancelar</button><button class="primary" id="btnStart">Empezar la partida</button></div>
   </div>
 </div>
 
@@ -280,10 +281,13 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 
 <!-- export modal -->
 <div class="ov" id="ovExport" role="dialog" aria-modal="true" aria-labelledby="expT">
-  <div class="modal">
-    <h2 id="expT" style="font-size:26px">Bitácora de la partida</h2>
-    <p style="color:var(--muted)">Selecciona el texto y cópialo para pegarlo en Canvas.</p>
-    <textarea id="expText" rows="14" style="font-size:14px"></textarea>
+  <div class="modal" style="max-width:980px">
+    <div class="row" style="justify-content:space-between">
+      <h2 id="expT" style="font-size:26px">Bitácora de la partida</h2>
+      <div class="row"><button class="ghost" id="logCopy">Copiar para pegar en Canvas</button><button class="ghost" id="logCsv">Descargar CSV</button></div>
+    </div>
+    <textarea id="expText" rows="10" style="font-size:14px; margin-top:12px" hidden aria-label="Bitácora en texto"></textarea>
+    <div id="logSummary" class="rules" style="margin-top:12px"></div>
     <div class="mfoot"><button class="primary" data-close="ovExport">Cerrar</button></div>
   </div>
 </div>
@@ -436,7 +440,16 @@ function render(){
   document.querySelectorAll(".sq .tok").forEach(x=>x.innerHTML="");
   document.querySelectorAll(".sq.active").forEach(x=>x.classList.remove("active"));
   $("startTokens").innerHTML="";
-  if(!S) return;
+  if(!S){
+    $("turnToken").innerHTML=""; $("turnName").textContent="Sin partida";
+    $("turnStatus").textContent="El docente presiona «Nueva partida» para registrar a los estudiantes.";
+    $("btnRoll").textContent="Configurar partida"; $("btnRoll").disabled=false;
+    document.querySelectorAll(".physical button").forEach(x=>x.disabled=true);
+    $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay jugadores.</li>';
+    $("log").innerHTML='<div>Aquí aparecerá cada jugada.</div>';
+    $("clock").textContent="--:--";
+    return;
+  }
   S.teams.forEach((t,i)=>{
     const h=tokenHTML(t,i);
     if(t.pos===0) $("startTokens").insertAdjacentHTML("beforeend",h);
@@ -667,17 +680,24 @@ $("btnStart").onclick=()=>{
   if($("order").value==="random") teams=shuffle(teams);
   S={config:{secs:+$("secs").value, mins:+$("mins").value}, teams, turn:0, decks:{}, log:[], startAt:Date.now(), pausedAt:null, pausedTotal:0, finished:0, over:false, timeUp:false, extraRoll:false, card:null};
   addLog("Inicia la partida con "+teams.length+" estudiantes.");
-  $("ovSetup").classList.remove("show"); busy=false; showDie(1); render(); startClock();
+  clearInterval(cardTimer); ["ovSetup","ovCard","ovWin"].forEach(id=>$(id).classList.remove("show")); busy=false; showDie(1); render(); startClock();
 };
 function twoStep(btn,label,ask,fn){ btn.onclick=()=>{ if(btn.dataset.armed){ delete btn.dataset.armed; btn.textContent=label; fn(); return; } btn.dataset.armed="1"; btn.textContent=ask; setTimeout(()=>{ if(btn.dataset.armed){ delete btn.dataset.armed; btn.textContent=label; } },3500); }; }
-twoStep($("btnReset"),"Nueva partida","¿Seguro? Clic otra vez",()=>{ if(!S){ openSetup(); return; } clearInterval(cardTimer); $("ovCard").classList.remove("show"); $("ovWin").classList.remove("show"); try{localStorage.removeItem(KEY);}catch(e){} S=null; busy=false; $("clock").textContent="--:--"; render(); openSetup(); });
+$("btnReset").onclick=()=>{
+  const b=$("btnReset");
+  if(!S || !S.log || S.log.length<=1 || b.dataset.armed){ delete b.dataset.armed; b.textContent="Nueva partida"; openSetup(); return; }
+  b.dataset.armed="1"; b.textContent="Se borrará la actual. Clic otra vez";
+  setTimeout(()=>{ if(b.dataset.armed){ delete b.dataset.armed; b.textContent="Nueva partida"; } },3500);
+};
+$("btnCancelSetup").onclick=()=>$("ovSetup").classList.remove("show");
 twoStep($("btnEnd"),"Terminar partida","¿Seguro? Clic otra vez",()=>{ if(!S||S.over) return; clearInterval(cardTimer); $("ovCard").classList.remove("show"); busy=false; endGame(); });
 function openSetup(){ teamRows(); $("ovSetup").classList.add("show"); }
 $("btnRules").onclick=()=>$("ovRules").classList.add("show");
+document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o && o.id!=="ovCard") o.classList.remove("show"); }));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).classList.remove("show")));
 $("winContinue").onclick=()=>$("ovWin").classList.remove("show");
 $("cNext").onclick=closeCard;
-$("btnRoll").onclick=rollAnimated;
+$("btnRoll").onclick=()=>{ if(!S){ openSetup(); return; } rollAnimated(); };
 document.querySelectorAll(".physical button").forEach(b=>b.addEventListener("click",()=>{ if(busy||!S||S.over) return; showDie(+b.dataset.v); move(+b.dataset.v); }));
 
 /* ---------- bitácora ---------- */
@@ -690,14 +710,25 @@ function logCSV(){
   const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
   return "tiempo,jugada\n"+S.log.map(l=>q(l.time)+","+q(l.text)).join("\n")+"\n\nestudiante,casilla,lugar,puntos,correctas,incorrectas\n"+S.teams.map(t=>[t.name,t.pos,t.rank||"",t.points,t.ok,t.bad].map(q).join(",")).join("\n");
 }
-$("btnCopy").onclick=async()=>{
-  const txt=logText(); if(!txt) return;
+async function copyLog(){
+  if(!S){ toast("Todavía no hay partida."); return; }
+  const txt=logText();
   try{ await navigator.clipboard.writeText(txt); toast("Bitácora copiada. Pégala en Canvas."); }
-  catch(e){ $("expText").value=txt; $("ovExport").classList.add("show"); $("expText").select(); }
-};
+  catch(e){ openLog(); $("expText").value=txt; $("expText").hidden=false; $("expText").select(); toast("Selecciona el texto y cópialo con Ctrl+C."); }
+}
+function openLog(){
+  if(!S){ toast("Todavía no hay partida. Presiona «Nueva partida»."); return; }
+  $("expText").hidden=true;
+  const res=rankOrder().map((i,k)=>{const t=S.teams[i]; return '<tr><td>'+(k+1)+'. '+esc(t.name)+'</td><td>'+(t.rank?"Meta ("+t.rank+"º)":(t.pos===0?"Salida":"Casilla "+t.pos))+'</td><td>'+t.points+' pts</td><td>'+t.ok+' de '+(t.ok+t.bad)+' correctas</td></tr>';}).join("");
+  const plays=S.log.map((l,k)=>'<tr><td>'+(k+1)+'</td><td>'+l.time+'</td><td colspan="2" style="white-space:normal; font-weight:400">'+esc(l.text)+'</td></tr>').join("");
+  $("logSummary").innerHTML='<h3>Posiciones</h3><table>'+res+'</table><h3>Jugadas</h3><table>'+plays+'</table>';
+  $("ovExport").classList.add("show");
+}
+$("btnCopy").onclick=copyLog; $("logCopy").onclick=copyLog; $("btnLog").onclick=openLog;
 function plainDownload(){
   $("btnCsv").hidden=false;
-  $("btnCsv").onclick=()=>{ if(!S) return;
+  $("logCsv").onclick=()=>$("btnCsv").onclick();
+  $("btnCsv").onclick=()=>{ if(!S){ toast("Todavía no hay partida."); return; }
     try{ const blob=new Blob(["\ufeff"+logCSV()],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a");
       a.href=URL.createObjectURL(blob); a.download="oca-verificadora-bitacora.csv"; document.body.appendChild(a); a.click();
       setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
@@ -709,7 +740,8 @@ function plainDownload(){
     const dl = await window.claude.use("downloads");
     if(!dl) return;
     $("btnCsv").hidden=false;
-    $("btnCsv").onclick=async()=>{ if(!S) return; try{ await dl.save({filename:"oca-verificadora-bitacora.csv", data:"\ufeff"+logCSV()}); }catch(e){ if(e && e.code==="declined") return; toast("No se pudo descargar aquí. Usa «Copiar»."); } };
+    $("logCsv").onclick=()=>$("btnCsv").onclick();
+    $("btnCsv").onclick=async()=>{ if(!S){ toast("Todavía no hay partida."); return; } try{ await dl.save({filename:"oca-verificadora-bitacora.csv", data:"\ufeff"+logCSV()}); }catch(e){ if(e && e.code==="declined") return; toast("No se pudo descargar aquí. Usa «Copiar»."); } };
   }catch(e){}
 })();
 
@@ -721,13 +753,13 @@ if(S && S.teams){
   if(S.pausedAt===undefined) S.pausedAt=null;
   render(); startClock();
   if(S.over) $("clock").textContent="00:00";
-} else { S=null; render(); openSetup(); }
+} else { S=null; render(); }
 document.addEventListener("keydown",e=>{
   if($("ovCard").classList.contains("show")){
     const k=e.key.toUpperCase(); const i="ABC".indexOf(k);
     if(i>=0){ const b=$("cOpts").querySelectorAll(".opt")[i]; if(b && !b.disabled) b.click(); }
   }
-  if(e.key==="Escape"){ ["ovRules","ovExport","ovWin"].forEach(id=>$(id).classList.remove("show")); }
+  if(e.key==="Escape"){ ["ovRules","ovExport","ovWin","ovSetup"].forEach(id=>$(id).classList.remove("show")); }
 });
 })();
 </script>
