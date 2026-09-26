@@ -442,7 +442,7 @@ function render(){
   $("startTokens").innerHTML="";
   if(!S){
     $("turnToken").innerHTML=""; $("turnName").textContent="Sin partida";
-    $("turnStatus").textContent="El docente presiona «Nueva partida» para registrar a los estudiantes.";
+    $("turnStatus").textContent="Un estudiante del equipo presiona «Nueva partida» para registrar al resto de estudiantes.";
     $("btnRoll").textContent="Configurar partida"; $("btnRoll").disabled=false;
     document.querySelectorAll(".physical button").forEach(x=>x.disabled=true);
     $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay jugadores.</li>';
