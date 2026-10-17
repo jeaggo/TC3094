@@ -1,36 +1,39 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Memorama de vecinos cercanos</title>
+<title>Gran Premio de Agentes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 :root{
   --bg:#EEF3F7; --surface:#FBFDFE; --surface2:#E4EBF2; --ink:#0E1B2C; --muted:#4F6078; --line:#D5DEE8;
   --navy:#0B1F3A; --navy2:#13305A; --cyan:#22C7E8; --teal:#0A6E8A; --orange:#E8742C; --ord:#A94A12;
-  --z1:#CFF1F8; --z2:#DDE3F6; --z3:#FBE3D3; --z1i:#0A5A72; --z2i:#3E4FA0; --z3i:#A94A12;
+  --z1:#FBE3D3; --z2:#DDE3F6; --z3:#CFF1F8; --z4:#E1F0D6; --z5:#F2E0F0;
+  --z1i:#9A4210; --z2i:#3E4FA0; --z3i:#0A6E8A; --z4i:#3A651C; --z5i:#7A3474;
   --ok:#0A6E8A; --okbg:#CFF1F8; --bad:#A94A12; --badbg:#FBE3D3;
-  --back1:#0B1F3A; --back2:#13305A; --backn:#B9C6D6;
+  --asphalt:#2B3A4F; --curb1:#E8742C; --curb2:#FBFDFE;
   --hf:'Space Grotesk', 'Trebuchet MS', Arial, sans-serif; --bf:'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#08172C; --surface:#10284A; --surface2:#163560; --ink:#EEF3F7; --muted:#A9B8CB; --line:#24416B;
-  --z1:#123E52; --z2:#1E2E5C; --z3:#4B2A20; --z1i:#7FE3F5; --z2i:#AFB9F2; --z3i:#F5A889;
+  --z1:#4B2A20; --z2:#1E2E5C; --z3:#123E52; --z4:#22401A; --z5:#43213F;
+  --z1i:#F5A889; --z2i:#AFB9F2; --z3i:#7FE3F5; --z4i:#B5E19A; --z5i:#EBB0E3;
   --ok:#7FE3F5; --okbg:#123E52; --bad:#F5A889; --badbg:#4B2A20; --teal:#7FE3F5; --ord:#F5A889;
-  --back1:#13305A; --back2:#1C3F70; --backn:#CFE0F0;
+  --asphalt:#1A2738;
 }}
 :root[data-theme="dark"]{
   --bg:#08172C; --surface:#10284A; --surface2:#163560; --ink:#EEF3F7; --muted:#A9B8CB; --line:#24416B;
-  --z1:#123E52; --z2:#1E2E5C; --z3:#4B2A20; --z1i:#7FE3F5; --z2i:#AFB9F2; --z3i:#F5A889;
+  --z1:#4B2A20; --z2:#1E2E5C; --z3:#123E52; --z4:#22401A; --z5:#43213F;
+  --z1i:#F5A889; --z2i:#AFB9F2; --z3i:#7FE3F5; --z4i:#B5E19A; --z5i:#EBB0E3;
   --ok:#7FE3F5; --okbg:#123E52; --bad:#F5A889; --badbg:#4B2A20; --teal:#7FE3F5; --ord:#F5A889;
-  --back1:#13305A; --back2:#1C3F70; --backn:#CFE0F0;
+  --asphalt:#1A2738;
 }
-*,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none !important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--bf); font-size:17px; line-height:1.45}
 button{font:inherit; cursor:pointer}
 button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{outline:3px solid var(--cyan); outline-offset:2px}
@@ -39,56 +42,44 @@ h1,h2,h3{font-family:var(--hf); margin:0; line-height:1.15}
 .top h1{font-size:24px; font-weight:700}
 .top .sub{color:#B9C6D6; font-size:14.5px}
 .top .spacer{flex:1}
-.clock{font-family:var(--hf); font-size:24px; font-weight:600; background:var(--navy2); padding:4px 14px; border-radius:10px; font-variant-numeric:tabular-nums; color:#EEF3F7}
+.clock{font-family:var(--hf); font-size:24px; font-weight:600; background:var(--navy2); padding:4px 14px; border-radius:10px; font-variant-numeric:tabular-nums}
 .clock.low{background:var(--orange); color:#0B1F3A}
 .actions{display:flex; gap:8px; flex-wrap:wrap}
 .tbtn{background:transparent; color:#EEF3F7; border:1.5px solid #3A5A86; border-radius:10px; padding:7px 13px}
 .tbtn:hover{border-color:var(--cyan)}
 .tbtn.main{background:var(--cyan); color:#0B1F3A; border-color:var(--cyan); font-weight:600}
-@media (max-width:1500px){ .top .sub{display:none} .top h1{font-size:20px} .top{padding:10px 18px} .tbtn{padding:6px 11px} }
-main{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; padding:14px 22px 24px; max-width:1600px; margin:0 auto}
+main{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; padding:14px 22px 24px; max-width:1720px; margin:0 auto}
 @media (max-width:1000px){ main{grid-template-columns:1fr} }
-.boardwrap{container-type:inline-size; width:100%; max-width:var(--bw, 1000px); margin:0 auto}
-.statusbar{display:flex; align-items:center; gap:12px; background:var(--surface); border:1.5px solid var(--line); border-radius:14px; padding:10px 16px; margin-bottom:10px; min-height:52px; flex-wrap:wrap}
-.statusbar .msg{flex:1; font-weight:600}
-.statusbar.ok{border-color:var(--ok); background:var(--okbg)}
-.statusbar.bad{border-color:var(--bad); background:var(--badbg)}
-.board{display:grid; gap:max(6px, 1cqw)}
-.card{position:relative; aspect-ratio:4/3; border:0; padding:0; background:transparent; perspective:900px; min-width:0}
-.card .inner{position:absolute; inset:0; transition:transform .45s; transform-style:preserve-3d}
-.card.up .inner, .card.done .inner{transform:rotateY(180deg)}
-.card .face{position:absolute; inset:0; border-radius:max(8px,1.2cqw); backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:max(6px,1cqw); overflow:hidden}
-.card .back{background:repeating-linear-gradient(45deg, var(--back1) 0 12px, var(--back2) 12px 24px); color:var(--backn); border:2px solid var(--back2)}
-.card .back b{font-family:var(--hf); font-size:max(18px, 3.2cqw); font-weight:700}
-.card .front{transform:rotateY(180deg); border:2px solid currentColor; padding-top:max(20px, 2.6cqw); padding-bottom:max(8px, 1.4cqw)}
-.card .front .tag{position:absolute; top:max(4px,.6cqw); left:max(6px,.8cqw); font-size:max(10px,1.15cqw); font-weight:600; opacity:.85}
-.card .front .num{position:absolute; top:max(4px,.6cqw); right:max(6px,.8cqw); font-size:max(10px,1.15cqw); font-weight:600; opacity:.7}
-.card .front .txt{font-weight:600; line-height:1.2; color:var(--ink)}
-.card .front.term .txt{font-family:var(--hf); font-size:max(14px, 2.15cqw)}
-.card .front.term.long .txt{font-size:max(13px, 1.7cqw)}
-.board.four .card .front.term.long .txt{font-size:max(13px, 2.4cqw)}
-.board.dense .card .front.desc .txt{font-size:max(10px, 1.3cqw)}
-.board.dense .card .front.term .txt{font-size:max(13px, 1.95cqw)}
-.board.dense .card .front.term.long .txt{font-size:max(12px, 1.6cqw)}
-.card .front.desc .txt{font-size:max(11px, 1.45cqw); font-weight:400; line-height:1.18}
-.card.done .front{opacity:.55}
-.board.over .card.done .front{opacity:1}
-.card .owner{position:absolute; top:max(3px,.5cqw); right:max(5px,.7cqw); z-index:2}
-.card .owner .token{width:max(16px,1.9cqw); height:max(16px,1.9cqw); font-size:max(10px,1.1cqw)}
-.card.done .front .num{display:none}
-.card:not(.up):not(.done):hover .back{border-color:var(--cyan)}
-.card:disabled{cursor:default}
-.board.six .card .front.term .txt{font-size:max(14px, 2.15cqw)}
-.board.four .card .front.term .txt{font-size:max(14px, 3cqw)}
-.board.four .card .front.desc .txt{font-size:max(12px, 2.1cqw)}
-.board.four .card .back b{font-size:max(18px,4.4cqw)}
-@media (prefers-reduced-motion: reduce){ .card .inner{transition:none} }
-.legend{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; font-size:14px}
-.legend span{border-radius:30px; padding:4px 12px; font-weight:600}
-.legend .plain{background:var(--surface); border:1.5px solid var(--line); color:var(--ink); font-weight:400}
-.z1{background:var(--z1); color:var(--z1i)} .z2{background:var(--z2); color:var(--z2i)} .z3{background:var(--z3); color:var(--z3i)}
-.token{width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:var(--hf); font-weight:700; font-size:12px; color:#0B1F3A; border:2px solid #0B1F3A; flex:none}
+@media (max-width:1500px){ .top .sub{display:none} .top h1{font-size:20px} .top{padding:10px 18px} .tbtn{padding:6px 11px} }
+.startbar{display:flex; align-items:center; gap:12px; background:var(--surface); border:1.5px solid var(--line); border-radius:14px; padding:8px 14px; margin:0 auto 10px; min-height:50px; max-width:clamp(640px, calc((100vh - 190px) * 10 / 7), 1240px); flex-wrap:wrap}
+.startbar b{font-family:var(--hf)}
+.boardwrap{container-type:inline-size; position:relative; width:100%; max-width:clamp(640px, calc((100vh - 190px) * 10 / 7), 1240px); margin:0 auto}
+.board{display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); grid-template-rows:repeat(7,minmax(0,1fr)); gap:5px; aspect-ratio:10/7; background:var(--asphalt); padding:8px; border-radius:22px; border:4px dashed var(--curb1)}
+.sq{position:relative; border-radius:9px; padding:3px 5px; display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; border:2px solid transparent}
+.sq .num{font-family:var(--hf); font-weight:700; font-size:max(12px, 1.9cqw); line-height:1.05; display:flex; gap:4px; align-items:center}
+.sq .ic{font-size:max(12px, 1.7cqw)}
+.sq .lbl{font-size:max(9px, 1.15cqw); line-height:1.1; font-weight:600}
+.sq .tok{display:flex; flex-wrap:wrap; gap:2px; margin-top:auto}
+.sq.turbo{border-color:var(--cyan); border-style:solid}
+.sq.hazard{border-color:var(--orange); border-style:dashed}
+.sq.item{border-color:currentColor; border-style:dotted}
+.sq.meta{background:repeating-conic-gradient(#0B1F3A 0 25%, #FBFDFE 0 50%) 0 0/18px 18px; color:#0B1F3A}
+.sq.meta .num,.sq.meta .lbl{background:#FBFDFE; border-radius:6px; padding:0 4px; align-self:flex-start}
+.sq.active{box-shadow:inset 0 0 0 3px var(--cyan), 0 0 0 2px var(--cyan)}
+.z1{background:var(--z1); color:var(--z1i)} .z2{background:var(--z2); color:var(--z2i)} .z3{background:var(--z3); color:var(--z3i)} .z4{background:var(--z4); color:var(--z4i)} .z5{background:var(--z5); color:var(--z5i)}
+.infield{grid-column:2 / 10; grid-row:2 / 7; background:var(--surface); border-radius:16px; padding:2.2cqw 2.6cqw; display:flex; flex-direction:column; gap:1.3cqw; overflow:hidden; border:3px solid var(--curb1)}
+.infield h2{font-size:max(20px, 3.3cqw); color:var(--ink)}
+.infield p{margin:0; color:var(--muted); font-size:max(13px, 1.45cqw)}
+.sectors{display:grid; grid-template-columns:repeat(5,1fr); gap:0.8cqw}
+.sectors div{border-radius:12px; padding:0.8cqw 1cqw; font-size:max(11px, 1.3cqw); line-height:1.2; font-weight:600}
+.sectors b{display:block; font-family:var(--hf); font-size:max(13px, 1.6cqw)}
+.legend2{display:grid; grid-template-columns:repeat(2,1fr); gap:0.6cqw 1.6cqw; font-size:max(11px, 1.3cqw); color:var(--ink)}
+.legend2 span{display:flex; gap:8px; align-items:baseline}
+.legend2 i{font-style:normal; font-size:max(13px, 1.6cqw)}
+.token{width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:var(--hf); font-weight:700; font-size:12px; color:#0B1F3A; border:2px solid #0B1F3A; box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.board .token{width:max(16px, 2.4cqw); height:max(16px, 2.4cqw); font-size:max(9px, 1.25cqw)}
 .token.big{width:40px; height:40px; font-size:19px}
+.startbar .token{width:28px; height:28px; font-size:14px}
 aside.panel{display:flex; flex-direction:column; gap:14px}
 .box{background:var(--surface); border:1.5px solid var(--line); border-radius:16px; padding:16px}
 .turn h2{font-size:15px; font-weight:600; color:var(--muted); font-family:var(--bf)}
@@ -96,33 +87,63 @@ aside.panel{display:flex; flex-direction:column; gap:14px}
 .turn .who h3{font-size:25px; overflow-wrap:anywhere}
 .turn .members{color:var(--muted); font-size:15px; margin-top:4px}
 .turn .status{margin-top:8px; font-size:15px; color:var(--muted)}
-.tt{display:flex; align-items:center; gap:10px; margin-top:12px}
-.tt .t{font-family:var(--hf); font-size:30px; font-weight:700; font-variant-numeric:tabular-nums}
-.tt .t.low{color:var(--orange)}
-.bar{flex:1; height:8px; background:var(--surface2); border-radius:8px; overflow:hidden}
-.bar i{display:block; height:100%; background:var(--cyan); width:100%; transition:width 1s linear}
-.primary{background:var(--cyan); color:#0B1F3A; border:0; border-radius:12px; padding:12px 18px; font-family:var(--hf); font-weight:700; font-size:19px}
+.items{display:flex; flex-direction:column; gap:6px; margin-top:10px}
+.items .it{display:flex; align-items:center; gap:8px; background:var(--surface2); border-radius:10px; padding:6px 10px; font-size:15px}
+.items .it b{flex:1}
+.items .it button{border:1.5px solid var(--cyan); background:transparent; color:var(--ink); border-radius:8px; padding:3px 10px; font-size:14px}
+.items .it button:disabled{opacity:.45; cursor:not-allowed}
+.items .none{font-size:14px; color:var(--muted)}
+.dicewrap{display:flex; align-items:center; gap:16px; margin-top:14px}
+.die{width:84px; height:84px; border-radius:18px; background:#FBFDFE; border:3px solid var(--navy); display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:10px; flex:none}
+.die i{width:14px; height:14px; border-radius:50%; background:#0B1F3A; place-self:center; visibility:hidden}
+.die i.on{visibility:visible}
+.die.rolling{animation:shake .5s linear infinite}
+@keyframes shake{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
+@media (prefers-reduced-motion: reduce){ .die.rolling{animation:none} }
+.primary{background:var(--cyan); color:#0B1F3A; border:0; border-radius:12px; padding:14px 18px; font-family:var(--hf); font-weight:700; font-size:20px}
 .primary:disabled{opacity:.45; cursor:not-allowed}
 .ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line); border-radius:10px; padding:7px 12px; font-size:15px}
 .ghost:hover{border-color:var(--cyan)}
-.standings ol{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; max-height:280px; overflow:auto}
+.physical{margin-top:10px; font-size:14px; color:var(--muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap}
+.physical button{width:34px; height:34px; border-radius:8px; border:1.5px solid var(--line); background:var(--surface2); color:var(--ink); font-weight:600}
+.physical button:disabled{opacity:.45; cursor:not-allowed}
+.physical.plan{color:var(--ink); font-weight:600}
+.physical.plan button{border-color:var(--cyan); background:var(--okbg)}
+.standings ol{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; max-height:260px; overflow:auto}
 .standings li{display:flex; align-items:center; gap:10px}
 .standings .nm{flex:1; font-weight:600; overflow-wrap:anywhere}
 .standings .meta2{font-size:14px; color:var(--muted); text-align:right; font-variant-numeric:tabular-nums}
-.progress{font-size:15px; color:var(--muted); margin-top:6px}
 .log{max-height:170px; overflow:auto; font-size:13.5px; color:var(--muted); display:flex; flex-direction:column; gap:5px; margin-top:8px}
 .log div b{color:var(--ink)}
 .row{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 .ov{position:fixed; inset:0; background:rgba(5,14,28,.72); display:none; align-items:center; justify-content:center; padding:20px; z-index:10}
 .ov.show{display:flex}
 .modal{background:var(--surface); color:var(--ink); border-radius:22px; max-width:880px; width:100%; max-height:92vh; overflow:auto; padding:28px 32px; box-shadow:0 20px 60px rgba(0,0,0,.35)}
-.modal.wide{max-width:1080px}
-.pairview{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0}
-.pairview div{border-radius:14px; padding:18px; border:2px solid currentColor}
-.pairview div p{margin:6px 0 0; color:var(--ink); font-size:20px; line-height:1.35}
-.pairview div p.t{font-family:var(--hf); font-weight:600; font-size:24px}
-.expl{background:var(--surface2); border-radius:14px; padding:14px 18px; font-size:18px; line-height:1.45}
-.mfoot{display:flex; justify-content:flex-end; gap:10px; margin-top:18px; flex-wrap:wrap}
+.modal.wide{max-width:1120px}
+.cardhead{display:flex; align-items:flex-start; gap:10px 14px; flex-wrap:wrap}
+.chip{border-radius:30px; padding:5px 14px; font-weight:600; font-size:15px}
+.timer{margin-left:auto; display:flex; align-items:center; gap:8px}
+.timer .t{font-family:var(--hf); font-size:34px; font-weight:700; font-variant-numeric:tabular-nums; min-width:70px; text-align:right}
+.timer .t.low{color:var(--orange)}
+.bar{height:8px; background:var(--surface2); border-radius:8px; overflow:hidden; margin:14px 0 4px}
+.bar i{display:block; height:100%; background:var(--cyan); width:100%; transition:width 1s linear}
+.rule{background:var(--surface2); border-radius:12px; padding:10px 14px; font-size:16px; margin-top:12px}
+.q{font-family:var(--hf); font-size:27px; font-weight:600; margin:18px 0 16px; line-height:1.25}
+.opts{display:flex; flex-direction:column; gap:10px}
+.opt{display:flex; gap:14px; align-items:flex-start; text-align:left; background:var(--surface2); color:var(--ink); border:2px solid transparent; border-radius:14px; padding:14px 16px; font-size:20px; line-height:1.35}
+.opt:hover:not(:disabled){border-color:var(--cyan)}
+.opt .L{font-family:var(--hf); font-weight:700; background:var(--navy); color:#EEF3F7; border-radius:8px; min-width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; flex:none}
+.opt.right{background:var(--okbg); border-color:var(--ok)}
+.opt.wrong{background:var(--badbg); border-color:var(--bad)}
+.opt.gone{opacity:.35; text-decoration:line-through}
+.opt:disabled{cursor:default}
+.fb{margin-top:16px; border-radius:14px; padding:14px 18px; display:none}
+.fb.show{display:block}
+.fb.okk{background:var(--okbg); border-left:8px solid var(--ok)}
+.fb.bad{background:var(--badbg); border-left:8px solid var(--bad)}
+.fb h3{font-size:22px; margin-bottom:6px}
+.fb .eff{margin-top:8px; font-weight:600}
+.mfoot{display:flex; justify-content:flex-end; gap:10px; margin-top:18px; flex-wrap:wrap; align-items:center}
 .setup h2{font-size:30px}
 .setup p.lead{color:var(--muted); margin:6px 0 18px}
 .grid2{display:grid; grid-template-columns:1fr 1fr; gap:14px}
@@ -140,19 +161,19 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 .scroll{overflow:auto; max-height:46vh}
 .res-ok{color:var(--ok); font-weight:600} .res-no{color:var(--bad); font-weight:600}
 .win{text-align:center}
-.win h2{font-size:36px; margin:8px 0}
+.win h2{font-size:38px; margin:8px 0}
 .podium{display:flex; flex-direction:column; gap:8px; margin:18px auto 0; max-width:560px; text-align:left; max-height:40vh; overflow:auto}
 .podium div{display:flex; gap:12px; align-items:center; background:var(--surface2); border-radius:12px; padding:10px 14px}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--navy); color:#EEF3F7; padding:12px 20px; border-radius:12px; font-weight:600; display:none; z-index:20; max-width:90vw; border:1.5px solid #3A5A86}
 .toast.show{display:block}
-@media (max-width:700px){ .grid2{grid-template-columns:1fr} #playerRows{grid-template-columns:1fr} #playerRows.team .prow{grid-template-columns:40px 1fr} #playerRows.team .prow .tm{grid-column:2} .pairview{grid-template-columns:1fr} .modal{padding:20px} .card .front .tag{display:none} }
+@media (max-width:760px){ .grid2{grid-template-columns:1fr} #playerRows{grid-template-columns:1fr} #playerRows.team .prow{grid-template-columns:40px 1fr} #playerRows.team .prow .tm{grid-column:2} .sq .lbl{display:none} .token{border-width:1.5px} .q{font-size:22px} .opt{font-size:17px} .modal{padding:20px} .infield .legend2,.infield p,.sectors{display:none} .infield{justify-content:center} }
 </style>
 </head>
 <body>
 <header class="top">
   <div>
-    <h1>Memorama de vecinos cercanos</h1>
-    <div class="sub">Encuentra el vecino más cercano de cada carta: bases de datos vectoriales, IA multimodal y casos empresariales.</div>
+    <h1>Gran Premio de Agentes</h1>
+    <div class="sub">Carrera de karts de 30 casillas en cinco sectores: arquitecturas, planificación, tool-calling, equipos de agentes y memoria.</div>
   </div>
   <div class="spacer"></div>
   <span class="clock" id="clock" title="Tiempo restante de la partida">--:--</span>
@@ -166,30 +187,30 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 </header>
 
 <main>
-  <section aria-label="Tablero">
-    <div class="boardwrap" id="boardwrap">
-      <div class="statusbar" id="statusbar" aria-live="polite"><span class="msg" id="statusMsg">Presionen «Nueva partida» para registrar a los participantes.</span><button class="primary" id="btnContinue" hidden>Continuar</button></div>
+  <section aria-label="Pista">
+    <div class="startbar"><b>Parrilla de salida</b><span id="startTokens" class="row"></span></div>
+    <div class="boardwrap">
       <div class="board" id="board"></div>
-      <div class="legend">
-        <span class="z1">El almacén: bases vectoriales</span>
-        <span class="z2">Los sentidos: IA multimodal</span>
-        <span class="z3">La fábrica: casos empresariales</span>
-        <span class="plain">Cada pareja: un concepto y su descripción</span>
-      </div>
     </div>
   </section>
 
   <aside class="panel">
-    <div class="box turn">
+    <div class="box turn" aria-live="polite">
       <h2>Turno de</h2>
       <div class="who"><span id="turnToken"></span><h3 id="turnName">Sin partida</h3></div>
       <div class="members" id="turnMembers"></div>
       <div class="status" id="turnStatus"></div>
-      <div class="tt" id="turnTimer" hidden><span class="t" id="ttTime">30</span><div class="bar"><i id="ttBar"></i></div><button class="ghost" id="ttPause">Pausar</button></div>
+      <div class="items" id="turnItems"></div>
+      <div class="dicewrap">
+        <div class="die" id="die" role="img" aria-label="Dado"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <button class="primary" id="btnRoll">Configurar partida</button>
+      </div>
+      <div class="physical" id="physical"><span id="physLbl">¿Dado físico? Marquen el resultado:</span>
+        <button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button>
+      </div>
     </div>
     <div class="box standings">
       <h3 style="font-size:20px">Posiciones</h3>
-      <div class="progress" id="progress"></div>
       <ol id="standings"></ol>
     </div>
     <div class="box">
@@ -202,67 +223,76 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
   </aside>
 </main>
 
-<div class="ov" id="ovPair" role="dialog" aria-modal="true" aria-labelledby="pairT">
+<div class="ov" id="ovCard" role="dialog" aria-modal="true" aria-labelledby="cq">
   <div class="modal">
-    <h2 id="pairT" style="font-size:28px">¡Son vecinos cercanos!</h2>
-    <div class="pairview" id="pairView"></div>
-    <div class="expl" id="pairExpl"></div>
-    <p id="pairWho" style="color:var(--muted); margin:14px 0 0"></p>
-    <div class="mfoot"><button class="primary" id="pairNext">Seguir jugando</button></div>
+    <div class="cardhead">
+      <span class="chip" id="cZone"></span>
+      <span class="chip" id="cType" style="background:var(--surface2)"></span>
+      <div class="timer"><span class="t" id="cTime">45</span><button class="ghost" id="cPause">Pausar</button></div>
+    </div>
+    <div class="bar"><i id="cBar"></i></div>
+    <div class="rule" id="cRule"></div>
+    <div style="margin-top:10px; color:var(--muted); font-size:15px" id="cWho"></div>
+    <div class="q" id="cq"></div>
+    <div class="opts" id="cOpts"></div>
+    <div class="fb" id="cFb"><h3 id="cFbT"></h3><div id="cFbE"></div><div class="eff" id="cFbX"></div></div>
+    <div class="mfoot"><button class="ghost" id="cTool" hidden>🔧 Usar herramienta: quitar una opción incorrecta</button><button class="primary" id="cNext" hidden>Continuar</button></div>
   </div>
 </div>
 
 <div class="ov" id="ovSetup" role="dialog" aria-modal="true" aria-labelledby="setupT">
   <div class="modal setup">
     <h2 id="setupT">Nueva partida</h2>
-    <p class="lead">Elijan la modalidad y registren a los participantes. Por turnos, cada quien voltea dos cartas buscando un concepto y su descripción.</p>
+    <p class="lead">Elijan cómo van a jugar y registren a los pilotos. Cada kart da una vuelta de 30 casillas respondiendo tarjetas de los cinco sectores.</p>
     <div class="grid2">
       <div><label for="mode">Modalidad</label>
         <select id="mode"><option value="solo" selected>Individual: cada estudiante con su nombre</option><option value="team">Por equipos</option></select></div>
       <div><label for="nPlayers" id="nLabel">Número de estudiantes</label>
         <select id="nPlayers"></select></div>
-      <div><label for="pairs">Tamaño del tablero</label>
-        <select id="pairs"><option value="8">8 parejas (16 cartas)</option><option value="12" selected>12 parejas (24 cartas)</option><option value="18">18 parejas (36 cartas)</option></select></div>
-      <div><label for="secs">Tiempo por turno</label>
-        <select id="secs"><option value="0">Sin límite</option><option value="20">20 segundos</option><option value="30" selected>30 segundos</option><option value="45">45 segundos</option></select></div>
+      <div><label for="secs">Segundos por tarjeta</label>
+        <select id="secs"><option>30</option><option selected>45</option><option>60</option><option>90</option></select></div>
       <div><label for="mins">Duración de la partida (minutos)</label>
-        <select id="mins"><option>15</option><option>20</option><option selected>30</option><option>40</option><option>45</option></select></div>
+        <select id="mins"><option>20</option><option>30</option><option selected>35</option><option>40</option><option>45</option><option>60</option></select></div>
       <div><label for="order">Orden de turnos</label>
         <select id="order"><option value="fixed" selected>Como aparecen abajo</option><option value="random">Al azar</option></select></div>
     </div>
     <h3 style="font-size:20px; margin:20px 0 10px" id="rowsTitle">Estudiantes</h3>
     <div id="playerRows"></div>
-    <div class="mfoot"><button class="ghost" id="btnCancelSetup">Cancelar</button><button class="primary" id="btnStart">Empezar la partida</button></div>
+    <div class="mfoot"><button class="ghost" id="btnCancelSetup">Cancelar</button><button class="primary" id="btnStart">Empezar la carrera</button></div>
   </div>
 </div>
 
 <div class="ov" id="ovRules" role="dialog" aria-modal="true" aria-labelledby="rulesT">
   <div class="modal rules">
-    <h2 id="rulesT" style="font-size:30px">Reglas del juego</h2>
-    <p>Es un memorama: todas las cartas empiezan boca abajo. Cada pareja está formada por un <b>concepto</b> y su <b>descripción</b> (una analogía, un ejemplo o un caso de PlantSense). El color de la carta indica el tema: <b>el almacén</b> (bases de datos vectoriales), <b>los sentidos</b> (IA multimodal) o <b>la fábrica</b> (casos empresariales). Como en una base vectorial, el objetivo es encontrar el vecino más cercano de cada carta.</p>
+    <h2 id="rulesT" style="font-size:30px">Reglas del Gran Premio</h2>
+    <p>La pista tiene 30 casillas en cinco sectores: <b>1–6 arquitecturas</b>, <b>7–12 planificación</b>, <b>13–18 tool-calling</b>, <b>19–24 equipos de agentes</b> y <b>25–30 memoria</b>. Gana quien cruce primero la meta (casilla 30) y responda bien la pregunta final. Si el dado se pasa de 30, el kart se detiene en la meta.</p>
     <h3>En cada turno</h3>
+    <p>Pueden usar un ítem, tiran el dado, el kart avanza y aparece una tarjeta del sector donde cayó. Hay tiempo límite para elegir y decir la respuesta en voz alta; si se acaba, cuenta como incorrecta.</p>
     <table>
-      <tr><td>Voltear</td><td>Quien tiene el turno voltea dos cartas y lee ambas en voz alta.</td></tr>
-      <tr><td>Pareja</td><td>Si son concepto y descripción del mismo tema, se queda con la pareja (+1 punto), se lee la explicación y vuelve a tirar.</td></tr>
-      <tr><td>No son pareja</td><td>Todos ven las dos cartas, se presiona «Continuar», las cartas regresan boca abajo y pasa el turno. ¡Memoricen dónde estaban!</td></tr>
-      <tr><td>Tiempo por turno</td><td>Si se acaba antes de voltear las dos cartas, el turno pasa al siguiente.</td></tr>
+      <tr><td>Casilla normal</td><td>Acierto: se quedan (+1 punto). Error: regresan a donde estaban.</td></tr>
+      <tr><td>⚡ Turbo</td><td>Acierto: avanzan 3 casillas más, sin pasar de la 29 (+2). Error: se quedan donde cayeron.</td></tr>
+      <tr><td>❓ Caja de ítem</td><td>Acierto: ganan un ítem al azar (+1). Error: regresan a donde estaban.</td></tr>
+      <tr><td>⚠ Obstáculo</td><td>Una falla típica de los agentes. Acierto: la esquivan (+2). Error: derrapan 3 casillas hacia atrás.</td></tr>
+      <tr><td>🏁 Meta (30)</td><td>Pregunta final de cualquier sector (+3). Error: regresan a donde estaban.</td></tr>
     </table>
-    <h3>Fin de la partida</h3>
-    <p>Termina cuando se encuentran todas las parejas o cuando se acaba el tiempo. Gana quien tenga más parejas. Al final se voltean todas las cartas para repasar.</p>
+    <h3>Ítems: las herramientas del agente</h3>
+    <table>
+      <tr><td>🗺️ Plan</td><td>Antes de tirar: eligen el número del dado (planificación, M5.2).</td></tr>
+      <tr><td>⚡ Llamada en paralelo</td><td>Antes de tirar: tiran dos dados y avanzan con el mayor (tool-calling en paralelo, M5.3).</td></tr>
+      <tr><td>🔧 Herramienta</td><td>Durante una tarjeta: quita una opción incorrecta (tool-calling, M5.3).</td></tr>
+      <tr><td>🧠 Memoria</td><td>Escudo automático: la próxima vez que fallen, no retroceden (memoria, M5.5).</td></tr>
+    </table>
+    <p>Cada kart guarda como máximo 2 ítems. Si gana uno con el garage lleno, recibe +1 punto en su lugar.</p>
+    <h3>Si se acaba el tiempo</h3>
+    <p>Gana quien esté más adelante; en empate, quien tenga más puntos. Los puntos cuentan respuestas correctas y sirven como evidencia de participación.</p>
     <h3>Botones</h3>
     <table>
-      <tr><td>Nueva partida</td><td>Abre la configuración: modalidad individual o por equipos, nombres, tamaño del tablero y tiempos.</td></tr>
-      <tr><td>Bitácora</td><td>Muestra cada jugada y las posiciones; se copia para pegar en Canvas o se descarga como CSV.</td></tr>
+      <tr><td>Nueva partida</td><td>Abre la configuración: modalidad individual o por equipos, nombres, tiempo por tarjeta y duración.</td></tr>
+      <tr><td>Bitácora</td><td>Muestra cada jugada, los ítems usados y las posiciones; se copia para pegar en Canvas o se descarga como CSV.</td></tr>
       <tr><td>Pausar reloj</td><td>Detiene y reanuda el tiempo de la partida.</td></tr>
-      <tr><td>Terminar partida</td><td>Cierra la partida, muestra resultados y voltea todas las cartas.</td></tr>
+      <tr><td>Terminar partida</td><td>Cierra la carrera y muestra los resultados.</td></tr>
     </table>
-    <h3>Guía docente (35 minutos)</h3>
-    <table>
-      <tr><td>0–5 min</td><td>Elegir modalidad y registrar a los participantes. Explicar las reglas con este panel proyectado.</td></tr>
-      <tr><td>5–30 min</td><td>Partida de 25 minutos. Cuando alguien encuentre una pareja, pídanle que explique con sus palabras por qué son vecinas antes de leer la explicación.</td></tr>
-      <tr><td>30–35 min</td><td>Cierre: con todas las cartas volteadas, pedir tres parejas al azar y relacionarlas con PlantSense.</td></tr>
-    </table>
-    <p style="color:var(--muted)">Consejos: con más de 8 estudiantes en modalidad individual, usen 18 parejas. Atajo: tecla Enter para «Continuar».</p>
+    <p style="color:var(--muted)">Consejo: con muchos estudiantes en modalidad individual, usen 30 segundos por tarjeta. Atajos: barra espaciadora para tirar; teclas A, B y C para responder.</p>
     <div class="mfoot"><button class="primary" data-close="ovRules">Entendido</button></div>
   </div>
 </div>
@@ -274,7 +304,8 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
     <div class="podium" id="podium"></div>
     <div class="mfoot" style="justify-content:center">
       <button class="ghost" id="winLog">Ver bitácora</button>
-      <button class="primary" data-close="ovWin">Repasar el tablero</button>
+      <button class="ghost" id="winContinue">Seguir la carrera por los siguientes lugares</button>
+      <button class="primary" data-close="ovWin">Cerrar</button>
     </div>
   </div>
 </div>
@@ -282,7 +313,7 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 <div class="ov" id="ovLog" role="dialog" aria-modal="true" aria-labelledby="logT">
   <div class="modal wide">
     <div class="row" style="justify-content:space-between">
-      <h2 id="logT" style="font-size:26px">Bitácora de la partida</h2>
+      <h2 id="logT" style="font-size:26px">Bitácora de la carrera</h2>
       <div class="row"><button class="ghost" id="logCopy">Copiar para pegar en Canvas</button><button class="ghost" id="logCsv">Descargar CSV</button></div>
     </div>
     <textarea id="expText" rows="8" style="font-size:14px; margin-top:12px" hidden aria-label="Bitácora en texto"></textarea>
@@ -299,204 +330,375 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 <script>
 (function(){
 "use strict";
-/* ---------- Parejas: a = concepto, b = descripción, e = explicación ---------- */
-const PAIRS = [
- {id:"A1", z:1, a:"Base de datos vectorial", b:"Responde «dame los k fragmentos más parecidos a esta pregunta»", e:"No busca coincidencias exactas como una base relacional: compara vectores de significado y devuelve los más cercanos."},
- {id:"A2", z:1, a:"Metadatos", b:"Fuente y sección de cada fragmento: sirven para citar y para filtrar", e:"Gracias a ellos PlantSense puede decir «[1] monstera.md › Riego» o buscar solo en la ficha de plagas."},
- {id:"A3", z:1, a:"Similitud coseno", b:"Mide el ángulo entre dos vectores: 1 si apuntan igual, 0 si no se relacionan", e:"Es la medida de parecido más usada para comparar embeddings de texto."},
- {id:"A4", z:1, a:"HNSW", b:"Autopista, avenida y calle: un grafo por capas para llegar rápido", e:"Empieza con saltos largos en la capa de arriba y solo al final revisa los vecinos cercanos en la capa de abajo."},
- {id:"A5", z:1, a:"IVF", b:"Busca solo en las zonas más cercanas, como buscar por código postal", e:"Agrupa los vectores con k-means y descarta las zonas lejanas. Usa menos memoria que HNSW, con algo menos de recall."},
- {id:"A6", z:1, a:"Cuantización", b:"Comprimir los vectores, como pasar una foto de RAW a JPG", e:"Reduce de 4 a 8 veces la memoria a cambio de perder un poco de exactitud."},
- {id:"A7", z:1, a:"Recall de la búsqueda", b:"De los vecinos verdaderos, cuántos encontró la búsqueda aproximada", e:"Con buena configuración suele superar 0.95; es el precio de buscar rápido en millones de vectores."},
- {id:"A8", z:1, a:"Subir ef_search", b:"Más precisión a cambio de más tiempo de respuesta", e:"Es el parámetro de HNSW que controla qué tanto explora al buscar: un compromiso clásico de ingeniería."},
- {id:"A9", z:1, a:"ChromaDB", b:"Un estante en tu propia casa: ideal para aprender y prototipar", e:"Es la base vectorial de la Tarea 4: se instala con una línea y corre dentro de Colab."},
- {id:"A10", z:1, a:"pgvector", b:"Agregar vectores al PostgreSQL que la empresa ya tiene", e:"Conviene cuando los vectores deben convivir con tablas de clientes, ventas o inventario."},
- {id:"A11", z:1, a:"Pinecone", b:"Una bodega rentada: servicio en la nube, cero servidores que operar", e:"Se paga por uso y escala a miles de millones de vectores sin equipo de infraestructura."},
- {id:"A12", z:1, a:"Búsqueda exacta", b:"Comparar la pregunta contra todos los vectores: precisa, pero lenta a escala", e:"Con un millón de vectores de 1,536 números son unos 1,536 millones de multiplicaciones por pregunta."},
- {id:"S1", z:2, a:"Vision Transformer (ViT)", b:"Corta la foto en 196 parches y los lee como si fueran palabras", e:"Una imagen de 224 × 224 en parches de 16 × 16 da 14 × 14 = 196 tokens visuales."},
- {id:"S2", z:2, a:"CLIP", b:"Fotos y frases en el mismo mapa de significados", e:"Permite buscar fichas de texto usando una foto, o fotos usando una frase: la base del RAG multimodal."},
- {id:"S3", z:2, a:"Whisper", b:"Convierte la nota de voz de la usuaria en texto", e:"Es un modelo de reconocimiento de voz entrenado con 680,000 horas de audio."},
- {id:"S4", z:2, a:"Texto a voz (TTS)", b:"PlantSense responde en voz alta mientras la usuaria trasplanta", e:"Genera audio a partir de texto; se puede elegir la voz y la velocidad."},
- {id:"S5", z:2, a:"Modelo de difusión", b:"Parte de puro ruido y lo limpia paso a paso hasta formar una imagen", e:"Así funcionan DALL·E y Stable Diffusion: cada paso quita ruido guiado por la descripción escrita."},
- {id:"S6", z:2, a:"Modelo nativamente multimodal", b:"Un solo modelo entrenado con texto, imagen y audio al mismo tiempo", e:"Razona mejor entre modalidades y responde más rápido que una cadena de modelos especializados."},
- {id:"S7", z:2, a:"Enfoque compositivo (LLaVA)", b:"Ojos conectados a un cerebro: codificador de imágenes + traductor + LLM", e:"Un codificador visual traduce la imagen al «idioma» del LLM mediante una capa de proyección."},
- {id:"S8", z:2, a:"Muestreo de cuadros", b:"Elegir algunos de los 1,440 cuadros de un minuto de video", e:"Un minuto a 24 cuadros por segundo son 1,440 imágenes: procesarlas todas es demasiado costoso."},
- {id:"S9", z:2, a:"Mensaje intercalado", b:"Foto, texto, otra foto y una pregunta, en un solo mensaje", e:"Así PlantSense puede comparar el antes y el después de una planta."},
- {id:"S10", z:2, a:"C2PA", b:"Marca de origen que identifica una imagen como generada por IA", e:"Es una de las medidas contra deepfakes y evidencia falsa, junto con la revisión humana."},
- {id:"F1", z:3, a:"Documentos inteligentes (IDP)", b:"De una factura escaneada a datos con total, fecha y RFC", e:"A diferencia de un OCR que solo copia letras, entiende qué es cada dato y lo entrega estructurado."},
- {id:"F2", z:3, a:"Inspección de calidad con VLM", b:"Dice qué defecto tiene la pieza, dónde está y qué hacer", e:"Funciona mejor con luz y posición de cámara fijas, y con revisión periódica de falsos positivos."},
- {id:"F3", z:3, a:"Dashboard a narrativa", b:"El modelo escribe el borrador del informe; el analista agrega el porqué", e:"El modelo ve que las ventas bajaron, pero no sabe que hubo una huelga del proveedor."},
- {id:"F4", z:3, a:"Apoyo diagnóstico en salud", b:"Herramienta para el médico, nunca su reemplazo", e:"Es un dispositivo médico regulado (COFEPRIS en México) y debe validarse con población local."},
- {id:"F5", z:3, a:"Enrutar por dificultad", b:"Modelo pequeño para lo fácil; modelo grande solo para lo difícil", e:"Es la estrategia principal para bajar costos cuando se procesan miles de imágenes al día."},
- {id:"F6", z:3, a:"Tokens de una imagen", b:"Una foto de 1,000 × 1,000 píxeles consume unos 1,300 tokens en Claude", e:"La regla publicada por Anthropic es ancho × alto ÷ 750. Más resolución, más costo."},
- {id:"F7", z:3, a:"Meses para recuperar la inversión", b:"Costo de desarrollo ÷ valor neto mensual", e:"En el ejemplo de facturas: 180,000 ÷ 25,850 ≈ 7 meses."},
- {id:"F8", z:3, a:"Procesamiento por lotes", b:"Lo que no es urgente se procesa después, con descuento", e:"Varios proveedores ofrecen APIs por lotes más baratas para trabajos asíncronos."},
- {id:"F9", z:3, a:"Retención cero de datos", b:"El proveedor no guarda tus documentos ni entrena con ellos", e:"Es un acuerdo clave antes de enviar documentos sensibles, como expedientes o contratos, a una API."},
- {id:"F10", z:3, a:"Nivel piloto", b:"Un caso de uso en producción con métricas de negocio claras", e:"En la escalera de madurez va después de la exploración y antes de escalar a varios casos."}
-];
-const ZONES = {1:{name:"El almacén", cls:"z1"}, 2:{name:"Los sentidos", cls:"z2"}, 3:{name:"La fábrica", cls:"z3"}};
+/* ---------- Banco de preguntas: o[0] es la correcta (se barajan al mostrar) ---------- */
+const BANK = {
+A: [
+ {q:"¿Qué distingue a un agente de un chatbot?", o:["Decide y ejecuta acciones con herramientas, en un bucle, hasta cumplir una meta","Usa un modelo de lenguaje más grande","Responde más rápido"], e:"Un agente observa, decide y actúa repetidamente. El chatbot solo genera texto con lo que ya sabe."},
+ {q:"ReAct intercala tres cosas. ¿Cuáles?", o:["Pensamiento, acción y observación","Entrenamiento, validación y prueba","Recuperación, chunking y embeddings"], e:"Reasoning + Acting: piensa qué hacer, usa una herramienta y mira el resultado antes de seguir."},
+ {q:"En la traza de ReAct, la «observación» es…", o:["El resultado que devolvió la herramienta","La pregunta de la usuaria","El razonamiento del modelo"], e:"Por ejemplo: {\"prob_lluvia_pct\": 80}. Con ese dato el agente decide el siguiente paso."},
+ {q:"¿Cuál es una ventaja clave de ReAct?", o:["Deja una traza que permite auditar por qué hizo cada cosa","No necesita herramientas","Hace menos llamadas al modelo que cualquier otro método"], e:"El razonamiento escrito queda a la vista. Su costo: cada vuelta del bucle es otra llamada al modelo."},
+ {q:"¿Cómo mejora un agente con Reflexion?", o:["Evalúa su intento, escribe una lección en texto y la usa en el siguiente","Vuelve a entrenar sus pesos después de cada error","Borra su memoria y empieza de cero"], e:"Reflexion no cambia el modelo: guarda lecciones aprendidas, como una bitácora de proyecto."},
+ {q:"Reflexion funciona bien cuando existe…", o:["Una señal para saber si se acertó: pruebas, calificación o retroalimentación","Una GPU muy potente","Un segundo modelo idéntico"], e:"Sin una señal confiable, el agente puede «reflexionar» hacia una conclusión equivocada."},
+ {q:"Plan-and-Execute…", o:["Primero escribe el plan completo y luego ejecuta cada paso","Improvisa paso a paso sin ningún plan","Solo planea y nunca ejecuta"], e:"Es como una orden de trabajo: planear al inicio ahorra llamadas al modelo grande."},
+ {q:"¿Cuándo debe re-planificar un agente Plan-and-Execute?", o:["Cuando un paso falla o aparece información nueva","Nunca: el plan inicial es definitivo","Después de cada palabra que genera"], e:"Si en el diagnóstico aparece cochinilla, el resto del plan tiene que ajustarse."},
+ {q:"En LangGraph, el «estado» es…", o:["La información compartida que todos los nodos leen y actualizan","El modelo de lenguaje","Una conexión a internet"], e:"Por ejemplo: la foto, la especie identificada y la confianza. Cada nodo lo recibe y lo modifica."},
+ {q:"Una arista condicional en LangGraph…", o:["Elige el siguiente nodo según una condición, como «confianza ≥ 80 %»","Une siempre los mismos dos nodos","Borra el estado del agente"], e:"Es la bifurcación de un diagrama de flujo: si la confianza es baja, se pide otra foto."},
+ {q:"¿Para qué sirve un límite de pasos (MAX_PASOS) en el bucle del agente?", o:["Para evitar bucles infinitos y costos sin control","Para que las respuestas sean más largas","Porque Python lo exige"], e:"Igual que un tiempo máximo de operación en un sistema de control."},
+ {q:"Un reporte que cada lunes sigue siempre los mismos pasos conviene hacerlo con…", o:["Un flujo fijo o Plan-and-Execute","ReAct con 20 herramientas","Árbol de pensamientos"], e:"Si el camino no depende de lo que se descubra, un agente que improvisa sale más caro y es menos predecible."},
+ {q:"Si un agente fuera un lazo de control, la herramienta sería…", o:["El actuador: ejecuta la acción en el mundo","El sensor que mide la temperatura","La referencia o meta"], e:"El LLM es el controlador que decide; la herramienta actúa; la observación es la medición."}
+],
+B: [
+ {q:"La cadena de pensamiento (chain of thought) consiste en…", o:["Pedir al modelo que escriba sus pasos intermedios antes de responder","Encadenar varios modelos distintos","Guardar toda la conversación"], e:"Como mostrar el procedimiento en un examen: reduce errores y deja ver dónde falló."},
+ {q:"La versión zero-shot de la cadena de pensamiento se activa con…", o:["Agregar «pensemos paso a paso»","Dar 100 ejemplos resueltos","Subir la temperatura"], e:"Kojima y colaboradores (2022) mostraron que esa frase basta para mejorar problemas de varios pasos."},
+ {q:"Few-shot con cadena de pensamiento significa…", o:["Mostrar al modelo ejemplos resueltos con su procedimiento","No darle ningún ejemplo","Pedir respuestas de una sola palabra"], e:"El modelo imita el formato: primero los pasos, luego la respuesta."},
+ {q:"Least-to-Most…", o:["Resuelve subproblemas de lo fácil a lo difícil y usa cada respuesta en el siguiente","Empieza siempre por la parte más difícil","Elige la respuesta más corta"], e:"Como resolver un sistema por subsistemas: el paso 2 usa el resultado del paso 1."},
+ {q:"Plan-and-Solve le pide al modelo…", o:["Entender el problema, diseñar un plan y ejecutarlo paso a paso","Responder sin pensar","Buscar la respuesta en internet"], e:"Reduce los pasos que el modelo se salta en problemas largos."},
+ {q:"El árbol de pensamientos (Tree of Thoughts)…", o:["Explora varias rutas, evalúa cuál promete más y descarta las malas","Sigue una sola línea de razonamiento","Genera imágenes de árboles"], e:"Es una búsqueda con poda, como un diagnóstico diferencial o un árbol de fallas."},
+ {q:"En el «juego del 24», ¿qué porcentaje resolvió GPT-4 con cadena de pensamiento y con árbol de pensamientos?", o:["4 % y 74 %","74 % y 4 %","50 % y 50 %"], e:"Explorar y descartar rutas ayuda mucho en problemas de búsqueda."},
+ {q:"¿Cuál es la principal desventaja del árbol de pensamientos?", o:["Necesita muchas más llamadas al modelo","No se puede auditar","Solo funciona en inglés"], e:"Cada rama y cada evaluación es una llamada: más tiempo y más costo."},
+ {q:"Los modelos que razonan (o1, o3, DeepSeek-R1, Claude con pensamiento extendido) convienen para…", o:["Problemas de varios pasos: matemáticas, código, planes con restricciones","Saludar a la usuaria","Preguntas de un solo dato"], e:"Ya traen la cadena de pensamiento integrada; en tareas simples solo gastan más."},
+ {q:"¿Qué problema hay en usar un modelo que razona para «¿cómo se llama esta planta?»", o:["Gasta más tokens y tiempo sin mejorar la respuesta","No puede ver imágenes nunca","Siempre se equivoca"], e:"Elegir el modelo es una decisión de ingeniería: costo, latencia y calidad."},
+ {q:"El modelo razonó bien la dilución pero escribió 8.25 ml en vez de 8.75 ml. ¿Qué lo evita?", o:["Delegar la cuenta a una calculadora","Pedirle que piense más tiempo","Usar un modelo más pequeño"], e:"La aritmética es un punto débil de los LLM: se resuelve con herramientas, no con más razonamiento."},
+ {q:"Un razonamiento paso a paso muy convincente…", o:["Puede partir de un dato inventado: hay que verificar las fuentes","Garantiza que la respuesta es correcta","Siempre refleja exactamente cómo pensó el modelo"], e:"Razonar no es lo mismo que acertar."},
+ {q:"«Quiero plantas para poca luz y tengo un gato.» Al descomponer, ¿cuál es el primer subproblema?", o:["¿Qué plantas toleran poca luz?","¿De qué raza es el gato?","¿Dónde comprar las plantas?"], e:"Después se filtran las que no son tóxicas para gatos, y al final se recomienda."}
+],
+C: [
+ {q:"En tool-calling, ¿quién ejecuta la función?", o:["Tu código, el programa cliente","El modelo de lenguaje","La usuaria"], e:"El modelo solo pide la llamada; el programa decide si la ejecuta y le devuelve el resultado."},
+ {q:"¿Cómo pide el modelo usar una herramienta?", o:["Con un mensaje estructurado (JSON) con el nombre y los argumentos","Mandando un correo","Ejecutando Python por su cuenta"], e:"Por ejemplo: {\"herramienta\": \"clima\", \"argumentos\": {\"ciudad\": \"Monterrey\"}}."},
+ {q:"¿Qué parte de la definición de una herramienta influye más en que el modelo la elija bien?", o:["La descripción: qué hace y cuándo usarla","El color del botón","El número de versión"], e:"Es lo único que el modelo lee para decidir. Una descripción ambigua produce malas elecciones."},
+ {q:"¿Cuál es el orden del ciclo de tool-calling?", o:["Describes las herramientas, el modelo decide, tu código ejecuta, el modelo responde","El modelo ejecuta, tú describes, el modelo decide","Tu código responde, el modelo ejecuta, tú describes"], e:"El paso 4 puede repetirse: con el resultado, el modelo puede pedir otra herramienta."},
+ {q:"En la Tarea 5, ¿para qué sirve Pydantic?", o:["Para validar que el JSON tenga los campos y tipos correctos","Para generar imágenes","Para acelerar la GPU"], e:"Si falta un campo o el tipo no coincide, se rechaza y se pide al modelo que lo corrija."},
+ {q:"Un JSON que cumple perfectamente el esquema…", o:["Tiene la forma correcta, pero su contenido puede estar equivocado","Siempre dice la verdad","Ya no necesita ninguna revisión"], e:"La validación revisa la forma, no la verdad: una dosis puede venir bien escrita y mal calculada."},
+ {q:"¿Cuándo conviene pedir varias herramientas en paralelo?", o:["Cuando las llamadas son independientes entre sí","Cuando una necesita el resultado de la otra","Cuando solo existe una herramienta"], e:"Fichas de monstera y de pothos se consultan a la vez; el clima de mañana no depende de ellas."},
+ {q:"La API de clima no responde. ¿Qué hace un buen agente?", o:["Atrapa el error, busca otra vía, baja la confianza y lo avisa","Inventa el pronóstico","Se detiene sin decir nada"], e:"Es la Tarea 3 del notebook: el error se convierte en una observación, no en un choque."},
+ {q:"¿Para qué sirve un timeout en la llamada a una herramienta?", o:["Para no esperar indefinidamente a un servicio caído","Para que la respuesta sea más larga","Para ahorrar memoria de la GPU"], e:"Junto con reintentos y valores de respaldo, permite una degradación elegante."},
+ {q:"MCP (Model Context Protocol) es…", o:["Un protocolo estándar para conectar herramientas y datos a aplicaciones de IA","Un modelo de lenguaje","Una base de datos vectorial"], e:"Una herramienta se publica una vez como servidor MCP y cualquier cliente compatible la usa."},
+ {q:"¿Qué analogía describe mejor a MCP?", o:["Un puerto USB-C: un mismo conector para muchos dispositivos","Un disco duro","Un teclado inalámbrico"], e:"Antes, cada app conectaba cada herramienta a su manera."},
+ {q:"Una herramienta «comprar fertilizante» debería…", o:["Pedir confirmación humana antes de ejecutarse","Ejecutarse sola siempre","Funcionar sin ninguna validación"], e:"Las acciones con consecuencias (dinero, correos, borrar datos) necesitan aprobación humana."},
+ {q:"El principio de mínimo privilegio significa…", o:["Dar al agente solo las herramientas y permisos que necesita","Darle todos los permisos por si acaso","Usar siempre el modelo más barato"], e:"Si solo necesita leer el inventario, no le des una herramienta que pueda borrarlo."},
+ {q:"Con calculadora, buscar_ficha y clima: «¿Qué opinas de los colores de mi sala?». ¿Qué herramienta usa?", o:["Ninguna: está fuera del alcance de PlantSense y debe decirlo","La calculadora","El clima"], e:"Un buen agente también sabe cuándo no usar herramientas."}
+],
+D: [
+ {q:"¿Qué ventaja tienen varios agentes especialistas frente a uno solo con 25 herramientas?", o:["Instrucciones cortas, pocas herramientas por agente y se prueban por separado","Siempre son más baratos","Nunca se equivocan"], e:"Como en una planta: especialistas y alguien que coordina."},
+ {q:"En el patrón supervisor-trabajador…", o:["Un supervisor reparte el trabajo y revisa a los especialistas","Todos los agentes hacen todo","No hay ninguna coordinación"], e:"En LangGraph, el supervisor es un nodo que decide a qué especialista mandar el estado."},
+ {q:"El patrón secuencial se parece a…", o:["Una línea de ensamble: identificar → diagnosticar → recomendar","Una junta de debate","Un sorteo"], e:"Cada agente recibe el trabajo del anterior."},
+ {q:"En el patrón paralelo…", o:["Varios agentes revisan lo mismo a la vez con criterios distintos y se combinan","Los agentes trabajan uno tras otro","Solo trabaja un agente"], e:"Como varios inspectores de calidad revisando la misma pieza."},
+ {q:"El estilo conversacional de AutoGen consiste en que…", o:["Los agentes se mandan mensajes y debaten hasta llegar a un acuerdo","Hay un solo agente","Se sigue un flujo fijo sin modelo de lenguaje"], e:"Es útil para revisar ideas, pero puede gastar muchos tokens."},
+ {q:"CrewAI organiza a los agentes con…", o:["Roles, metas y tareas, en procesos secuenciales o jerárquicos","Solo imágenes","Bases de datos vectoriales"], e:"Cada agente tiene un rol («diagnosticador»), una meta y herramientas."},
+ {q:"El efecto manada en sistemas multiagente es…", o:["Que los agentes le den la razón a uno que afirma algo con seguridad aunque esté mal","Que trabajen más rápido en grupo","Un error de la red"], e:"La seguridad de un agente no es evidencia de que tenga razón."},
+ {q:"¿Qué ayuda contra el efecto manada?", o:["Que cada agente responda primero por su cuenta y luego se comparen","Que todos copien al primero","Quitar al agente revisor"], e:"También ayuda asignar a uno el papel de abogado del diablo o usar modelos distintos."},
+ {q:"Un error en cascada ocurre cuando…", o:["El identificador confunde la especie y todo lo que sigue hereda el error","Un error se corrige solo","El agente responde dos veces"], e:"Se previene validando la salida de cada etapa, por ejemplo con un umbral de confianza."},
+ {q:"Human-in-the-loop significa…", o:["Que una persona aprueba antes de las acciones importantes","Que la persona hace todo el trabajo","Que no participa ninguna persona"], e:"LangGraph permite pausar el grafo esperando la aprobación."},
+ {q:"¿En qué caso NO conviene un equipo de agentes?", o:["«¿Cada cuánto riego un cactus?»","Un vivero con diagnóstico, cotización, inventario y entregas","Revisar un reporte largo con criterios técnicos, de redacción y de normas"], e:"Una consulta simple se resuelve con un agente o con RAG. Más agentes = más costo."},
+ {q:"Un especialista no responde a tiempo. Degradación elegante significa…", o:["Entregar una respuesta parcial y avisar qué faltó","Esperar para siempre","Cancelar todo sin avisar"], e:"Se combina con un tiempo máximo por agente."},
+ {q:"Cuatro agentes conversando entre sí para una tarea…", o:["Pueden gastar muchas veces más tokens que un solo agente","Cuestan lo mismo que uno","No consumen tokens"], e:"Cada mensaje entre agentes es otra llamada al modelo."}
+],
+E: [
+ {q:"La memoria de trabajo de un agente es…", o:["Lo que está en la conversación actual: la ventana de contexto","Un perfil guardado para siempre","Un disco duro externo"], e:"Se pierde al cerrar la conversación y tiene un límite de tokens."},
+ {q:"«El 3 de octubre su monstera tenía hojas amarillas.» ¿Qué tipo de memoria es?", o:["Episódica","Semántica","Procedimental"], e:"Es un evento con fecha: algo que pasó."},
+ {q:"«Vive en Monterrey y tiene un gato.» ¿Qué tipo de memoria es?", o:["Semántica","Episódica","De trabajo"], e:"Son datos estables sobre la usuaria; suelen ir en un perfil estructurado."},
+ {q:"«Prefiere respuestas cortas y con recordatorios.» ¿Qué tipo de memoria es?", o:["Procedimental","Episódica","De trabajo"], e:"Describe cómo trabajar bien con ella."},
+ {q:"Entre una conversación y la siguiente, un modelo de lenguaje…", o:["No recuerda nada por sí mismo: la memoria es un sistema construido alrededor","Recuerda todo automáticamente","Recuerda solo lo importante"], e:"La memoria persistente se guarda afuera del modelo y se le da en el prompt."},
+ {q:"¿Dónde se guarda normalmente la memoria episódica?", o:["En una base vectorial, para buscar episodios parecidos","En los pesos del modelo","En el teclado"], e:"Es la misma técnica de la Tarea 4, aplicada a la historia de la usuaria."},
+ {q:"MemGPT trata la ventana de contexto como…", o:["La RAM, y la base de datos como el disco duro","Una impresora","Una memoria USB"], e:"El agente decide qué subir al contexto y qué guardar afuera, como la memoria virtual de un sistema operativo."},
+ {q:"Consolidar la memoria significa…", o:["Resumir muchos episodios en un dato útil: «tiende a regar de más»","Guardar todo dos veces","Borrar todos los datos"], e:"Menos registros, más útiles."},
+ {q:"¿Por qué un sistema de memoria también debe olvidar?", o:["Porque lo viejo o contradictorio empeora la recuperación","Para ahorrar electricidad","No debe olvidar nunca"], e:"Se usa decaimiento por tiempo, puntaje de importancia y consolidación periódica."},
+ {q:"Los derechos ARCO de la LFPDPPP son…", o:["Acceso, rectificación, cancelación y oposición","Almacenar, recordar, copiar y ordenar","Analizar, registrar, compartir y operar"], e:"La usuaria debe poder ver, corregir y borrar lo que PlantSense recuerda de ella."},
+ {q:"¿Qué NO debería recordar PlantSense?", o:["La dirección exacta de la casa o datos de pago","Que tiene una monstera","Que prefiere respuestas cortas"], e:"Minimización: guardar solo lo que se necesita para ayudar."},
+ {q:"La usuaria se mudó de Monterrey a Mérida. ¿Qué debe hacer la memoria?", o:["Actualizar el perfil en lugar de guardar dos ciudades","Guardar ambas ciudades sin avisar","Ignorar el cambio"], e:"Corregir evita respuestas contradictorias, como el clima de la ciudad equivocada."},
+ {q:"En el ciclo de memoria, el paso de guardar consiste en…", o:["Extraer solo lo nuevo que vale la pena recordar","Guardar siempre la conversación completa","No guardar nada"], e:"Guardar todo llena la memoria de ruido."}
+]};
+const ZONES = {A:{name:"Arquitecturas", cls:"z1", n:1}, B:{name:"Planificación", cls:"z2", n:2}, C:{name:"Tool-calling", cls:"z3", n:3}, D:{name:"Equipos de agentes", cls:"z4", n:4}, E:{name:"Memoria", cls:"z5", n:5}};
+const zoneOf = n => n<=6?"A":n<=12?"B":n<=18?"C":n<=24?"D":"E";
+const GOAL = 30;
+const TURBO = {4:"Traza ReAct", 10:"Paso a paso", 16:"JSON validado", 21:"Supervisor", 25:"Perfil recordado"};
+const HAZARD = {6:"Bucle infinito", 9:"Cuenta mal hecha", 14:"API caída", 19:"Efecto manada", 24:"Error en cascada", 28:"Memoria contaminada"};
+const HAZDESC = {6:"El agente repite la misma acción sin avanzar.", 9:"Razonó bien, pero hizo mal la cuenta.", 14:"La herramienta no responde.", 19:"Todos le dan la razón al agente más seguro.", 24:"Un error temprano se hereda en todo el equipo.", 28:"Un dato viejo o falso se coló en la memoria."};
+const ITEMBOX = [3, 8, 12, 17, 23, 26];
+const ITEMS = {plan:{ic:"🗺️", name:"Plan", desc:"elige el número del dado"}, par:{ic:"⚡", name:"Llamada en paralelo", desc:"tira dos dados y usa el mayor"}, tool:{ic:"🔧", name:"Herramienta", desc:"quita una opción incorrecta en la tarjeta"}, mem:{ic:"🧠", name:"Memoria", desc:"escudo: la próxima vez que falles no retrocedes"}};
+const RULES = {
+ normal:"Casilla normal. Si aciertan, se quedan aquí. Si fallan, regresan a donde estaban.",
+ turbo:"⚡ Turbo «{t}». Si aciertan, avanzan 3 casillas más (sin pasar de la 29). Si fallan, se quedan aquí.",
+ item:"❓ Caja de ítem. Si aciertan, ganan un ítem al azar. Si fallan, regresan a donde estaban.",
+ hazard:"⚠ Obstáculo «{t}»: {d} Si aciertan, lo esquivan. Si fallan, derrapan 3 casillas hacia atrás.",
+ meta:"🏁 Pregunta final, de cualquier sector. Si aciertan, cruzan la meta. Si fallan, regresan a donde estaban."
+};
+const KIND = {normal:"Normal", turbo:"Turbo", item:"Caja de ítem", hazard:"Obstáculo", meta:"Meta", use:"Ítem"};
 const COLORS = ["#22C7E8","#E8742C","#A48CFF","#35C27A","#F2C94C","#F07BA6","#7FD6C2","#F4A261","#8EB8FF","#C9E265","#FFB4A2","#B8A1E8","#5BC0EB","#FFD166","#9BE564","#F28FB0","#A0E7E5","#E9C46A","#CDB4DB","#90BE6D"];
-const KEY = "memorama-vecinos-v1";
-const byId = Object.fromEntries(PAIRS.map(p=>[p.id,p]));
+const PIPS = {1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
+const KEY = "gran-premio-agentes-v1";
 
-let S=null, clockTimer=null, turnTimer=null, ttLeft=0, ttPaused=false;
+let S = null, cardTimer = null, clockTimer = null, busy = false;
 const $ = id => document.getElementById(id);
 const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
-const load = () => { try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } };
+const load = () => { try{ const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } };
 const shuffle = a => { const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; };
 const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function toast(m,ms){ const t=$("toast"); t.textContent=m; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), ms||2800); }
+const reduceMotion = () => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } };
+function toast(msg, ms){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), ms||2800); }
 function fmt(ms){ ms=Math.max(0,ms); const s=Math.round(ms/1000); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
-function elapsed(){ if(!S) return 0; return (S.pausedAt?S.pausedAt:Date.now())-S.startAt-S.pausedTotal; }
+function elapsed(){ if(!S) return 0; return (S.pausedAt ? S.pausedAt : Date.now()) - S.startAt - S.pausedTotal; }
 const isTeam = () => S && S.config.mode==="team";
-const speakerOf = t => (isTeam() && t.members.length) ? t.members[t.speaker % t.members.length] : t.name;
-function tokenHTML(t,i,big){ return '<span class="token'+(big?" big":"")+'" style="background:'+t.color+'" title="'+esc(t.name)+'">'+(i+1)+'</span>'; }
-const cardText = c => { const p=byId[c.pid]; return c.side==="a" ? p.a : p.b; };
+const where = p => p===0 ? "la parrilla de salida" : "la casilla "+p;
+const kindOf = n => n===GOAL ? "meta" : TURBO[n] ? "turbo" : HAZARD[n] ? "hazard" : ITEMBOX.includes(n) ? "item" : "normal";
 
-/* ---------- tablero ---------- */
-function layout(n){
-  const cols = n<=16 ? 4 : 6, rows = Math.ceil(n/cols);
-  const b=$("board"); b.style.gridTemplateColumns="repeat("+cols+", minmax(0,1fr))";
-  b.className = "board " + (cols===4 ? "four" : "six") + (rows>=6 ? " dense" : "") + (S && S.over ? " over" : "");
-  // ancho que hace caber el tablero en la altura disponible (cartas 4:3)
-  const avail = Math.max(360, window.innerHeight - 190);
-  const w = Math.min(1000, Math.max(560, Math.floor(avail * cols * 4 / (rows * 3))));
-  $("boardwrap").style.setProperty("--bw", w+"px");
+/* ---------- pista: 30 casillas alrededor de una cuadrícula de 10 × 7, en sentido horario ---------- */
+function cellRC(n){
+  if(n<=7) return {r:7-n+1, c:1};            // columna izquierda, de abajo hacia arriba (1..7)
+  if(n<=16) return {r:1, c:n-6};             // fila superior, de izquierda a derecha (8..16)
+  if(n<=22) return {r:n-15, c:10};           // columna derecha, de arriba hacia abajo (17..22)
+  return {r:7, c:10-(n-22)};                 // fila inferior, de derecha a izquierda (23..30)
 }
-function renderBoard(){
-  const b=$("board");
-  const cards = S ? S.cards : Array.from({length:24},(_,i)=>({pid:null, side:null, state:"down"}));
-  layout(cards.length);
-  b.innerHTML = cards.map((c,i)=>{
-    let front="";
-    if(c.pid){
-      const p=byId[c.pid], z=ZONES[p.z];
-      front='<div class="face front '+(c.side==="a"?"term"+(p.a.length>24?" long":""):"desc")+' '+z.cls+'"><span class="tag">'+(c.side==="a"?"Concepto":"Descripción")+'</span><span class="num">'+(i+1)+'</span><span class="txt">'+esc(cardText(c))+'</span></div>';
-    }
-    const own = (c.state==="done" && S && c.owner!=null) ? '<span class="owner">'+tokenHTML(S.teams[c.owner], c.owner)+'</span>' : '';
-    const label = c.state==="down" ? "Carta "+(i+1)+", boca abajo" : "Carta "+(i+1)+": "+(c.pid?cardText(c):"");
-    return '<button class="card '+(c.state!=="down"?c.state:"")+'" data-i="'+i+'" aria-label="'+esc(label)+'"><div class="inner"><div class="face back"><b>'+(i+1)+'</b></div>'+front+'</div>'+own+'</button>';
-  }).join("");
-  b.querySelectorAll(".card").forEach(el=>el.addEventListener("click",()=>flip(+el.dataset.i)));
+function buildBoard(){
+  const b=$("board"); b.innerHTML="";
+  for(let n=1;n<=GOAL;n++){
+    const k=kindOf(n), rc=cellRC(n), d=document.createElement("div");
+    d.className="sq "+ZONES[zoneOf(n)].cls+" "+k; d.id="sq"+n;
+    d.style.gridRow=rc.r; d.style.gridColumn=rc.c;
+    let ic="", lbl="", aria="Casilla "+n+", sector "+ZONES[zoneOf(n)].name;
+    if(k==="meta"){ ic="🏁"; lbl="Meta"; aria+=": meta"; }
+    else if(k==="turbo"){ ic="⚡"; lbl="Turbo"; aria+=": turbo "+TURBO[n]; }
+    else if(k==="hazard"){ ic="⚠"; lbl=HAZARD[n]; aria+=": obstáculo "+HAZARD[n]; }
+    else if(k==="item"){ ic="❓"; lbl="Ítem"; aria+=": caja de ítem"; }
+    else if(n===1){ ic="🚦"; lbl="Arranque"; aria+=": primera casilla después de la salida"; }
+    d.innerHTML='<span class="num">'+n+(ic?'<span class="ic" aria-hidden="true">'+ic+'</span>':'')+'</span><span class="lbl">'+esc(lbl)+'</span><div class="tok"></div>';
+    d.setAttribute("aria-label",aria);
+    b.appendChild(d);
+  }
+  const f=document.createElement("div"); f.className="infield";
+  f.innerHTML='<h2>Gran Premio de Agentes</h2>'+
+    '<p>Una vuelta en sentido de las manecillas del reloj: salen de la casilla 1 (abajo a la izquierda), suben, cruzan la recta superior, bajan y cierran la vuelta en la meta 30.</p>'+
+    '<div class="sectors">'+Object.keys(ZONES).map(z=>{ const r=[1,7,13,19,25][ZONES[z].n-1]; return '<div class="'+ZONES[z].cls+'"><b>'+ZONES[z].n+'. '+ZONES[z].name+'</b>Casillas '+r+'–'+(r+5)+'</div>'; }).join("")+'</div>'+
+    '<div class="legend2"><span><i>⚡</i>Turbo: si aciertas, +3 casillas</span><span><i>⚠</i>Obstáculo: si fallas, −3 casillas</span><span><i>❓</i>Caja: si aciertas, ganas un ítem</span><span><i>🏁</i>Meta: pregunta final</span>'+
+    '<span><i>🗺️</i>Plan: eliges el dado</span><span><i>⚡</i>Paralelo: dos dados, el mayor</span><span><i>🔧</i>Herramienta: quita una opción</span><span><i>🧠</i>Memoria: escudo contra un retroceso</span></div>';
+  b.appendChild(f);
 }
-function renderPanel(){
+function tokenHTML(t,i,big){ return '<span class="token'+(big?" big":"")+'" style="background:'+t.color+'" title="'+esc(t.name)+'">'+(i+1)+'</span>'; }
+function speakerOf(t){ return (isTeam() && t.members.length) ? t.members[t.speaker % t.members.length] : t.name; }
+function rankOrder(){
+  return S.teams.map((t,i)=>i).sort((a,b)=>{ const A=S.teams[a],B=S.teams[b];
+    if(A.rank&&B.rank) return A.rank-B.rank; if(A.rank) return -1; if(B.rank) return 1;
+    return (B.pos-A.pos) || (B.points-A.points); });
+}
+function itemsHTML(t){
+  if(!t.items.length) return '<div class="none">Sin ítems. Ganen uno en una caja ❓.</div>';
+  const can = !busy && !S.over && !S.mod;
+  return t.items.map((k,j)=>{
+    const I=ITEMS[k]; let btn="";
+    if(k==="plan"||k==="par") btn='<button data-use="'+j+'"'+(can?"":" disabled")+'>Usar</button>';
+    else if(k==="tool") btn='<span style="font-size:13px;color:var(--muted)">en la tarjeta</span>';
+    else btn='<span style="font-size:13px;color:var(--muted)">automático</span>';
+    return '<div class="it"><span aria-hidden="true">'+I.ic+'</span><b>'+I.name+'</b>'+btn+'</div>'; }).join("");
+}
+function render(){
+  document.querySelectorAll(".sq .tok").forEach(x=>x.innerHTML="");
+  document.querySelectorAll(".sq.active").forEach(x=>x.classList.remove("active"));
+  $("startTokens").innerHTML="";
+  $("physical").classList.remove("plan"); $("physLbl").textContent="¿Dado físico? Marquen el resultado:";
   if(!S){
     $("turnToken").innerHTML=""; $("turnName").textContent="Sin partida"; $("turnMembers").textContent="";
-    $("turnStatus").textContent="Presionen «Nueva partida» para registrar a los participantes.";
-    $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay participantes.</li>'; $("progress").textContent="";
-    $("log").innerHTML='<div>Aquí aparecerá cada jugada.</div>'; $("clock").textContent="--:--"; $("clock").classList.remove("low");
-    $("turnTimer").hidden=true; return;
+    $("turnStatus").textContent="Presionen «Nueva partida» para registrar a los pilotos.";
+    $("turnItems").innerHTML="";
+    $("btnRoll").textContent="Configurar partida"; $("btnRoll").disabled=false;
+    document.querySelectorAll(".physical button").forEach(x=>x.disabled=true);
+    $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay pilotos.</li>';
+    $("log").innerHTML='<div>Aquí aparecerá cada jugada.</div>';
+    $("clock").textContent="--:--"; $("clock").classList.remove("low");
+    return;
   }
+  S.teams.forEach((t,i)=>{
+    const h=tokenHTML(t,i);
+    if(t.pos===0) $("startTokens").insertAdjacentHTML("beforeend",h);
+    else $("sq"+t.pos).querySelector(".tok").insertAdjacentHTML("beforeend",h);
+  });
   const cur=S.teams[S.turn];
-  $("turnToken").innerHTML=tokenHTML(cur,S.turn,true); $("turnName").textContent=cur.name;
-  $("turnMembers").textContent = (isTeam() && cur.members.length) ? "Voltea y lee: "+speakerOf(cur) : "";
-  $("turnStatus").textContent = S.over ? "La partida terminó. Repasen el tablero o abran la bitácora." : (S.flipped.length===1 ? "Falta voltear una carta." : "Volteen dos cartas.");
-  const found=S.cards.filter(c=>c.state==="done").length/2, total=S.cards.length/2;
-  $("progress").textContent = "Parejas encontradas: "+found+" de "+total;
+  if(cur.pos>0) $("sq"+cur.pos).classList.add("active");
+  $("turnToken").innerHTML=tokenHTML(cur,S.turn,true);
+  $("turnName").textContent=cur.name;
+  $("turnMembers").textContent = (isTeam() && cur.members.length) ? "Responde: "+speakerOf(cur) : "";
+  let st = S.over ? "La carrera terminó. Pueden revisar la bitácora o iniciar una nueva." : "Está en "+where(cur.pos)+".";
+  if(!S.over && S.mod==="plan") st="🗺️ Plan activo: elijan el número del dado abajo.";
+  if(!S.over && S.mod==="par") st="⚡ Llamada en paralelo activa: al tirar se lanzan dos dados y se usa el mayor.";
+  $("turnStatus").textContent=st;
+  $("turnItems").innerHTML=itemsHTML(cur);
+  $("turnItems").querySelectorAll("[data-use]").forEach(b=>b.addEventListener("click",()=>useItem(+b.dataset.use)));
+  const planning = S.mod==="plan" && !S.over;
+  $("btnRoll").textContent = planning ? "Elijan el número abajo" : (S.mod==="par" ? "Tirar dos dados" : "Tirar el dado");
+  $("btnRoll").disabled = busy || S.over || planning;
+  if(planning){ $("physical").classList.add("plan"); $("physLbl").textContent="🗺️ Plan: ¿cuántas casillas avanzan?"; }
+  document.querySelectorAll(".physical button").forEach(x=>x.disabled = busy || S.over);
   $("standings").innerHTML = rankOrder().map(i=>{ const t=S.teams[i];
-    return '<li>'+tokenHTML(t,i)+'<span class="nm">'+esc(t.name)+'</span><span class="meta2">'+t.points+' pareja'+(t.points===1?"":"s")+'<br>'+t.tries+' intentos</span></li>'; }).join("");
-  $("log").innerHTML = S.log.slice(-12).reverse().map(l=>'<div><b>'+esc(l.player)+'</b>: '+(l.result==="Pareja"?"encontró la pareja «"+esc(l.c1)+"»":l.result==="Tiempo agotado"?"se le acabó el tiempo":"no hubo pareja ("+l.n1+" y "+l.n2+")")+'.</div>').join("") || '<div>Aquí aparecerá cada jugada.</div>';
+    const w = t.rank ? "Meta ("+t.rank+"º)" : (t.pos===0?"Salida":"Casilla "+t.pos);
+    const its = t.items.map(k=>ITEMS[k].ic).join(" ");
+    return '<li>'+tokenHTML(t,i)+'<span class="nm">'+esc(t.name)+(its?' <span aria-label="ítems">'+its+'</span>':'')+'</span><span class="meta2">'+w+'<br>'+t.points+' pts, '+t.ok+'/'+(t.ok+t.bad)+'</span></li>'; }).join("");
+  $("log").innerHTML = S.log.slice(-12).reverse().map(l=> l.kind==="use"
+      ? '<div><b>'+esc(l.player)+'</b> '+esc(l.effect)+'</div>'
+      : '<div><b>'+esc(l.player)+'</b> sacó '+l.die+': '+KIND[l.kind].toLowerCase()+' en '+l.at+', '+l.result.toLowerCase()+'. '+esc(l.effect)+'</div>').join("") || '<div>Aquí aparecerá cada jugada.</div>';
 }
-function render(){ renderBoard(); renderPanel(); }
-function setStatus(msg, cls, showContinue){
-  $("statusMsg").textContent=msg; $("statusbar").className="statusbar"+(cls?" "+cls:"");
-  $("btnContinue").hidden=!showContinue; if(showContinue) $("btnContinue").focus();
+function logUse(t, msg){
+  S.log.push({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), die:"", from:t.pos, at:t.pos, kind:"use", card:"", result:"—", effect:msg, end:t.pos, pts:0, item:""});
 }
-function rankOrder(){ return S.teams.map((t,i)=>i).sort((a,b)=>(S.teams[b].points-S.teams[a].points)||(S.teams[a].tries-S.teams[b].tries)||(a-b)); }
 
-/* ---------- jugadas ---------- */
-function flip(i){
-  if(!S){ openSetup(); return; }
-  if(S.over || S.waiting || $("ovPair").classList.contains("show")) return;
-  const c=S.cards[i]; if(c.state!=="down" || S.flipped.length>=2) return;
-  c.state="up"; S.flipped.push(i); save();
-  if(S.flipped.length===1){ render(); setStatus(S.teams[S.turn].name+" volteó la carta "+(i+1)+". Falta una."); return; }
-  evaluate();
+/* ---------- ítems ---------- */
+function useItem(j){
+  if(busy||!S||S.over||S.mod) return;
+  const t=S.teams[S.turn], k=t.items[j];
+  if(k!=="plan" && k!=="par") return;
+  t.items.splice(j,1); S.mod=k;
+  logUse(t, "usó "+ITEMS[k].ic+" "+ITEMS[k].name+".");
+  save(); render();
+  toast(k==="plan" ? "Plan activado: elijan el número del dado." : "Llamada en paralelo: tiren dos dados.");
 }
-function evaluate(){
-  stopTurnTimer();
-  const [i,j]=S.flipped, a=S.cards[i], b=S.cards[j], t=S.teams[S.turn];
-  t.tries++;
-  const match = a.pid===b.pid;
-  const entry={n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), n1:i+1, n2:j+1, c1:cardText(a), c2:cardText(b), result:match?"Pareja":"No son pareja", pts:match?1:0};
-  if(match){
-    a.state=b.state="done"; a.owner=b.owner=S.turn; t.points++; S.flipped=[];
-    entry.c1 = byId[a.pid].a; entry.c2 = byId[a.pid].b;
-    S.log.push(entry); save(); render();
-    setStatus("¡"+t.name+" encontró una pareja! Vuelve a tirar.", "ok");
-    showPair(a.pid, t);
+
+/* ---------- dado y movimiento ---------- */
+function showDie(v){ $("die").querySelectorAll("i").forEach((p,k)=>p.classList.toggle("on", PIPS[v].includes(k))); $("die").setAttribute("aria-label","Dado: "+v); }
+function rollAnimated(){
+  if(busy||!S||S.over||S.mod==="plan") return;
+  busy=true; render();
+  $("die").classList.add("rolling");
+  let k=0; const n=reduceMotion()?1:9;
+  const it=setInterval(()=>{ showDie(1+Math.floor(Math.random()*6)); if(++k>=n){ clearInterval(it);
+    let v=1+Math.floor(Math.random()*6);
+    if(S.mod==="par"){ const w=1+Math.floor(Math.random()*6); toast("Dados en paralelo: "+v+" y "+w+". Avanzan "+Math.max(v,w)+".",3200); v=Math.max(v,w); S.mod=null; }
+    showDie(v); $("die").classList.remove("rolling"); move(v); } }, 70);
+}
+function move(v){
+  busy=true;
+  const t=S.teams[S.turn], from=t.pos, path=[]; let p=from;
+  for(let s=0;s<v && p<GOAL;s++){ p++; path.push(p); }
+  if(!path.length){ land(from,v); return; }
+  const fast=reduceMotion(); let i=0;
+  const step=()=>{ t.pos=path[i]; render(); i++; if(i<path.length) setTimeout(step, fast?0:170); else setTimeout(()=>land(from,v), fast?0:250); };
+  step();
+}
+function land(prev, die){
+  const n=S.teams[S.turn].pos, kind=kindOf(n);
+  const z = kind==="meta" ? "ABCDE"[Math.floor(Math.random()*5)] : zoneOf(n);
+  if(!S.decks[z] || !S.decks[z].length) S.decks[z]=shuffle(BANK[z].map((_,i)=>i));
+  S.pending={n, prev, die, kind, z, idx:S.decks[z].pop(), removed:null, toolUsed:false};
+  save(); openCard();
+}
+
+/* ---------- tarjetas ---------- */
+function openCard(){
+  busy=true;
+  const P=S.pending, t=S.teams[S.turn], item=BANK[P.z][P.idx];
+  const opts=shuffle(item.o.map((txt,k)=>({txt, ok:k===0})));
+  $("cZone").textContent="Sector "+ZONES[P.z].n+": "+ZONES[P.z].name; $("cZone").className="chip "+ZONES[P.z].cls;
+  let type="Casilla "+P.n+" · "+KIND[P.kind];
+  if(P.kind==="turbo") type+=": "+TURBO[P.n]; if(P.kind==="hazard") type+=": "+HAZARD[P.n];
+  $("cType").textContent=type;
+  $("cRule").textContent=RULES[P.kind].replace("{t}",TURBO[P.n]||HAZARD[P.n]||"").replace("{d}",HAZDESC[P.n]||"");
+  $("cWho").textContent = isTeam() ? t.name+(t.members.length?" · responde en voz alta: "+speakerOf(t):"") : "Responde: "+t.name;
+  $("cq").textContent=item.q;
+  $("cOpts").innerHTML = opts.map((o,k)=>'<button class="opt" data-ok="'+(o.ok?1:0)+'" data-txt="'+esc(o.txt)+'"><span class="L">'+"ABC"[k]+'</span><span>'+esc(o.txt)+'</span></button>').join("");
+  $("cOpts").querySelectorAll(".opt").forEach(b=>{ b.addEventListener("click",()=>answer(b)); if(P.removed && b.dataset.txt===P.removed){ b.disabled=true; b.classList.add("gone"); } });
+  $("cFb").className="fb"; $("cNext").hidden=true;
+  $("cTool").hidden = !(t.items.includes("tool") && !P.toolUsed);
+  $("ovCard").classList.add("show");
+  const first=[...$("cOpts").querySelectorAll(".opt")].find(b=>!b.disabled); if(first) first.focus();
+  startCardTimer(S.config.secs);
+  render();
+}
+$("cTool").onclick=()=>{
+  if(!S||!S.pending||S.pending.toolUsed) return;
+  const t=S.teams[S.turn], j=t.items.indexOf("tool"); if(j<0) return;
+  const wrong=[...$("cOpts").querySelectorAll('.opt[data-ok="0"]:not(:disabled)')];
+  if(!wrong.length) return;
+  const b=wrong[Math.floor(Math.random()*wrong.length)];
+  b.disabled=true; b.classList.add("gone");
+  t.items.splice(j,1); S.pending.toolUsed=true; S.pending.removed=b.dataset.txt;
+  logUse(t, "usó 🔧 Herramienta y quitó una opción incorrecta.");
+  $("cTool").hidden=true; save(); render();
+};
+function startCardTimer(total){
+  clearInterval(cardTimer);
+  let left=total, paused=false;
+  const tick=()=>{ $("cTime").textContent=left; $("cTime").classList.toggle("low", left<=10); $("cBar").style.width=(100*left/total)+"%"; };
+  tick();
+  $("cPause").textContent="Pausar"; $("cPause").hidden=false;
+  $("cPause").onclick=()=>{ paused=!paused; $("cPause").textContent=paused?"Reanudar":"Pausar"; };
+  cardTimer=setInterval(()=>{ if(paused) return; left--; tick(); if(left<=0){ clearInterval(cardTimer); answer(null); } },1000);
+}
+function answer(btn){
+  if(!S || !S.pending) return;
+  clearInterval(cardTimer); $("cPause").hidden=true; $("cTool").hidden=true;
+  $("cOpts").querySelectorAll(".opt").forEach(b=>{ b.disabled=true; if(b.dataset.ok==="1") b.classList.add("right"); });
+  const ok = !!(btn && btn.dataset.ok==="1");
+  if(btn && !ok) btn.classList.add("wrong");
+  const item=BANK[S.pending.z][S.pending.idx];
+  const eff = applyEffect(ok, btn?null:"Sin respuesta");
+  $("cFb").className="fb show "+(ok?"okk":"bad");
+  $("cFbT").textContent = ok ? "Correcto" : (btn ? "Incorrecto" : "Se acabó el tiempo");
+  $("cFbE").textContent = item.e;
+  $("cFbX").textContent = eff;
+  $("cNext").hidden=false; $("cNext").focus();
+}
+function retreat(t, to, why){
+  const j=t.items.indexOf("mem");
+  if(j>=0){ t.items.splice(j,1); return {msg:"🧠 La memoria lo protege: no retrocede ("+why+").", used:"🧠 Memoria"}; }
+  t.pos=to; return {msg:why.charAt(0).toUpperCase()+why.slice(1)+": queda en "+where(to)+".", used:""};
+}
+function applyEffect(ok, label){
+  const t=S.teams[S.turn], P=S.pending; let msg="", pts=0, used=P.toolUsed?"🔧 Herramienta":"";
+  if(ok) t.ok++; else t.bad++;
+  if(P.kind==="normal"){
+    if(ok){ pts=1; msg="Se queda en la casilla "+P.n+"."; } else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
+  } else if(P.kind==="item"){
+    if(ok){ pts=1; const k=Object.keys(ITEMS)[Math.floor(Math.random()*4)];
+      if(t.items.length<2){ t.items.push(k); msg="Gana el ítem "+ITEMS[k].ic+" "+ITEMS[k].name+": "+ITEMS[k].desc+"."; }
+      else { pts=2; msg="Garage lleno: en lugar del ítem recibe +1 punto extra."; } }
+    else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
+  } else if(P.kind==="turbo"){
+    if(ok){ pts=2; t.pos=Math.min(GOAL-1, P.n+3); msg="¡Turbo! Avanza a la casilla "+t.pos+"."; } else msg="Sin turbo: se queda en la casilla "+P.n+".";
+  } else if(P.kind==="hazard"){
+    if(ok){ pts=2; msg="Esquiva «"+HAZARD[P.n]+"» y se queda en la casilla "+P.n+"."; }
+    else { const r=retreat(t,Math.max(0,P.n-3),"derrapa 3 casillas por «"+HAZARD[P.n]+"»"); msg=r.msg; used=used||r.used; }
   } else {
-    S.waiting=true; S.log.push(entry); save(); render();
-    setStatus("No son pareja. Memoricen las cartas "+(i+1)+" y "+(j+1)+" y presionen «Continuar».", "bad", true);
+    if(ok){ pts=3; S.finished=(S.finished||0)+1; t.rank=S.finished; msg="¡Cruza la meta en "+t.rank+"º lugar!"; }
+    else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
   }
+  t.points+=pts;
+  S.log.push({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), die:P.die, from:P.prev, at:P.n, kind:P.kind,
+    card:ZONES[P.z].name, result: ok?"Correcta":(label||"Incorrecta"), effect:msg, end:t.pos, pts:pts, item:used});
+  S.lastKind=P.kind; S.pending=null;
+  save(); render();
+  return msg;
 }
-function showPair(pid, t){
-  const p=byId[pid], z=ZONES[p.z];
-  $("pairView").innerHTML='<div class="'+z.cls+'"><b>Concepto</b><p class="t">'+esc(p.a)+'</p></div><div class="'+z.cls+'"><b>Descripción</b><p>'+esc(p.b)+'</p></div>';
-  $("pairExpl").innerHTML='<b>'+esc(z.name)+':</b> '+esc(p.e);
-  $("pairWho").textContent = t.name+" suma "+t.points+" pareja"+(t.points===1?"":"s")+". Antes de seguir, expliquen con sus palabras por qué son vecinas.";
-  $("ovPair").classList.add("show"); $("pairNext").focus();
-}
-function afterPair(){
-  $("ovPair").classList.remove("show");
-  if(S.cards.every(c=>c.state==="done")){ endGame(); return; }
-  if(S.timeUp){ endGame(); return; }
-  setStatus("Sigue "+S.teams[S.turn].name+": volteen dos cartas.");
-  startTurnTimer(); renderPanel();
-}
-function continueTurn(){
-  if(!S || !S.waiting) return;
-  S.flipped.forEach(k=>{ if(S.cards[k].state==="up") S.cards[k].state="down"; });
-  S.flipped=[]; S.waiting=false;
+function closeCard(){
+  $("ovCard").classList.remove("show");
+  const t=S.teams[S.turn];
+  t.speaker++; busy=false;
+  if(S.lastKind==="meta" && t.rank && !S.over){ S.lastKind=null; if(S.teams.every(x=>x.rank)){ endGame(); return; } showWin(t); }
   nextTurn();
 }
 function nextTurn(){
-  const t=S.teams[S.turn]; t.speaker++;
-  S.turn=(S.turn+1)%S.teams.length; save();
-  if(S.timeUp){ render(); endGame(); return; }
-  render(); setStatus("Turno de "+S.teams[S.turn].name+": volteen dos cartas.");
-  startTurnTimer();
+  if(S.over){ render(); return; }
+  if(!S.teams.some(t=>!t.rank)){ endGame(); return; }
+  S.mod=null;
+  do{ S.turn=(S.turn+1)%S.teams.length; } while(S.teams[S.turn].rank);
+  save(); render();
+  if(S.timeUp) endGame();
 }
-
-/* ---------- tiempo por turno ---------- */
-function startTurnTimer(){
-  stopTurnTimer();
-  if(!S || S.over || !S.config.secs){ $("turnTimer").hidden=true; return; }
-  ttLeft=S.config.secs; ttPaused=false; $("turnTimer").hidden=false; $("ttPause").textContent="Pausar";
-  const total=S.config.secs;
-  const tick=()=>{ $("ttTime").textContent=ttLeft; $("ttTime").classList.toggle("low", ttLeft<=10); $("ttBar").style.width=(100*ttLeft/total)+"%"; };
-  tick();
-  turnTimer=setInterval(()=>{
-    if(ttPaused || S.pausedAt || $("ovPair").classList.contains("show")) return;
-    ttLeft--; tick();
-    if(ttLeft<=0){
-      stopTurnTimer();
-      const t=S.teams[S.turn];
-      S.flipped.forEach(k=>{ if(S.cards[k].state==="up") S.cards[k].state="down"; }); S.flipped=[];
-      S.log.push({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), n1:"", n2:"", c1:"", c2:"", result:"Tiempo agotado", pts:0});
-      toast("Se acabó el tiempo de "+t.name+".");
-      nextTurn();
-    }
-  },1000);
-}
-function stopTurnTimer(){ clearInterval(turnTimer); turnTimer=null; }
-$("ttPause").onclick=()=>{ ttPaused=!ttPaused; $("ttPause").textContent=ttPaused?"Reanudar":"Pausar"; };
 
 /* ---------- fin ---------- */
-function podiumHTML(){ return rankOrder().map((i,k)=>{ const t=S.teams[i]; return '<div>'+tokenHTML(t,i)+'<b style="flex:1; overflow-wrap:anywhere">'+(k+1)+'. '+esc(t.name)+'</b><span>'+t.points+' pareja'+(t.points===1?"":"s")+' · '+t.tries+' intentos</span></div>'; }).join(""); }
+function podiumHTML(){
+  return rankOrder().map((i,k)=>{ const t=S.teams[i];
+    return '<div>'+tokenHTML(t,i)+'<b style="flex:1; overflow-wrap:anywhere">'+(k+1)+'. '+esc(t.name)+'</b><span>'+(t.rank?"Cruzó la meta":(t.pos===0?"Salida":"Casilla "+t.pos))+' · '+t.points+' pts</span></div>'; }).join("");
+}
+function showWin(t){
+  $("winT").textContent = t.rank===1 ? "🏁 ¡"+t.name+" ganó el Gran Premio!" : t.name+" cruzó la meta en "+t.rank+"º lugar";
+  $("winP").textContent = "Superó los cinco sectores y la pregunta final.";
+  $("podium").innerHTML=podiumHTML(); $("winContinue").hidden=false;
+  $("ovWin").classList.add("show");
+}
 function endGame(){
   if(!S) return;
-  stopTurnTimer(); $("turnTimer").hidden=true;
-  S.over=true; S.waiting=false; S.flipped=[]; if(!S.pausedAt) S.pausedAt=Date.now();
-  S.cards.forEach(c=>{ if(c.state!=="done") c.state="up"; });
-  save(); render();
-  const found=S.cards.filter(c=>c.owner!=null).length/2, total=S.cards.length/2;
-  const best=S.teams[rankOrder()[0]];
-  const tie=S.teams.filter(t=>t.points===best.points).length>1;
-  $("winT").textContent = best.points===0 ? "Resultados finales" : tie ? "¡Empate en el primer lugar!" : "¡"+best.name+" gana con "+best.points+" pareja"+(best.points===1?"":"s")+"!";
-  $("winP").textContent = "Se encontraron "+found+" de "+total+" parejas. Las cartas quedaron boca arriba para repasar.";
-  $("podium").innerHTML=podiumHTML(); $("ovWin").classList.add("show");
-  setStatus("Partida terminada. Todas las cartas están boca arriba para repasar.");
+  S.over=true; S.pending=null; S.mod=null; if(!S.pausedAt) S.pausedAt=Date.now(); save();
+  $("winT").textContent="Resultados finales";
+  $("winP").textContent="Gana quien cruzó la meta; si nadie llegó, quien esté más adelante y, en empate, quien tenga más puntos.";
+  $("podium").innerHTML=podiumHTML(); $("winContinue").hidden=true;
+  $("ovWin").classList.add("show"); render();
 }
 
 /* ---------- reloj de partida ---------- */
@@ -504,31 +706,32 @@ function startClock(){
   clearInterval(clockTimer);
   clockTimer=setInterval(()=>{
     if(!S) return;
-    const left=S.config.mins*60000-elapsed();
+    const left=S.config.mins*60000 - elapsed();
     $("clock").textContent=fmt(left); $("clock").classList.toggle("low", left<=5*60000 && !S.over);
-    if(left<=0 && !S.over && !S.timeUp){ S.timeUp=true; save(); toast("Se acabó el tiempo. Terminen la jugada en curso.",4000); }
-    if(S.timeUp && !S.over && !S.waiting && S.flipped.length===0 && !$("ovPair").classList.contains("show")) endGame();
+    if(left<=0 && !S.over && !S.timeUp){ S.timeUp=true; save(); toast("Se acabó el tiempo. Terminen la tarjeta en curso.",4000); }
+    if(S.timeUp && !S.over && !busy && !$("ovCard").classList.contains("show")) endGame();
   },500);
 }
 $("btnPause").onclick=()=>{
-  if(!S){ toast("Todavía no hay partida."); return; } if(S.over) return;
-  if(S.pausedAt){ S.pausedTotal+=Date.now()-S.pausedAt; S.pausedAt=null; } else S.pausedAt=Date.now();
-  $("btnPause").textContent=S.pausedAt?"Reanudar reloj":"Pausar reloj"; save();
+  if(!S){ toast("Todavía no hay partida."); return; }
+  if(S.over) return;
+  if(S.pausedAt){ S.pausedTotal+=Date.now()-S.pausedAt; S.pausedAt=null; } else { S.pausedAt=Date.now(); }
+  $("btnPause").textContent = S.pausedAt ? "Reanudar reloj" : "Pausar reloj"; save();
 };
 
 /* ---------- configuración ---------- */
 function fillCount(){
-  const team=$("mode").value==="team", max=team?6:20; let h="";
+  const team=$("mode").value==="team", sel=$("nPlayers"), max=team?6:20; let h="";
   for(let i=2;i<=max;i++) h+='<option'+(i===4?" selected":"")+'>'+i+'</option>';
-  $("nPlayers").innerHTML=h;
-  $("nLabel").textContent=team?"Número de equipos":"Número de estudiantes";
-  $("rowsTitle").textContent=team?"Equipos":"Estudiantes";
+  sel.innerHTML=h;
+  $("nLabel").textContent = team ? "Número de equipos" : "Número de estudiantes";
+  $("rowsTitle").textContent = team ? "Equipos" : "Estudiantes";
   $("playerRows").innerHTML=""; playerRows();
 }
 function playerRows(){
   const team=$("mode").value==="team", n=+$("nPlayers").value, box=$("playerRows");
   const prev=[...box.querySelectorAll(".prow")].map(r=>({n:r.querySelector(".tn").value, m:r.querySelector(".tm")?r.querySelector(".tm").value:""}));
-  box.className=team?"team":""; box.innerHTML="";
+  box.className = team ? "team" : ""; box.innerHTML="";
   for(let i=0;i<n;i++){
     const d=document.createElement("div"); d.className="prow";
     let h='<span class="token big" style="background:'+COLORS[i]+'">'+(i+1)+'</span>';
@@ -541,29 +744,22 @@ function playerRows(){
     d.innerHTML=h; box.appendChild(d);
   }
 }
-$("mode").onchange=fillCount; $("nPlayers").onchange=playerRows;
-function pickPairs(n){
-  // reparte las parejas entre los tres temas de forma pareja
-  const byZ=[1,2,3].map(z=>shuffle(PAIRS.filter(p=>p.z===z)));
-  const out=[]; let k=0;
-  while(out.length<n){ const g=byZ[k%3]; if(g.length) out.push(g.pop()); k++; }
-  return out;
-}
+$("mode").onchange=fillCount;
+$("nPlayers").onchange=playerRows;
 $("btnStart").onclick=()=>{
   const team=$("mode").value==="team";
   let teams=[...document.querySelectorAll("#playerRows .prow")].map((r,i)=>({
     name:(r.querySelector(".tn").value.trim()||((team?"Equipo ":"Estudiante ")+(i+1))).slice(0,40),
     members: team ? r.querySelector(".tm").value.split(",").map(s=>s.trim()).filter(Boolean).slice(0,8) : [],
-    color:COLORS[i], points:0, tries:0, speaker:0 }));
+    color:COLORS[i], pos:0, points:0, ok:0, bad:0, rank:0, speaker:0, items:[] }));
   if($("order").value==="random") teams=shuffle(teams);
-  const chosen=pickPairs(+$("pairs").value);
-  const cards=shuffle(chosen.flatMap(p=>[{pid:p.id, side:"a", state:"down", owner:null},{pid:p.id, side:"b", state:"down", owner:null}]));
-  S={config:{mode:team?"team":"solo", secs:+$("secs").value, mins:+$("mins").value}, teams, turn:0, cards, flipped:[], waiting:false, log:[], startAt:Date.now(), pausedAt:null, pausedTotal:0, over:false, timeUp:false};
+  clearInterval(cardTimer);
+  S={config:{mode:team?"team":"solo", secs:+$("secs").value, mins:+$("mins").value}, teams, turn:0, decks:{}, log:[], startAt:Date.now(), pausedAt:null, pausedTotal:0, finished:0, over:false, timeUp:false, pending:null, mod:null};
   save();
-  ["ovSetup","ovWin","ovLog","ovPair"].forEach(id=>$(id).classList.remove("show"));
+  ["ovSetup","ovCard","ovWin","ovLog"].forEach(id=>$(id).classList.remove("show"));
   $("btnPause").textContent="Pausar reloj";
-  render(); startClock(); startTurnTimer();
-  setStatus("Empieza "+teams[0].name+": volteen dos cartas.");
+  busy=false; showDie(1); render(); startClock();
+  toast("¡Arranca la carrera! Empieza "+teams[0].name+".");
 };
 function openSetup(){ if(!$("nPlayers").options.length) fillCount(); else playerRows(); $("ovSetup").classList.add("show"); }
 function twoStep(btn,label,ask,need,fn){
@@ -577,76 +773,91 @@ twoStep($("btnReset"),"Nueva partida","Se borrará la actual. Clic otra vez",()=
 twoStep($("btnEnd"),"Terminar partida","¿Seguro? Clic otra vez",()=>!!(S && !S.over),()=>{
   if(!S){ toast("Todavía no hay partida."); return; }
   if(S.over){ $("ovWin").classList.add("show"); return; }
-  $("ovPair").classList.remove("show"); endGame();
+  clearInterval(cardTimer); $("ovCard").classList.remove("show");
+  if(S.pending){ S.teams[S.turn].pos=S.pending.prev; S.pending=null; }
+  busy=false; endGame();
 });
 $("btnCancelSetup").onclick=()=>$("ovSetup").classList.remove("show");
 $("btnRules").onclick=()=>$("ovRules").classList.add("show");
-$("btnContinue").onclick=continueTurn;
-$("pairNext").onclick=afterPair;
-$("winLog").onclick=()=>{ $("ovWin").classList.remove("show"); openLog(); };
-document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o && o.id!=="ovPair") o.classList.remove("show"); }));
+document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o && o.id!=="ovCard") o.classList.remove("show"); }));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).classList.remove("show")));
+$("winContinue").onclick=()=>$("ovWin").classList.remove("show");
+$("winLog").onclick=()=>{ $("ovWin").classList.remove("show"); openLog(); };
+$("cNext").onclick=closeCard;
+$("btnRoll").onclick=()=>{ if(!S){ openSetup(); return; } rollAnimated(); };
+document.querySelectorAll(".physical button").forEach(b=>b.addEventListener("click",()=>{
+  if(busy||!S||S.over) return;
+  const v=+b.dataset.v;
+  if(S.mod==="plan"){ const t=S.teams[S.turn]; S.mod=null; logUse(t,"eligió avanzar "+v+" con 🗺️ Plan."); }
+  else if(S.mod==="par"){ S.mod=null; }
+  showDie(v); move(v);
+}));
 
 /* ---------- bitácora ---------- */
-const unit = () => isTeam() ? "Equipo" : "Estudiante";
-const LOGHEAD = () => ["#","Tiempo",unit(),"Volteó","Carta 1","Texto 1","Carta 2","Texto 2","Resultado","Puntos"];
-function logRows(){ return S.log.map(r=>[r.n,r.time,r.player,r.who,r.n1,r.c1,r.n2,r.c2,r.result,r.pts]); }
-const POSHEAD = () => ["Lugar",unit(),"Integrantes","Parejas","Intentos"];
-function posRows(){ return rankOrder().map((i,k)=>{ const t=S.teams[i]; return [k+1,t.name,isTeam()?t.members.join("; "):"",t.points,t.tries]; }); }
-function logCSV(){ const q=v=>'"'+String(v).replace(/"/g,'""')+'"'; return [POSHEAD()].concat(posRows()).map(r=>r.map(q).join(",")).join("\n")+"\n\n"+[LOGHEAD()].concat(logRows()).map(r=>r.map(q).join(",")).join("\n"); }
-function logText(){ const tab=rows=>rows.map(r=>r.join("\t")).join("\n"); return "Memorama de vecinos cercanos\n\nPosiciones\n"+tab([POSHEAD()].concat(posRows()))+"\n\nJugadas\n"+tab([LOGHEAD()].concat(logRows())); }
+function unit(){ return isTeam() ? "Equipo" : "Estudiante"; }
+function logRows(){ return S.log.map(r=>[r.n, r.time, r.player, r.who, r.die, r.from, r.at, KIND[r.kind], r.card, r.result, r.effect, r.item||"", r.end, r.pts]); }
+const LOGHEAD = () => ["#","Tiempo",unit(),"Respondió","Dado","Desde","Casilla","Tipo","Sector","Resultado","Efecto","Ítem usado","Termina en","Puntos"];
+function posRows(){ return rankOrder().map((i,k)=>{ const t=S.teams[i]; return [k+1, t.name, isTeam()?t.members.join("; "):"", t.rank?"Meta ("+t.rank+"º)":(t.pos===0?"Salida":"Casilla "+t.pos), t.points, t.ok, t.bad, t.items.map(x=>ITEMS[x].name).join("; ")]; }); }
+const POSHEAD = () => ["Lugar",unit(),"Integrantes","Posición","Puntos","Correctas","Incorrectas","Ítems guardados"];
+function logCSV(){
+  const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
+  return [POSHEAD()].concat(posRows()).map(r=>r.map(q).join(",")).join("\n")+"\n\n"+[LOGHEAD()].concat(logRows()).map(r=>r.map(q).join(",")).join("\n");
+}
+function logText(){
+  const tab=rows=>rows.map(r=>r.join("\t")).join("\n");
+  return "Gran Premio de Agentes\n\nPosiciones\n"+tab([POSHEAD()].concat(posRows()))+"\n\nJugadas\n"+tab([LOGHEAD()].concat(logRows()));
+}
 function openLog(){
   if(!S){ toast("Todavía no hay partida. Presionen «Nueva partida»."); return; }
   $("expText").hidden=true;
   const th=h=>'<tr>'+h.map(x=>'<th>'+x+'</th>').join("")+'</tr>';
-  let ph=POSHEAD(), pr=posRows(); if(!isTeam()){ ph=ph.filter((_,i)=>i!==2); pr=pr.map(r=>r.filter((_,i)=>i!==2)); }
+  let ph=POSHEAD(), pr=posRows();
+  if(!isTeam()){ ph=ph.filter((_,i)=>i!==2); pr=pr.map(r=>r.filter((_,i)=>i!==2)); }
   $("posTable").innerHTML=th(ph)+pr.map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join("")+'</tr>').join("");
-  const head=["#","Tiempo",unit()].concat(isTeam()?["Volteó"]:[]).concat(["Cartas","Resultado"]);
-  $("logTable").innerHTML=th(head)+(S.log.length ? S.log.map(r=>'<tr><td>'+r.n+'</td><td>'+r.time+'</td><td>'+esc(r.player)+'</td>'+(isTeam()?'<td>'+esc(r.who)+'</td>':'')+'<td>'+(r.n1!==""?r.n1+": "+esc(r.c1)+"<br>"+r.n2+": "+esc(r.c2):"—")+'</td><td class="'+(r.result==="Pareja"?"res-ok":"res-no")+'">'+r.result+'</td></tr>').join("") : '<tr><td colspan="'+head.length+'">Aún no hay jugadas registradas.</td></tr>');
+  const head=["#","Tiempo",unit()].concat(isTeam()?["Respondió"]:[]).concat(["Dado","Casilla","Tipo","Sector","Resultado","Efecto","Ítem"]);
+  $("logTable").innerHTML=th(head)+(S.log.length ? S.log.map(r=>'<tr><td>'+r.n+'</td><td>'+r.time+'</td><td>'+esc(r.player)+'</td>'+(isTeam()?'<td>'+esc(r.who)+'</td>':'')+'<td>'+r.die+'</td><td>'+(r.kind==="use"?r.at:r.from+' → '+r.at)+'</td><td>'+KIND[r.kind]+'</td><td>'+esc(r.card)+'</td><td class="'+(r.result==="Correcta"?"res-ok":r.result==="—"?"":"res-no")+'">'+r.result+'</td><td>'+esc(r.effect)+'</td><td>'+esc(r.item||"")+'</td></tr>').join("") : '<tr><td colspan="'+head.length+'">Aún no hay jugadas registradas. Tiren el dado para empezar.</td></tr>');
   $("ovLog").classList.add("show");
 }
 $("btnLog").onclick=openLog; $("btnLog2").onclick=openLog;
 $("logCopy").onclick=async()=>{
   if(!S) return; const txt=logText();
-  try{ await navigator.clipboard.writeText(txt); toast("Bitácora copiada. Péguenla en Canvas."); }
+  try{ await navigator.clipboard.writeText(txt); toast("Bitácora copiada. Péguenla en su entrega de Canvas."); }
   catch(e){ const b=$("expText"); b.value=txt; b.hidden=false; b.select(); toast("Seleccionen el texto y cópienlo con Ctrl+C."); }
 };
 function nativeCsv(){
   try{ const blob=new Blob(["﻿"+logCSV()],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob); a.download="bitacora-memorama-vecinos.csv"; document.body.appendChild(a); a.click();
+    a.href=URL.createObjectURL(blob); a.download="bitacora-gran-premio-agentes.csv"; document.body.appendChild(a); a.click();
     setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
   }catch(e){ toast("No se pudo descargar aquí. Usen «Copiar»."); }
 }
 let saver=null;
 $("logCsv").onclick=async()=>{
-  if(!S) return; if(!saver){ nativeCsv(); return; }
-  try{ await saver.save({filename:"bitacora-memorama-vecinos.csv", data:"﻿"+logCSV()}); }
+  if(!S) return;
+  if(!saver){ nativeCsv(); return; }
+  try{ await saver.save({filename:"bitacora-gran-premio-agentes.csv", data:"﻿"+logCSV()}); }
   catch(e){ if(e && e.code==="declined") return; toast("No se pudo descargar aquí. Usen «Copiar»."); }
 };
-(async()=>{ try{ if(window.claude && window.claude.use){ saver=await window.claude.use("downloads"); } }catch(e){ saver=null; } })();
+(async()=>{ try{ if(window.claude && window.claude.use){ saver = await window.claude.use("downloads"); } }catch(e){ saver=null; } })();
 
-/* ---------- inicio: siempre se muestra el tablero ---------- */
-fillCount();
-S=load();
-if(S && S.cards && S.config){
-  S.log=S.log||[];
+/* ---------- inicio: siempre se muestra la pista ---------- */
+buildBoard(); showDie(1); fillCount();
+S = load();
+if(S && S.teams && S.config){
+  busy=false; S.log=S.log||[]; S.decks=S.decks||{}; S.teams.forEach(t=>{ t.items=t.items||[]; });
   render(); startClock();
-  $("btnPause").textContent=(S.pausedAt && !S.over)?"Reanudar reloj":"Pausar reloj";
-  if(S.over) setStatus("Partida terminada. Todas las cartas están boca arriba para repasar.");
-  else if(S.waiting) setStatus("No son pareja. Memoricen las cartas y presionen «Continuar».","bad",true);
-  else { setStatus("Partida recuperada. Turno de "+S.teams[S.turn].name+"."); startTurnTimer(); }
+  $("btnPause").textContent = (S.pausedAt && !S.over) ? "Reanudar reloj" : "Pausar reloj";
+  if(S.pending && !S.over) openCard();
 } else { S=null; render(); }
-window.addEventListener("resize",()=>{ layout((S?S.cards.length:24)); });
 document.addEventListener("keydown",e=>{
-  if(e.key==="Enter"){
-    if($("ovPair").classList.contains("show")){ e.preventDefault(); afterPair(); return; }
-    if(S && S.waiting && !document.querySelector(".ov.show")){ e.preventDefault(); continueTurn(); return; }
-  }
+  const typing=/INPUT|SELECT|TEXTAREA|BUTTON/.test((document.activeElement||{}).tagName||"");
+  const anyOpen=[...document.querySelectorAll(".ov")].some(o=>o.classList.contains("show"));
+  if($("ovCard").classList.contains("show")){
+    const i="ABC".indexOf(e.key.toUpperCase());
+    if(i>=0){ const b=$("cOpts").querySelectorAll(".opt")[i]; if(b && !b.disabled) b.click(); }
+  } else if(e.code==="Space" && !typing && !anyOpen && S && !S.over){ e.preventDefault(); rollAnimated(); }
   if(e.key==="Escape"){ ["ovRules","ovLog","ovWin","ovSetup"].forEach(id=>$(id).classList.remove("show")); }
 });
 })();
 </script>
 </body>
 </html>
-
-</body></html>
