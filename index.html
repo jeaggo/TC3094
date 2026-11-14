@@ -1,38 +1,35 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Gran Premio de Agentes</title>
+<title>Monopoly de Tokens</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&display=swap">
 <style>
 :root{
   --bg:#EEF3F7; --surface:#FBFDFE; --surface2:#E4EBF2; --ink:#0E1B2C; --muted:#4F6078; --line:#D5DEE8;
   --navy:#0B1F3A; --navy2:#13305A; --cyan:#22C7E8; --teal:#0A6E8A; --orange:#E8742C; --ord:#A94A12;
-  --z1:#FBE3D3; --z2:#DDE3F6; --z3:#CFF1F8; --z4:#E1F0D6; --z5:#F2E0F0;
-  --z1i:#9A4210; --z2i:#3E4FA0; --z3i:#0A6E8A; --z4i:#3A651C; --z5i:#7A3474;
+  --gA:#E8742C; --gB:#5B6CD6; --gC:#0A8FB0; --gD:#3E8A2E;
+  --tile:#FBFDFE; --felt:#D9EEE4; --corner:#E4EBF2;
   --ok:#0A6E8A; --okbg:#CFF1F8; --bad:#A94A12; --badbg:#FBE3D3;
-  --asphalt:#2B3A4F; --curb1:#E8742C; --curb2:#FBFDFE;
   --hf:'Space Grotesk', 'Trebuchet MS', Arial, sans-serif; --bf:'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
   box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
   --bg:#08172C; --surface:#10284A; --surface2:#163560; --ink:#EEF3F7; --muted:#A9B8CB; --line:#24416B;
-  --z1:#4B2A20; --z2:#1E2E5C; --z3:#123E52; --z4:#22401A; --z5:#43213F;
-  --z1i:#F5A889; --z2i:#AFB9F2; --z3i:#7FE3F5; --z4i:#B5E19A; --z5i:#EBB0E3;
+  --tile:#10284A; --felt:#0F2E2A; --corner:#163560;
+  --gA:#F08A45; --gB:#8F9BF0; --gC:#3CC6E6; --gD:#7CC86A;
   --ok:#7FE3F5; --okbg:#123E52; --bad:#F5A889; --badbg:#4B2A20; --teal:#7FE3F5; --ord:#F5A889;
-  --asphalt:#1A2738;
 }}
 :root[data-theme="dark"]{
   --bg:#08172C; --surface:#10284A; --surface2:#163560; --ink:#EEF3F7; --muted:#A9B8CB; --line:#24416B;
-  --z1:#4B2A20; --z2:#1E2E5C; --z3:#123E52; --z4:#22401A; --z5:#43213F;
-  --z1i:#F5A889; --z2i:#AFB9F2; --z3i:#7FE3F5; --z4i:#B5E19A; --z5i:#EBB0E3;
+  --tile:#10284A; --felt:#0F2E2A; --corner:#163560;
+  --gA:#F08A45; --gB:#8F9BF0; --gC:#3CC6E6; --gD:#7CC86A;
   --ok:#7FE3F5; --okbg:#123E52; --bad:#F5A889; --badbg:#4B2A20; --teal:#7FE3F5; --ord:#F5A889;
-  --asphalt:#1A2738;
 }
 [hidden]{display:none !important}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0; background:var(--bg); color:var(--ink); font-family:var(--bf); font-size:17px; line-height:1.45}
 button{font:inherit; cursor:pointer}
@@ -48,67 +45,65 @@ h1,h2,h3{font-family:var(--hf); margin:0; line-height:1.15}
 .tbtn{background:transparent; color:#EEF3F7; border:1.5px solid #3A5A86; border-radius:10px; padding:7px 13px}
 .tbtn:hover{border-color:var(--cyan)}
 .tbtn.main{background:var(--cyan); color:#0B1F3A; border-color:var(--cyan); font-weight:600}
-main{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:20px; padding:14px 22px 24px; max-width:1720px; margin:0 auto}
+main{display:grid; grid-template-columns:minmax(0,1fr) 350px; gap:20px; padding:14px 22px 24px; max-width:1600px; margin:0 auto}
 @media (max-width:1000px){ main{grid-template-columns:1fr} }
 @media (max-width:1500px){ .top .sub{display:none} .top h1{font-size:20px} .top{padding:10px 18px} .tbtn{padding:6px 11px} }
-.startbar{display:flex; align-items:center; gap:12px; background:var(--surface); border:1.5px solid var(--line); border-radius:14px; padding:8px 14px; margin:0 auto 10px; min-height:50px; max-width:clamp(640px, calc((100vh - 190px) * 10 / 7), 1240px); flex-wrap:wrap}
-.startbar b{font-family:var(--hf)}
-.boardwrap{container-type:inline-size; position:relative; width:100%; max-width:clamp(640px, calc((100vh - 190px) * 10 / 7), 1240px); margin:0 auto}
-.board{display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); grid-template-rows:repeat(7,minmax(0,1fr)); gap:5px; aspect-ratio:10/7; background:var(--asphalt); padding:8px; border-radius:22px; border:4px dashed var(--curb1)}
-.sq{position:relative; border-radius:9px; padding:3px 5px; display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; border:2px solid transparent}
-.sq .num{font-family:var(--hf); font-weight:700; font-size:max(12px, 1.9cqw); line-height:1.05; display:flex; gap:4px; align-items:center}
-.sq .ic{font-size:max(12px, 1.7cqw)}
-.sq .lbl{font-size:max(9px, 1.15cqw); line-height:1.1; font-weight:600}
-.sq .tok{display:flex; flex-wrap:wrap; gap:2px; margin-top:auto}
-.sq.turbo{border-color:var(--cyan); border-style:solid}
-.sq.hazard{border-color:var(--orange); border-style:dashed}
-.sq.item{border-color:currentColor; border-style:dotted}
-.sq.meta{background:repeating-conic-gradient(#0B1F3A 0 25%, #FBFDFE 0 50%) 0 0/18px 18px; color:#0B1F3A}
-.sq.meta .num,.sq.meta .lbl{background:#FBFDFE; border-radius:6px; padding:0 4px; align-self:flex-start}
-.sq.active{box-shadow:inset 0 0 0 3px var(--cyan), 0 0 0 2px var(--cyan)}
-.z1{background:var(--z1); color:var(--z1i)} .z2{background:var(--z2); color:var(--z2i)} .z3{background:var(--z3); color:var(--z3i)} .z4{background:var(--z4); color:var(--z4i)} .z5{background:var(--z5); color:var(--z5i)}
-.infield{grid-column:2 / 10; grid-row:2 / 7; background:var(--surface); border-radius:16px; padding:2.2cqw 2.6cqw; display:flex; flex-direction:column; gap:1.3cqw; overflow:hidden; border:3px solid var(--curb1)}
-.infield h2{font-size:max(20px, 3.3cqw); color:var(--ink)}
-.infield p{margin:0; color:var(--muted); font-size:max(13px, 1.45cqw)}
-.sectors{display:grid; grid-template-columns:repeat(5,1fr); gap:0.8cqw}
-.sectors div{border-radius:12px; padding:0.8cqw 1cqw; font-size:max(11px, 1.3cqw); line-height:1.2; font-weight:600}
-.sectors b{display:block; font-family:var(--hf); font-size:max(13px, 1.6cqw)}
-.legend2{display:grid; grid-template-columns:repeat(2,1fr); gap:0.6cqw 1.6cqw; font-size:max(11px, 1.3cqw); color:var(--ink)}
-.legend2 span{display:flex; gap:8px; align-items:baseline}
-.legend2 i{font-style:normal; font-size:max(13px, 1.6cqw)}
-.token{width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:var(--hf); font-weight:700; font-size:12px; color:#0B1F3A; border:2px solid #0B1F3A; box-shadow:0 1px 0 rgba(0,0,0,.25)}
-.board .token{width:max(16px, 2.4cqw); height:max(16px, 2.4cqw); font-size:max(9px, 1.25cqw)}
+.boardwrap{container-type:inline-size; width:100%; max-width:clamp(600px, calc(100vh - 110px), 980px); margin:0 auto}
+.board{display:grid; grid-template-columns:1.35fr repeat(7,minmax(0,1fr)) 1.35fr; grid-template-rows:1.35fr repeat(7,minmax(0,1fr)) 1.35fr; gap:3px; aspect-ratio:1/1; background:var(--navy); padding:5px; border-radius:16px}
+.sq{position:relative; background:var(--tile); border-radius:6px; display:flex; flex-direction:column; min-width:0; min-height:0; overflow:hidden; padding:0 0.45cqw 0.3cqw; color:var(--ink)}
+.sq .band{height:1.6cqw; margin:0 -0.45cqw 0.3cqw; flex:none}
+.sq .nm{font-size:max(9px, 1.15cqw); line-height:1.1; font-weight:600; overflow-wrap:anywhere}
+.sq.prop .tok{padding-right:max(16px,2.4cqw); min-height:max(15px,2.3cqw)}
+.sq .pr{font-size:max(9px, 1.1cqw); color:var(--muted); font-variant-numeric:tabular-nums; margin-top:0.2cqw}
+.sq .ic{font-size:max(14px, 2.4cqw); line-height:1; margin-top:0.5cqw; text-align:center}
+.sq .tok{display:flex; flex-wrap:wrap; gap:2px; margin-top:auto; position:relative; z-index:2}
+.sq.corner{background:var(--corner); padding:0.6cqw; justify-content:flex-start}
+.sq.corner .nm{font-size:max(10px, 1.35cqw); font-family:var(--hf)}
+.sq.special{padding-top:0.4cqw}
+.sq.active{box-shadow:inset 0 0 0 3px var(--cyan)}
+.sq .own{position:absolute; right:3px; bottom:3px; width:max(14px,2.1cqw); height:max(14px,2.1cqw); border-radius:4px; border:2px solid #0B1F3A; font-family:var(--hf); font-weight:700; font-size:max(8px,1.1cqw); color:#0B1F3A; display:flex; align-items:center; justify-content:center}
+.gA{background:var(--gA)} .gB{background:var(--gB)} .gC{background:var(--gC)} .gD{background:var(--gD)}
+.infield{grid-column:2 / 9; grid-row:2 / 9; background:var(--felt); border-radius:10px; padding:2.4cqw 2.6cqw; display:flex; flex-direction:column; gap:1.4cqw; overflow:hidden}
+.infield h2{font-size:max(20px, 3.6cqw); color:var(--ink)}
+.infield p{margin:0; color:var(--muted); font-size:max(12px, 1.45cqw); line-height:1.35}
+.decks{display:flex; gap:1.6cqw}
+.deck{flex:1; border-radius:12px; padding:1.2cqw 1.4cqw; color:#FBFDFE; font-family:var(--hf); font-weight:700; font-size:max(13px,1.7cqw); line-height:1.15; box-shadow:0.4cqw 0.4cqw 0 rgba(11,31,58,.35)}
+.deck small{display:block; font-family:var(--bf); font-weight:400; font-size:max(11px,1.25cqw); margin-top:0.4cqw; opacity:.92}
+.deck.exp{background:#3E4FA0} .deck.inc{background:#A94A12}
+.groups{display:grid; grid-template-columns:1fr 1fr; gap:0.8cqw 1.6cqw; font-size:max(11px,1.35cqw); color:var(--ink)}
+.groups span{display:flex; align-items:center; gap:0.8cqw}
+.groups i{width:1.6cqw; height:1.6cqw; min-width:10px; min-height:10px; border-radius:3px; display:inline-block}
+.pot{font-family:var(--hf); font-size:max(14px,2cqw); font-weight:700; color:var(--ink)}
+.token{width:22px; height:22px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-family:var(--hf); font-weight:700; font-size:12px; color:#0B1F3A; border:2px solid #0B1F3A; box-shadow:0 1px 0 rgba(0,0,0,.25); flex:none}
+.board .token{width:max(15px, 2.3cqw); height:max(15px, 2.3cqw); font-size:max(8px, 1.15cqw)}
 .token.big{width:40px; height:40px; font-size:19px}
-.startbar .token{width:28px; height:28px; font-size:14px}
 aside.panel{display:flex; flex-direction:column; gap:14px}
 .box{background:var(--surface); border:1.5px solid var(--line); border-radius:16px; padding:16px}
 .turn h2{font-size:15px; font-weight:600; color:var(--muted); font-family:var(--bf)}
 .turn .who{display:flex; align-items:center; gap:12px; margin-top:6px}
 .turn .who h3{font-size:25px; overflow-wrap:anywhere}
 .turn .members{color:var(--muted); font-size:15px; margin-top:4px}
+.money{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:10px}
+.money div{background:var(--surface2); border-radius:10px; padding:8px 10px}
+.money b{display:block; font-family:var(--hf); font-size:22px; font-variant-numeric:tabular-nums}
+.money span{font-size:13px; color:var(--muted)}
 .turn .status{margin-top:8px; font-size:15px; color:var(--muted)}
-.items{display:flex; flex-direction:column; gap:6px; margin-top:10px}
-.items .it{display:flex; align-items:center; gap:8px; background:var(--surface2); border-radius:10px; padding:6px 10px; font-size:15px}
-.items .it b{flex:1}
-.items .it button{border:1.5px solid var(--cyan); background:transparent; color:var(--ink); border-radius:8px; padding:3px 10px; font-size:14px}
-.items .it button:disabled{opacity:.45; cursor:not-allowed}
-.items .none{font-size:14px; color:var(--muted)}
-.dicewrap{display:flex; align-items:center; gap:16px; margin-top:14px}
-.die{width:84px; height:84px; border-radius:18px; background:#FBFDFE; border:3px solid var(--navy); display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:10px; flex:none}
-.die i{width:14px; height:14px; border-radius:50%; background:#0B1F3A; place-self:center; visibility:hidden}
+.props{display:flex; flex-wrap:wrap; gap:5px; margin-top:8px}
+.props span{font-size:13px; border-radius:6px; padding:2px 7px; color:#0B1F3A; font-weight:600}
+.dicewrap{display:flex; align-items:center; gap:12px; margin-top:12px}
+.die{width:62px; height:62px; border-radius:14px; background:#FBFDFE; border:3px solid var(--navy); display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:8px; flex:none}
+.die i{width:10px; height:10px; border-radius:50%; background:#0B1F3A; place-self:center; visibility:hidden}
 .die i.on{visibility:visible}
 .die.rolling{animation:shake .5s linear infinite}
 @keyframes shake{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}
 @media (prefers-reduced-motion: reduce){ .die.rolling{animation:none} }
-.primary{background:var(--cyan); color:#0B1F3A; border:0; border-radius:12px; padding:14px 18px; font-family:var(--hf); font-weight:700; font-size:20px}
+.primary{background:var(--cyan); color:#0B1F3A; border:0; border-radius:12px; padding:12px 16px; font-family:var(--hf); font-weight:700; font-size:19px}
 .primary:disabled{opacity:.45; cursor:not-allowed}
 .ghost{background:transparent; color:var(--ink); border:1.5px solid var(--line); border-radius:10px; padding:7px 12px; font-size:15px}
 .ghost:hover{border-color:var(--cyan)}
-.physical{margin-top:10px; font-size:14px; color:var(--muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap}
-.physical button{width:34px; height:34px; border-radius:8px; border:1.5px solid var(--line); background:var(--surface2); color:var(--ink); font-weight:600}
+.physical{margin-top:10px; font-size:14px; color:var(--muted); display:flex; align-items:center; gap:5px; flex-wrap:wrap}
+.physical button{width:32px; height:32px; border-radius:8px; border:1.5px solid var(--line); background:var(--surface2); color:var(--ink); font-weight:600; font-size:14px; padding:0}
 .physical button:disabled{opacity:.45; cursor:not-allowed}
-.physical.plan{color:var(--ink); font-weight:600}
-.physical.plan button{border-color:var(--cyan); background:var(--okbg)}
 .standings ol{list-style:none; margin:8px 0 0; padding:0; display:flex; flex-direction:column; gap:8px; max-height:260px; overflow:auto}
 .standings li{display:flex; align-items:center; gap:10px}
 .standings .nm{flex:1; font-weight:600; overflow-wrap:anywhere}
@@ -121,21 +116,23 @@ aside.panel{display:flex; flex-direction:column; gap:14px}
 .modal{background:var(--surface); color:var(--ink); border-radius:22px; max-width:880px; width:100%; max-height:92vh; overflow:auto; padding:28px 32px; box-shadow:0 20px 60px rgba(0,0,0,.35)}
 .modal.wide{max-width:1120px}
 .cardhead{display:flex; align-items:flex-start; gap:10px 14px; flex-wrap:wrap}
-.chip{border-radius:30px; padding:5px 14px; font-weight:600; font-size:15px}
+.chip{border-radius:30px; padding:5px 14px; font-weight:600; font-size:15px; color:#0B1F3A}
+.chip.plain{background:var(--surface2); color:var(--ink)}
 .timer{margin-left:auto; display:flex; align-items:center; gap:8px}
 .timer .t{font-family:var(--hf); font-size:34px; font-weight:700; font-variant-numeric:tabular-nums; min-width:70px; text-align:right}
 .timer .t.low{color:var(--orange)}
 .bar{height:8px; background:var(--surface2); border-radius:8px; overflow:hidden; margin:14px 0 4px}
 .bar i{display:block; height:100%; background:var(--cyan); width:100%; transition:width 1s linear}
 .rule{background:var(--surface2); border-radius:12px; padding:10px 14px; font-size:16px; margin-top:12px}
-.q{font-family:var(--hf); font-size:27px; font-weight:600; margin:18px 0 16px; line-height:1.25}
+.scen{border-left:6px solid var(--orange); background:var(--badbg); border-radius:10px; padding:10px 14px; margin-top:12px; font-size:17px}
+.scen.exp{border-color:#5B6CD6; background:var(--surface2)}
+.q{font-family:var(--hf); font-size:26px; font-weight:600; margin:16px 0 14px; line-height:1.25}
 .opts{display:flex; flex-direction:column; gap:10px}
-.opt{display:flex; gap:14px; align-items:flex-start; text-align:left; background:var(--surface2); color:var(--ink); border:2px solid transparent; border-radius:14px; padding:14px 16px; font-size:20px; line-height:1.35}
+.opt{display:flex; gap:14px; align-items:flex-start; text-align:left; background:var(--surface2); color:var(--ink); border:2px solid transparent; border-radius:14px; padding:13px 16px; font-size:19px; line-height:1.35}
 .opt:hover:not(:disabled){border-color:var(--cyan)}
 .opt .L{font-family:var(--hf); font-weight:700; background:var(--navy); color:#EEF3F7; border-radius:8px; min-width:34px; height:34px; display:inline-flex; align-items:center; justify-content:center; flex:none}
 .opt.right{background:var(--okbg); border-color:var(--ok)}
 .opt.wrong{background:var(--badbg); border-color:var(--bad)}
-.opt.gone{opacity:.35; text-decoration:line-through}
 .opt:disabled{cursor:default}
 .fb{margin-top:16px; border-radius:14px; padding:14px 18px; display:none}
 .fb.show{display:block}
@@ -161,19 +158,19 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 .scroll{overflow:auto; max-height:46vh}
 .res-ok{color:var(--ok); font-weight:600} .res-no{color:var(--bad); font-weight:600}
 .win{text-align:center}
-.win h2{font-size:38px; margin:8px 0}
-.podium{display:flex; flex-direction:column; gap:8px; margin:18px auto 0; max-width:560px; text-align:left; max-height:40vh; overflow:auto}
+.win h2{font-size:36px; margin:8px 0}
+.podium{display:flex; flex-direction:column; gap:8px; margin:18px auto 0; max-width:600px; text-align:left; max-height:40vh; overflow:auto}
 .podium div{display:flex; gap:12px; align-items:center; background:var(--surface2); border-radius:12px; padding:10px 14px}
 .toast{position:fixed; left:50%; bottom:calc(24px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--navy); color:#EEF3F7; padding:12px 20px; border-radius:12px; font-weight:600; display:none; z-index:20; max-width:90vw; border:1.5px solid #3A5A86}
 .toast.show{display:block}
-@media (max-width:760px){ .grid2{grid-template-columns:1fr} #playerRows{grid-template-columns:1fr} #playerRows.team .prow{grid-template-columns:40px 1fr} #playerRows.team .prow .tm{grid-column:2} .sq .lbl{display:none} .token{border-width:1.5px} .q{font-size:22px} .opt{font-size:17px} .modal{padding:20px} .infield .legend2,.infield p,.sectors{display:none} .infield{justify-content:center} }
+@media (max-width:760px){ .grid2{grid-template-columns:1fr} #playerRows{grid-template-columns:1fr} #playerRows.team .prow{grid-template-columns:40px 1fr} #playerRows.team .prow .tm{grid-column:2} .sq .pr{display:none} .sq .nm{font-size:8px} .q{font-size:21px} .opt{font-size:16px} .modal{padding:20px} .infield p,.infield .groups{display:none} }
 </style>
 </head>
 <body>
 <header class="top">
   <div>
-    <h1>Gran Premio de Agentes</h1>
-    <div class="sub">Carrera de karts de 30 casillas en cinco sectores: arquitecturas, planificación, tool-calling, equipos de agentes y memoria.</div>
+    <h1>Monopoly de Tokens</h1>
+    <div class="sub">Cada quien dirige su PlantSense: paga tokens, compra optimizaciones y sobrevive a incidentes y experimentos.</div>
   </div>
   <div class="spacer"></div>
   <span class="clock" id="clock" title="Tiempo restante de la partida">--:--</span>
@@ -187,11 +184,8 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 </header>
 
 <main>
-  <section aria-label="Pista">
-    <div class="startbar"><b>Parrilla de salida</b><span id="startTokens" class="row"></span></div>
-    <div class="boardwrap">
-      <div class="board" id="board"></div>
-    </div>
+  <section aria-label="Tablero">
+    <div class="boardwrap"><div class="board" id="board"></div></div>
   </section>
 
   <aside class="panel">
@@ -199,18 +193,23 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
       <h2>Turno de</h2>
       <div class="who"><span id="turnToken"></span><h3 id="turnName">Sin partida</h3></div>
       <div class="members" id="turnMembers"></div>
+      <div class="money" id="turnMoney" hidden>
+        <div><span>Presupuesto</span><b id="mMoney">$0</b></div>
+        <div><span>Factura mensual de tokens</span><b id="mBill">$0</b></div>
+      </div>
       <div class="status" id="turnStatus"></div>
-      <div class="items" id="turnItems"></div>
+      <div class="props" id="turnProps"></div>
       <div class="dicewrap">
-        <div class="die" id="die" role="img" aria-label="Dado"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="die" id="die1" role="img" aria-label="Dado 1"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="die" id="die2" role="img" aria-label="Dado 2"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         <button class="primary" id="btnRoll">Configurar partida</button>
       </div>
-      <div class="physical" id="physical"><span id="physLbl">¿Dado físico? Marquen el resultado:</span>
-        <button data-v="1">1</button><button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button>
+      <div class="physical" id="physical"><span>¿Dados físicos? Marquen la suma:</span>
+        <button data-v="2">2</button><button data-v="3">3</button><button data-v="4">4</button><button data-v="5">5</button><button data-v="6">6</button><button data-v="7">7</button><button data-v="8">8</button><button data-v="9">9</button><button data-v="10">10</button><button data-v="11">11</button><button data-v="12">12</button>
       </div>
     </div>
     <div class="box standings">
-      <h3 style="font-size:20px">Posiciones</h3>
+      <h3 style="font-size:20px">Posiciones por patrimonio</h3>
       <ol id="standings"></ol>
     </div>
     <div class="box">
@@ -227,23 +226,28 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
   <div class="modal">
     <div class="cardhead">
       <span class="chip" id="cZone"></span>
-      <span class="chip" id="cType" style="background:var(--surface2)"></span>
+      <span class="chip plain" id="cType"></span>
       <div class="timer"><span class="t" id="cTime">45</span><button class="ghost" id="cPause">Pausar</button></div>
     </div>
     <div class="bar"><i id="cBar"></i></div>
     <div class="rule" id="cRule"></div>
+    <div class="scen" id="cScen" hidden></div>
     <div style="margin-top:10px; color:var(--muted); font-size:15px" id="cWho"></div>
     <div class="q" id="cq"></div>
     <div class="opts" id="cOpts"></div>
     <div class="fb" id="cFb"><h3 id="cFbT"></h3><div id="cFbE"></div><div class="eff" id="cFbX"></div></div>
-    <div class="mfoot"><button class="ghost" id="cTool" hidden>🔧 Usar herramienta: quitar una opción incorrecta</button><button class="primary" id="cNext" hidden>Continuar</button></div>
+    <div class="mfoot">
+      <button class="ghost" id="cSkip" hidden>No comprar</button>
+      <button class="primary" id="cBuy" hidden>Comprar</button>
+      <button class="primary" id="cNext" hidden>Continuar</button>
+    </div>
   </div>
 </div>
 
 <div class="ov" id="ovSetup" role="dialog" aria-modal="true" aria-labelledby="setupT">
   <div class="modal setup">
     <h2 id="setupT">Nueva partida</h2>
-    <p class="lead">Elijan cómo van a jugar y registren a los pilotos. Cada kart da una vuelta de 30 casillas respondiendo tarjetas de los cinco sectores.</p>
+    <p class="lead">Elijan cómo van a jugar y registren a los participantes. Cada quien empieza con $1,500 de presupuesto para operar su propio PlantSense.</p>
     <div class="grid2">
       <div><label for="mode">Modalidad</label>
         <select id="mode"><option value="solo" selected>Individual: cada estudiante con su nombre</option><option value="team">Por equipos</option></select></div>
@@ -258,41 +262,43 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
     </div>
     <h3 style="font-size:20px; margin:20px 0 10px" id="rowsTitle">Estudiantes</h3>
     <div id="playerRows"></div>
-    <div class="mfoot"><button class="ghost" id="btnCancelSetup">Cancelar</button><button class="primary" id="btnStart">Empezar la carrera</button></div>
+    <div class="mfoot"><button class="ghost" id="btnCancelSetup">Cancelar</button><button class="primary" id="btnStart">Empezar la partida</button></div>
   </div>
 </div>
 
 <div class="ov" id="ovRules" role="dialog" aria-modal="true" aria-labelledby="rulesT">
   <div class="modal rules">
-    <h2 id="rulesT" style="font-size:30px">Reglas del Gran Premio</h2>
-    <p>La pista tiene 30 casillas en cinco sectores: <b>1–6 arquitecturas</b>, <b>7–12 planificación</b>, <b>13–18 tool-calling</b>, <b>19–24 equipos de agentes</b> y <b>25–30 memoria</b>. Gana quien cruce primero la meta (casilla 30) y responda bien la pregunta final. Si el dado se pasa de 30, el kart se detiene en la meta.</p>
+    <h2 id="rulesT" style="font-size:30px">Reglas del Monopoly de Tokens</h2>
+    <p>Cada participante dirige su propio PlantSense y empieza con <b>$1,500</b>. Gana quien tenga más <b>patrimonio</b> al terminar el tiempo: dinero más el valor de las optimizaciones que compró.</p>
     <h3>En cada turno</h3>
-    <p>Pueden usar un ítem, tiran el dado, el kart avanza y aparece una tarjeta del sector donde cayó. Hay tiempo límite para elegir y decir la respuesta en voz alta; si se acaba, cuenta como incorrecta.</p>
+    <p>Se tiran dos dados y la ficha avanza en sentido de las manecillas del reloj. Casi todas las casillas traen una pregunta con tiempo límite; si se acaba el tiempo, cuenta como incorrecta.</p>
     <table>
-      <tr><td>Casilla normal</td><td>Acierto: se quedan (+1 punto). Error: regresan a donde estaban.</td></tr>
-      <tr><td>⚡ Turbo</td><td>Acierto: avanzan 3 casillas más, sin pasar de la 29 (+2). Error: se quedan donde cayeron.</td></tr>
-      <tr><td>❓ Caja de ítem</td><td>Acierto: ganan un ítem al azar (+1). Error: regresan a donde estaban.</td></tr>
-      <tr><td>⚠ Obstáculo</td><td>Una falla típica de los agentes. Acierto: la esquivan (+2). Error: derrapan 3 casillas hacia atrás.</td></tr>
-      <tr><td>🏁 Meta (30)</td><td>Pregunta final de cualquier sector (+3). Error: regresan a donde estaban.</td></tr>
+      <tr><td>Cierre de mes</td><td>Cada vez que pasan por la Salida cobran <b>$300 de ingresos</b> y pagan su <b>factura de tokens</b> (empieza en $200). Si caen justo en ella, +$50.</td></tr>
+      <tr><td>Optimización libre</td><td>Acierto: pueden comprarla a su precio. Error: no pueden comprarla en este turno.</td></tr>
+      <tr><td>Optimización ajena</td><td>Le pagan consultoría a su dueño (20 % del precio; el doble si tiene todo el grupo). Acierto: pagan la mitad.</td></tr>
+      <tr><td>Optimización propia</td><td>Pregunta de repaso. Acierto: +$20.</td></tr>
+      <tr><td>🧪 Experimento A/B</td><td>Un resultado de experimento: decidan qué hacer. Acierto: +$60, y +$20 por cada optimización de Experimentar que tengan. Error: −$40.</td></tr>
+      <tr><td>⚠ Incidente</td><td>Algo falla en producción. Si tienen la optimización que protege de ese incidente, no pierden nada. Si no, pierden dinero; un acierto reduce la pérdida a la mitad.</td></tr>
+      <tr><td>💸 Cargo</td><td>Un gasto inesperado que va al Fondo de innovación. Acierto: pagan la mitad.</td></tr>
+      <tr><td>Fondo de innovación</td><td>Quien cae ahí se lleva todo el dinero acumulado por los cargos.</td></tr>
+      <tr><td>Presupuesto de errores agotado</td><td>Acierto: siguen igual. Error: van a la Sala de pruebas y pierden su siguiente turno. Con Monitoreo de SLO no les pasa nada.</td></tr>
     </table>
-    <h3>Ítems: las herramientas del agente</h3>
+    <h3>Los cuatro grupos de optimizaciones</h3>
     <table>
-      <tr><td>🗺️ Plan</td><td>Antes de tirar: eligen el número del dado (planificación, M5.2).</td></tr>
-      <tr><td>⚡ Llamada en paralelo</td><td>Antes de tirar: tiran dos dados y avanzan con el mayor (tool-calling en paralelo, M5.3).</td></tr>
-      <tr><td>🔧 Herramienta</td><td>Durante una tarjeta: quita una opción incorrecta (tool-calling, M5.3).</td></tr>
-      <tr><td>🧠 Memoria</td><td>Escudo automático: la próxima vez que fallen, no retroceden (memoria, M5.5).</td></tr>
+      <tr><td><span class="chip gA">Ahorrar</span></td><td>Bajan su factura mensual de tokens: límite por usuario, menos contexto, caché, modelo según la tarea (tema 6.4).</td></tr>
+      <tr><td><span class="chip gB">Experimentar</span></td><td>Aumentan lo que ganan en las tarjetas de Experimento A/B (tema 6.5).</td></tr>
+      <tr><td><span class="chip gC">Resistir</span></td><td>Los protegen de incidentes: reintentos, circuit breaker, respaldo, runbook (tema 6.6).</td></tr>
+      <tr><td><span class="chip gD">Operar</span></td><td>Mezcla de protección y ahorro: monitoreo, alertas de presupuesto, gateway, GPU propia.</td></tr>
     </table>
-    <p>Cada kart guarda como máximo 2 ítems. Si gana uno con el garage lleno, recibe +1 punto en su lugar.</p>
-    <h3>Si se acaba el tiempo</h3>
-    <p>Gana quien esté más adelante; en empate, quien tenga más puntos. Los puntos cuentan respuestas correctas y sirven como evidencia de participación.</p>
+    <p>El dinero puede quedar en negativo (deuda): nadie sale del juego, pero el patrimonio baja.</p>
     <h3>Botones</h3>
     <table>
       <tr><td>Nueva partida</td><td>Abre la configuración: modalidad individual o por equipos, nombres, tiempo por tarjeta y duración.</td></tr>
-      <tr><td>Bitácora</td><td>Muestra cada jugada, los ítems usados y las posiciones; se copia para pegar en Canvas o se descarga como CSV.</td></tr>
+      <tr><td>Bitácora</td><td>Muestra cada jugada y las posiciones; se copia para pegar en Canvas o se descarga como CSV.</td></tr>
       <tr><td>Pausar reloj</td><td>Detiene y reanuda el tiempo de la partida.</td></tr>
-      <tr><td>Terminar partida</td><td>Cierra la carrera y muestra los resultados.</td></tr>
+      <tr><td>Terminar partida</td><td>Cierra la partida y muestra los resultados.</td></tr>
     </table>
-    <p style="color:var(--muted)">Consejo: con muchos estudiantes en modalidad individual, usen 30 segundos por tarjeta. Atajos: barra espaciadora para tirar; teclas A, B y C para responder.</p>
+    <p style="color:var(--muted)">Atajos: barra espaciadora para tirar los dados; teclas A, B y C para responder.</p>
     <div class="mfoot"><button class="primary" data-close="ovRules">Entendido</button></div>
   </div>
 </div>
@@ -304,7 +310,6 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
     <div class="podium" id="podium"></div>
     <div class="mfoot" style="justify-content:center">
       <button class="ghost" id="winLog">Ver bitácora</button>
-      <button class="ghost" id="winContinue">Seguir la carrera por los siguientes lugares</button>
       <button class="primary" data-close="ovWin">Cerrar</button>
     </div>
   </div>
@@ -313,7 +318,7 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 <div class="ov" id="ovLog" role="dialog" aria-modal="true" aria-labelledby="logT">
   <div class="modal wide">
     <div class="row" style="justify-content:space-between">
-      <h2 id="logT" style="font-size:26px">Bitácora de la carrera</h2>
+      <h2 id="logT" style="font-size:26px">Bitácora de la partida</h2>
       <div class="row"><button class="ghost" id="logCopy">Copiar para pegar en Canvas</button><button class="ghost" id="logCsv">Descargar CSV</button></div>
     </div>
     <textarea id="expText" rows="8" style="font-size:14px; margin-top:12px" hidden aria-label="Bitácora en texto"></textarea>
@@ -333,100 +338,114 @@ input,select,textarea{width:100%; font:inherit; color:var(--ink); background:var
 /* ---------- Banco de preguntas: o[0] es la correcta (se barajan al mostrar) ---------- */
 const BANK = {
 A: [
- {q:"¿Qué distingue a un agente de un chatbot?", o:["Decide y ejecuta acciones con herramientas, en un bucle, hasta cumplir una meta","Usa un modelo de lenguaje más grande","Responde más rápido"], e:"Un agente observa, decide y actúa repetidamente. El chatbot solo genera texto con lo que ya sabe."},
- {q:"ReAct intercala tres cosas. ¿Cuáles?", o:["Pensamiento, acción y observación","Entrenamiento, validación y prueba","Recuperación, chunking y embeddings"], e:"Reasoning + Acting: piensa qué hacer, usa una herramienta y mira el resultado antes de seguir."},
- {q:"En la traza de ReAct, la «observación» es…", o:["El resultado que devolvió la herramienta","La pregunta de la usuaria","El razonamiento del modelo"], e:"Por ejemplo: {\"prob_lluvia_pct\": 80}. Con ese dato el agente decide el siguiente paso."},
- {q:"¿Cuál es una ventaja clave de ReAct?", o:["Deja una traza que permite auditar por qué hizo cada cosa","No necesita herramientas","Hace menos llamadas al modelo que cualquier otro método"], e:"El razonamiento escrito queda a la vista. Su costo: cada vuelta del bucle es otra llamada al modelo."},
- {q:"¿Cómo mejora un agente con Reflexion?", o:["Evalúa su intento, escribe una lección en texto y la usa en el siguiente","Vuelve a entrenar sus pesos después de cada error","Borra su memoria y empieza de cero"], e:"Reflexion no cambia el modelo: guarda lecciones aprendidas, como una bitácora de proyecto."},
- {q:"Reflexion funciona bien cuando existe…", o:["Una señal para saber si se acertó: pruebas, calificación o retroalimentación","Una GPU muy potente","Un segundo modelo idéntico"], e:"Sin una señal confiable, el agente puede «reflexionar» hacia una conclusión equivocada."},
- {q:"Plan-and-Execute…", o:["Primero escribe el plan completo y luego ejecuta cada paso","Improvisa paso a paso sin ningún plan","Solo planea y nunca ejecuta"], e:"Es como una orden de trabajo: planear al inicio ahorra llamadas al modelo grande."},
- {q:"¿Cuándo debe re-planificar un agente Plan-and-Execute?", o:["Cuando un paso falla o aparece información nueva","Nunca: el plan inicial es definitivo","Después de cada palabra que genera"], e:"Si en el diagnóstico aparece cochinilla, el resto del plan tiene que ajustarse."},
- {q:"En LangGraph, el «estado» es…", o:["La información compartida que todos los nodos leen y actualizan","El modelo de lenguaje","Una conexión a internet"], e:"Por ejemplo: la foto, la especie identificada y la confianza. Cada nodo lo recibe y lo modifica."},
- {q:"Una arista condicional en LangGraph…", o:["Elige el siguiente nodo según una condición, como «confianza ≥ 80 %»","Une siempre los mismos dos nodos","Borra el estado del agente"], e:"Es la bifurcación de un diagrama de flujo: si la confianza es baja, se pide otra foto."},
- {q:"¿Para qué sirve un límite de pasos (MAX_PASOS) en el bucle del agente?", o:["Para evitar bucles infinitos y costos sin control","Para que las respuestas sean más largas","Porque Python lo exige"], e:"Igual que un tiempo máximo de operación en un sistema de control."},
- {q:"Un reporte que cada lunes sigue siempre los mismos pasos conviene hacerlo con…", o:["Un flujo fijo o Plan-and-Execute","ReAct con 20 herramientas","Árbol de pensamientos"], e:"Si el camino no depende de lo que se descubra, un agente que improvisa sale más caro y es menos predecible."},
- {q:"Si un agente fuera un lazo de control, la herramienta sería…", o:["El actuador: ejecuta la acción en el mundo","El sensor que mide la temperatura","La referencia o meta"], e:"El LLM es el controlador que decide; la herramienta actúa; la observación es la medición."}
+ {q:"¿Dónde está la mayor parte del costo de usar un modelo de lenguaje por API?", o:["En los tokens de entrada y de salida de cada consulta","En la electricidad de la computadora de la usuaria","En una licencia anual de Python"], e:"Se paga como un taxímetro: cada token cuenta, y el costo crece en proporción al uso."},
+ {q:"¿Por qué los tokens de salida cuestan más que los de entrada?", o:["Porque se generan uno por uno, mientras que la entrada se procesa en paralelo","Porque tienen más letras","Porque se guardan en caché"], e:"Generar es secuencial: cada token nuevo requiere una pasada completa del modelo."},
+ {q:"PlantSense recibe 100,000 consultas al mes y cada una cuesta $0.01. ¿Cuánto paga al mes?", o:["$1,000","$100","$10,000"], e:"100,000 × $0.01 = $1,000. Un centavo por consulta se vuelve mucho dinero a escala."},
+ {q:"Enviar las consultas simples a un modelo barato y las difíciles a uno grande se llama…", o:["Routing por complejidad","Shadow test","Circuit breaker"], e:"«No mandes al ingeniero con doctorado a contestar el teléfono de recepción»."},
+ {q:"¿Cuál es el principal riesgo del routing por complejidad?", o:["Que una consulta difícil caiga en el modelo pequeño y reciba una respuesta pobre que parece correcta","Que la factura suba","Que el caché deje de funcionar"], e:"Se mitiga con un reintento escalado al modelo grande y monitoreando la calidad por tipo de consulta."},
+ {q:"El caché de prompts solo funciona si…", o:["El inicio del prompt es idéntico entre consultas","Cada consulta es distinta desde el primer token","El modelo cambia en cada consulta"], e:"Por eso el prompt del sistema, que nunca cambia, es el candidato ideal."},
+ {q:"Para aprovechar el caché, ¿en qué orden se arma el prompt?", o:["Lo fijo primero (instrucciones) y lo que cambia al final (fichas, historial, pregunta)","La pregunta primero y las instrucciones al final","En orden aleatorio"], e:"El caché reutiliza el prefijo: si lo variable va al principio, el prefijo nunca coincide."},
+ {q:"En Claude Sonnet 5.5, leer tokens desde el caché cuesta…", o:["Alrededor de 5 % del precio normal de entrada","El doble del precio normal","Lo mismo que la entrada normal"], e:"$0.10 por millón contra $2.00: un 95 % menos (precios de noviembre de 2026)."},
+ {q:"¿Para qué tarea de PlantSense conviene el procesamiento por lotes (batch)?", o:["El reporte semanal de salud del jardín que se envía los lunes","El chat en vivo con una usuaria","Una alerta urgente de plaga"], e:"Batch cuesta la mitad, pero la respuesta puede tardar horas: solo para lo que no es urgente."},
+ {q:"¿Cuánto descuento suele dar el procesamiento por lotes?", o:["50 %","5 %","95 %"], e:"Anthropic, OpenAI y Google cobran la mitad en su modalidad por lotes."},
+ {q:"El caché ahorra 35 % y el modelo barato 66 %. Juntos, el ahorro es…", o:["Menos de 101 %: el segundo se aplica sobre una factura ya reducida (≈ 78 %)","Exactamente 101 %","Solo 31 %"], e:"Los ahorros no se suman: se multiplican lo que queda. 1 − (0.65 × 0.34…) ≈ 78 %."},
+ {q:"¿Qué métrica de costo le sirve más a un equipo de producto?", o:["El costo por acción exitosa de la usuaria, como un diagnóstico útil","El costo por token","El número de GPUs"], e:"Conecta el gasto técnico con el valor que recibe la usuaria."},
+ {q:"Con poco tráfico y muy variable, ¿qué conviene?", o:["Pagar por token a un proveedor","Comprar GPUs propias","Construir un centro de datos"], e:"La GPU propia se paga por hora aunque esté ociosa; conviene solo con tráfico alto y constante."},
+ {q:"¿Por qué las instancias spot de GPU son más baratas?", o:["Porque el proveedor puede quitártelas con muy poco aviso","Porque son GPUs usadas","Porque no consumen electricidad"], e:"Ahorran 60 a 80 %, a cambio de poder perder la máquina en cualquier momento."},
+ {q:"Limitar la longitud de las respuestas ahorra mucho porque…", o:["La salida es la parte más cara por token","Aumenta el uso del caché","Hace que el modelo piense más"], e:"En Sonnet 5.5, un token de salida cuesta 5 veces lo que uno de entrada."}
 ],
 B: [
- {q:"La cadena de pensamiento (chain of thought) consiste en…", o:["Pedir al modelo que escriba sus pasos intermedios antes de responder","Encadenar varios modelos distintos","Guardar toda la conversación"], e:"Como mostrar el procedimiento en un examen: reduce errores y deja ver dónde falló."},
- {q:"La versión zero-shot de la cadena de pensamiento se activa con…", o:["Agregar «pensemos paso a paso»","Dar 100 ejemplos resueltos","Subir la temperatura"], e:"Kojima y colaboradores (2022) mostraron que esa frase basta para mejorar problemas de varios pasos."},
- {q:"Few-shot con cadena de pensamiento significa…", o:["Mostrar al modelo ejemplos resueltos con su procedimiento","No darle ningún ejemplo","Pedir respuestas de una sola palabra"], e:"El modelo imita el formato: primero los pasos, luego la respuesta."},
- {q:"Least-to-Most…", o:["Resuelve subproblemas de lo fácil a lo difícil y usa cada respuesta en el siguiente","Empieza siempre por la parte más difícil","Elige la respuesta más corta"], e:"Como resolver un sistema por subsistemas: el paso 2 usa el resultado del paso 1."},
- {q:"Plan-and-Solve le pide al modelo…", o:["Entender el problema, diseñar un plan y ejecutarlo paso a paso","Responder sin pensar","Buscar la respuesta en internet"], e:"Reduce los pasos que el modelo se salta en problemas largos."},
- {q:"El árbol de pensamientos (Tree of Thoughts)…", o:["Explora varias rutas, evalúa cuál promete más y descarta las malas","Sigue una sola línea de razonamiento","Genera imágenes de árboles"], e:"Es una búsqueda con poda, como un diagnóstico diferencial o un árbol de fallas."},
- {q:"En el «juego del 24», ¿qué porcentaje resolvió GPT-4 con cadena de pensamiento y con árbol de pensamientos?", o:["4 % y 74 %","74 % y 4 %","50 % y 50 %"], e:"Explorar y descartar rutas ayuda mucho en problemas de búsqueda."},
- {q:"¿Cuál es la principal desventaja del árbol de pensamientos?", o:["Necesita muchas más llamadas al modelo","No se puede auditar","Solo funciona en inglés"], e:"Cada rama y cada evaluación es una llamada: más tiempo y más costo."},
- {q:"Los modelos que razonan (o1, o3, DeepSeek-R1, Claude con pensamiento extendido) convienen para…", o:["Problemas de varios pasos: matemáticas, código, planes con restricciones","Saludar a la usuaria","Preguntas de un solo dato"], e:"Ya traen la cadena de pensamiento integrada; en tareas simples solo gastan más."},
- {q:"¿Qué problema hay en usar un modelo que razona para «¿cómo se llama esta planta?»", o:["Gasta más tokens y tiempo sin mejorar la respuesta","No puede ver imágenes nunca","Siempre se equivoca"], e:"Elegir el modelo es una decisión de ingeniería: costo, latencia y calidad."},
- {q:"El modelo razonó bien la dilución pero escribió 8.25 ml en vez de 8.75 ml. ¿Qué lo evita?", o:["Delegar la cuenta a una calculadora","Pedirle que piense más tiempo","Usar un modelo más pequeño"], e:"La aritmética es un punto débil de los LLM: se resuelve con herramientas, no con más razonamiento."},
- {q:"Un razonamiento paso a paso muy convincente…", o:["Puede partir de un dato inventado: hay que verificar las fuentes","Garantiza que la respuesta es correcta","Siempre refleja exactamente cómo pensó el modelo"], e:"Razonar no es lo mismo que acertar."},
- {q:"«Quiero plantas para poca luz y tengo un gato.» Al descomponer, ¿cuál es el primer subproblema?", o:["¿Qué plantas toleran poca luz?","¿De qué raza es el gato?","¿Dónde comprar las plantas?"], e:"Después se filtran las que no son tóxicas para gatos, y al final se recomienda."}
+ {q:"¿Por qué no basta con una prueba de laboratorio (benchmark) antes de cambiar el prompt?", o:["Porque las usuarias reales preguntan distinto que un conjunto fijo de pruebas","Porque los benchmarks son ilegales","Porque los benchmarks solo miden el costo"], e:"Fotos borrosas, faltas de ortografía, «mi planta está triste»: la producción es otra carretera."},
+ {q:"En un A/B test, el grupo de control recibe…", o:["La versión actual del sistema","La versión nueva","Ninguna respuesta"], e:"El tratamiento recibe la versión nueva; todo lo demás se mantiene igual."},
+ {q:"¿Por qué conviene asignar los grupos por usuaria y no por mensaje?", o:["Para que nadie reciba respuestas de A y B mezcladas en la misma conversación","Para ahorrar tokens","Porque es más rápido de programar"], e:"Mezclar versiones en una conversación contamina los dos grupos."},
+ {q:"La métrica norte de un experimento es…", o:["La que queremos mejorar, como el % de diagnósticos útiles","La que nunca debe moverse","El costo del servidor"], e:"Debajo están las métricas secundarias y los guardarraíles."},
+ {q:"Un guardarraíl en un A/B test es…", o:["Una métrica que no debe empeorar, como el tiempo de respuesta o el costo","La métrica que queremos mejorar","El nombre del experimento"], e:"Si un guardarraíl se rompe, el experimento se cancela aunque gane en la métrica norte."},
+ {q:"Un resultado con p < 0.05 significa que…", o:["Es poco probable que la diferencia se deba solo al azar","La mejora es grande","El 5 % de las usuarias está feliz"], e:"Dice si la diferencia es real, no si es importante."},
+ {q:"La significancia práctica responde a…", o:["¿La diferencia es suficientemente grande para que importe?","¿El valor p es pequeño?","¿Hay muchos usuarios?"], e:"Con millones de usuarias, una diferencia insignificante puede salir «significativa»."},
+ {q:"Si quieres detectar una mejora de la mitad de tamaño, necesitas…", o:["4 veces más usuarios","La mitad de usuarios","El doble de usuarios"], e:"La mejora mínima está al cuadrado en el denominador de la fórmula de la muestra."},
+ {q:"Revisar el valor p cada día y detener el experimento en cuanto sale menor a 0.05…", o:["Aumenta la probabilidad de un falso positivo","Es la práctica recomendada","Ahorra muestra sin ningún riesgo"], e:"Es el problema de «asomarse»: la muestra se fija antes de empezar."},
+ {q:"En un shadow test…", o:["El sistema nuevo responde en paralelo, pero la usuaria solo ve la respuesta del actual","La mitad de las usuarias ve la versión nueva","El sistema se apaga de noche"], e:"Sirve para probar cambios riesgosos sin exponer a nadie."},
+ {q:"¿Qué NO puede medir un shadow test?", o:["La reacción de las usuarias a las respuestas nuevas","El costo de la versión nueva","El tiempo de respuesta de la versión nueva"], e:"Nadie vio esas respuestas, así que no hay pulgares ni reformulaciones."},
+ {q:"Una señal implícita de que una respuesta no sirvió es que la usuaria…", o:["Reformula la misma pregunta a los pocos segundos","Da pulgar arriba","Cierra la app al terminar"], e:"Las señales pueden ser explícitas (pulgar), implícitas (reformular) o automáticas (un juez LLM)."}
 ],
 C: [
- {q:"En tool-calling, ¿quién ejecuta la función?", o:["Tu código, el programa cliente","El modelo de lenguaje","La usuaria"], e:"El modelo solo pide la llamada; el programa decide si la ejecuta y le devuelve el resultado."},
- {q:"¿Cómo pide el modelo usar una herramienta?", o:["Con un mensaje estructurado (JSON) con el nombre y los argumentos","Mandando un correo","Ejecutando Python por su cuenta"], e:"Por ejemplo: {\"herramienta\": \"clima\", \"argumentos\": {\"ciudad\": \"Monterrey\"}}."},
- {q:"¿Qué parte de la definición de una herramienta influye más en que el modelo la elija bien?", o:["La descripción: qué hace y cuándo usarla","El color del botón","El número de versión"], e:"Es lo único que el modelo lee para decidir. Una descripción ambigua produce malas elecciones."},
- {q:"¿Cuál es el orden del ciclo de tool-calling?", o:["Describes las herramientas, el modelo decide, tu código ejecuta, el modelo responde","El modelo ejecuta, tú describes, el modelo decide","Tu código responde, el modelo ejecuta, tú describes"], e:"El paso 4 puede repetirse: con el resultado, el modelo puede pedir otra herramienta."},
- {q:"En la Tarea 5, ¿para qué sirve Pydantic?", o:["Para validar que el JSON tenga los campos y tipos correctos","Para generar imágenes","Para acelerar la GPU"], e:"Si falta un campo o el tipo no coincide, se rechaza y se pide al modelo que lo corrija."},
- {q:"Un JSON que cumple perfectamente el esquema…", o:["Tiene la forma correcta, pero su contenido puede estar equivocado","Siempre dice la verdad","Ya no necesita ninguna revisión"], e:"La validación revisa la forma, no la verdad: una dosis puede venir bien escrita y mal calculada."},
- {q:"¿Cuándo conviene pedir varias herramientas en paralelo?", o:["Cuando las llamadas son independientes entre sí","Cuando una necesita el resultado de la otra","Cuando solo existe una herramienta"], e:"Fichas de monstera y de pothos se consultan a la vez; el clima de mañana no depende de ellas."},
- {q:"La API de clima no responde. ¿Qué hace un buen agente?", o:["Atrapa el error, busca otra vía, baja la confianza y lo avisa","Inventa el pronóstico","Se detiene sin decir nada"], e:"Es la Tarea 3 del notebook: el error se convierte en una observación, no en un choque."},
- {q:"¿Para qué sirve un timeout en la llamada a una herramienta?", o:["Para no esperar indefinidamente a un servicio caído","Para que la respuesta sea más larga","Para ahorrar memoria de la GPU"], e:"Junto con reintentos y valores de respaldo, permite una degradación elegante."},
- {q:"MCP (Model Context Protocol) es…", o:["Un protocolo estándar para conectar herramientas y datos a aplicaciones de IA","Un modelo de lenguaje","Una base de datos vectorial"], e:"Una herramienta se publica una vez como servidor MCP y cualquier cliente compatible la usa."},
- {q:"¿Qué analogía describe mejor a MCP?", o:["Un puerto USB-C: un mismo conector para muchos dispositivos","Un disco duro","Un teclado inalámbrico"], e:"Antes, cada app conectaba cada herramienta a su manera."},
- {q:"Una herramienta «comprar fertilizante» debería…", o:["Pedir confirmación humana antes de ejecutarse","Ejecutarse sola siempre","Funcionar sin ninguna validación"], e:"Las acciones con consecuencias (dinero, correos, borrar datos) necesitan aprobación humana."},
- {q:"El principio de mínimo privilegio significa…", o:["Dar al agente solo las herramientas y permisos que necesita","Darle todos los permisos por si acaso","Usar siempre el modelo más barato"], e:"Si solo necesita leer el inventario, no le des una herramienta que pueda borrarlo."},
- {q:"Con calculadora, buscar_ficha y clima: «¿Qué opinas de los colores de mi sala?». ¿Qué herramienta usa?", o:["Ninguna: está fuera del alcance de PlantSense y debe decirlo","La calculadora","El clima"], e:"Un buen agente también sabe cuándo no usar herramientas."}
-],
-D: [
- {q:"¿Qué ventaja tienen varios agentes especialistas frente a uno solo con 25 herramientas?", o:["Instrucciones cortas, pocas herramientas por agente y se prueban por separado","Siempre son más baratos","Nunca se equivocan"], e:"Como en una planta: especialistas y alguien que coordina."},
- {q:"En el patrón supervisor-trabajador…", o:["Un supervisor reparte el trabajo y revisa a los especialistas","Todos los agentes hacen todo","No hay ninguna coordinación"], e:"En LangGraph, el supervisor es un nodo que decide a qué especialista mandar el estado."},
- {q:"El patrón secuencial se parece a…", o:["Una línea de ensamble: identificar → diagnosticar → recomendar","Una junta de debate","Un sorteo"], e:"Cada agente recibe el trabajo del anterior."},
- {q:"En el patrón paralelo…", o:["Varios agentes revisan lo mismo a la vez con criterios distintos y se combinan","Los agentes trabajan uno tras otro","Solo trabaja un agente"], e:"Como varios inspectores de calidad revisando la misma pieza."},
- {q:"El estilo conversacional de AutoGen consiste en que…", o:["Los agentes se mandan mensajes y debaten hasta llegar a un acuerdo","Hay un solo agente","Se sigue un flujo fijo sin modelo de lenguaje"], e:"Es útil para revisar ideas, pero puede gastar muchos tokens."},
- {q:"CrewAI organiza a los agentes con…", o:["Roles, metas y tareas, en procesos secuenciales o jerárquicos","Solo imágenes","Bases de datos vectoriales"], e:"Cada agente tiene un rol («diagnosticador»), una meta y herramientas."},
- {q:"El efecto manada en sistemas multiagente es…", o:["Que los agentes le den la razón a uno que afirma algo con seguridad aunque esté mal","Que trabajen más rápido en grupo","Un error de la red"], e:"La seguridad de un agente no es evidencia de que tenga razón."},
- {q:"¿Qué ayuda contra el efecto manada?", o:["Que cada agente responda primero por su cuenta y luego se comparen","Que todos copien al primero","Quitar al agente revisor"], e:"También ayuda asignar a uno el papel de abogado del diablo o usar modelos distintos."},
- {q:"Un error en cascada ocurre cuando…", o:["El identificador confunde la especie y todo lo que sigue hereda el error","Un error se corrige solo","El agente responde dos veces"], e:"Se previene validando la salida de cada etapa, por ejemplo con un umbral de confianza."},
- {q:"Human-in-the-loop significa…", o:["Que una persona aprueba antes de las acciones importantes","Que la persona hace todo el trabajo","Que no participa ninguna persona"], e:"LangGraph permite pausar el grafo esperando la aprobación."},
- {q:"¿En qué caso NO conviene un equipo de agentes?", o:["«¿Cada cuánto riego un cactus?»","Un vivero con diagnóstico, cotización, inventario y entregas","Revisar un reporte largo con criterios técnicos, de redacción y de normas"], e:"Una consulta simple se resuelve con un agente o con RAG. Más agentes = más costo."},
- {q:"Un especialista no responde a tiempo. Degradación elegante significa…", o:["Entregar una respuesta parcial y avisar qué faltó","Esperar para siempre","Cancelar todo sin avisar"], e:"Se combina con un tiempo máximo por agente."},
- {q:"Cuatro agentes conversando entre sí para una tarea…", o:["Pueden gastar muchas veces más tokens que un solo agente","Cuestan lo mismo que uno","No consumen tokens"], e:"Cada mensaje entre agentes es otra llamada al modelo."}
-],
-E: [
- {q:"La memoria de trabajo de un agente es…", o:["Lo que está en la conversación actual: la ventana de contexto","Un perfil guardado para siempre","Un disco duro externo"], e:"Se pierde al cerrar la conversación y tiene un límite de tokens."},
- {q:"«El 3 de octubre su monstera tenía hojas amarillas.» ¿Qué tipo de memoria es?", o:["Episódica","Semántica","Procedimental"], e:"Es un evento con fecha: algo que pasó."},
- {q:"«Vive en Monterrey y tiene un gato.» ¿Qué tipo de memoria es?", o:["Semántica","Episódica","De trabajo"], e:"Son datos estables sobre la usuaria; suelen ir en un perfil estructurado."},
- {q:"«Prefiere respuestas cortas y con recordatorios.» ¿Qué tipo de memoria es?", o:["Procedimental","Episódica","De trabajo"], e:"Describe cómo trabajar bien con ella."},
- {q:"Entre una conversación y la siguiente, un modelo de lenguaje…", o:["No recuerda nada por sí mismo: la memoria es un sistema construido alrededor","Recuerda todo automáticamente","Recuerda solo lo importante"], e:"La memoria persistente se guarda afuera del modelo y se le da en el prompt."},
- {q:"¿Dónde se guarda normalmente la memoria episódica?", o:["En una base vectorial, para buscar episodios parecidos","En los pesos del modelo","En el teclado"], e:"Es la misma técnica de la Tarea 4, aplicada a la historia de la usuaria."},
- {q:"MemGPT trata la ventana de contexto como…", o:["La RAM, y la base de datos como el disco duro","Una impresora","Una memoria USB"], e:"El agente decide qué subir al contexto y qué guardar afuera, como la memoria virtual de un sistema operativo."},
- {q:"Consolidar la memoria significa…", o:["Resumir muchos episodios en un dato útil: «tiende a regar de más»","Guardar todo dos veces","Borrar todos los datos"], e:"Menos registros, más útiles."},
- {q:"¿Por qué un sistema de memoria también debe olvidar?", o:["Porque lo viejo o contradictorio empeora la recuperación","Para ahorrar electricidad","No debe olvidar nunca"], e:"Se usa decaimiento por tiempo, puntaje de importancia y consolidación periódica."},
- {q:"Los derechos ARCO de la LFPDPPP son…", o:["Acceso, rectificación, cancelación y oposición","Almacenar, recordar, copiar y ordenar","Analizar, registrar, compartir y operar"], e:"La usuaria debe poder ver, corregir y borrar lo que PlantSense recuerda de ella."},
- {q:"¿Qué NO debería recordar PlantSense?", o:["La dirección exacta de la casa o datos de pago","Que tiene una monstera","Que prefiere respuestas cortas"], e:"Minimización: guardar solo lo que se necesita para ayudar."},
- {q:"La usuaria se mudó de Monterrey a Mérida. ¿Qué debe hacer la memoria?", o:["Actualizar el perfil en lugar de guardar dos ciudades","Guardar ambas ciudades sin avisar","Ignorar el cambio"], e:"Corregir evita respuestas contradictorias, como el clima de la ciudad equivocada."},
- {q:"En el ciclo de memoria, el paso de guardar consiste en…", o:["Extraer solo lo nuevo que vale la pena recordar","Guardar siempre la conversación completa","No guardar nada"], e:"Guardar todo llena la memoria de ruido."}
+ {q:"Un SLO es…", o:["La meta interna de confiabilidad, por ejemplo 99.9 % de disponibilidad al mes","Un contrato con penalizaciones para el cliente","Un tipo de modelo de lenguaje"], e:"SLI = lo que se mide; SLO = la meta; SLA = la promesa al cliente."},
+ {q:"¿Por qué el SLO interno debe ser más exigente que el SLA?", o:["Para tener margen antes de romper la promesa al cliente","Porque así lo exige la ley","No debe serlo: son iguales"], e:"Si son iguales, cualquier incidente menor ya es una violación del contrato."},
+ {q:"Un SLO de 99.9 % al mes permite aproximadamente…", o:["43 minutos de falla","9 horas de falla","1 minuto de falla"], e:"30 × 24 × 60 = 43,200 minutos; el 0.1 % son 43.2 minutos: el presupuesto de errores."},
+ {q:"Si el presupuesto de errores está casi agotado, el equipo debe…", o:["Pausar experimentos y congelar cambios no críticos","Lanzar más experimentos","Subir el SLO a 99.99 %"], e:"Con presupuesto de sobra se innova; sin presupuesto, se prioriza la estabilidad."},
+ {q:"El proveedor responde «error 429: demasiadas solicitudes». ¿Qué conviene?", o:["Reintentar con espera creciente (backoff) y un poco de azar","Reintentar mil veces de inmediato","Apagar PlantSense"], e:"Esperar 1 s, 2 s, 4 s… da tiempo a que el proveedor se recupere."},
+ {q:"¿Para qué se agrega un poco de azar (jitter) a la espera entre reintentos?", o:["Para que no reintenten todos los clientes al mismo tiempo","Para cifrar los mensajes","Para medir la latencia"], e:"Si todos reintentan a la vez, vuelven a saturar al proveedor (efecto manada)."},
+ {q:"Cuando un circuit breaker se abre…", o:["Deja de llamar al proveedor que falla y responde de inmediato","Llama más rápido al proveedor","Borra el caché"], e:"Como el disyuntor de una casa: corta para que el problema no se propague."},
+ {q:"¿Por qué no basta con esperar más tiempo (timeout más largo) cuando el proveedor está lento?", o:["Las solicitudes se acumulan esperando y la falla se propaga a todo el sistema","Porque cuesta más tokens","Porque el proveedor lo prohíbe"], e:"Es la falla en cascada: el problema del proveedor se vuelve una caída total."},
+ {q:"¿Cuál es un buen fallback para PlantSense si el proveedor principal falla?", o:["Otro proveedor o un modelo local pequeño","Mostrar el error técnico completo","Pedir a la usuaria que reinicie su teléfono"], e:"También sirve una respuesta predefinida para casos comunes o encolar la consulta."},
+ {q:"La estrategia activo-pasivo significa…", o:["Un proveedor principal y otro en espera","Todos los proveedores reciben tráfico a la vez","No tener respaldo"], e:"Es simple y barata, pero el cambio tarda de 30 a 120 segundos."},
+ {q:"Un respaldo que nunca se ha probado…", o:["No es confiable: hay que probarlo antes, por ejemplo en sombra","Siempre funciona","Es más barato y por eso mejor"], e:"En el post-mortem de la lectura, el respaldo existía en papel pero no estaba configurado."},
+ {q:"El riesgo de «consumo ilimitado» de OWASP para LLM es…", o:["Que alguien agote los recursos o el presupuesto con contextos o respuestas enormes","Que haya demasiadas usuarias felices","Usar un modelo gratuito"], e:"También se le llama «ataque a la cartera»: dispara la factura de tokens."},
+ {q:"Un post-mortem sin culpa busca…", o:["Las causas en el sistema y los procesos, no culpables","A quién despedir","No documentar nada"], e:"En una cultura sin culpa la gente reporta incluso los casi-incidentes."},
+ {q:"La técnica de los 5 porqués sirve para…", o:["Llegar a la causa raíz preguntando «¿por qué?» varias veces","Contar cuántos errores hubo","Votar quién tuvo la culpa"], e:"Es el mismo análisis de causa raíz que se usa en manufactura y seguridad industrial."},
+ {q:"El TTFT (time to first token) mide…", o:["Cuánto tarda en aparecer el primer token de la respuesta","Cuántos tokens tiene la respuesta","La tasa de fallas del proveedor"], e:"Es la latencia que percibe la usuaria cuando la respuesta se muestra mientras se genera."}
 ]};
-const ZONES = {A:{name:"Arquitecturas", cls:"z1", n:1}, B:{name:"Planificación", cls:"z2", n:2}, C:{name:"Tool-calling", cls:"z3", n:3}, D:{name:"Equipos de agentes", cls:"z4", n:4}, E:{name:"Memoria", cls:"z5", n:5}};
-const zoneOf = n => n<=6?"A":n<=12?"B":n<=18?"C":n<=24?"D":"E";
-const GOAL = 30;
-const TURBO = {4:"Traza ReAct", 10:"Paso a paso", 16:"JSON validado", 21:"Supervisor", 25:"Perfil recordado"};
-const HAZARD = {6:"Bucle infinito", 9:"Cuenta mal hecha", 14:"API caída", 19:"Efecto manada", 24:"Error en cascada", 28:"Memoria contaminada"};
-const HAZDESC = {6:"El agente repite la misma acción sin avanzar.", 9:"Razonó bien, pero hizo mal la cuenta.", 14:"La herramienta no responde.", 19:"Todos le dan la razón al agente más seguro.", 24:"Un error temprano se hereda en todo el equipo.", 28:"Un dato viejo o falso se coló en la memoria."};
-const ITEMBOX = [3, 8, 12, 17, 23, 26];
-const ITEMS = {plan:{ic:"🗺️", name:"Plan", desc:"elige el número del dado"}, par:{ic:"⚡", name:"Llamada en paralelo", desc:"tira dos dados y usa el mayor"}, tool:{ic:"🔧", name:"Herramienta", desc:"quita una opción incorrecta en la tarjeta"}, mem:{ic:"🧠", name:"Memoria", desc:"escudo: la próxima vez que falles no retrocedes"}};
-const RULES = {
- normal:"Casilla normal. Si aciertan, se quedan aquí. Si fallan, regresan a donde estaban.",
- turbo:"⚡ Turbo «{t}». Si aciertan, avanzan 3 casillas más (sin pasar de la 29). Si fallan, se quedan aquí.",
- item:"❓ Caja de ítem. Si aciertan, ganan un ítem al azar. Si fallan, regresan a donde estaban.",
- hazard:"⚠ Obstáculo «{t}»: {d} Si aciertan, lo esquivan. Si fallan, derrapan 3 casillas hacia atrás.",
- meta:"🏁 Pregunta final, de cualquier sector. Si aciertan, cruzan la meta. Si fallan, regresan a donde estaban."
-};
-const KIND = {normal:"Normal", turbo:"Turbo", item:"Caja de ítem", hazard:"Obstáculo", meta:"Meta", use:"Ítem"};
+const INCIDENTS = [
+ {t:"El proveedor principal se cae 2 horas", loss:150, prot:21, q:"¿Qué permite que PlantSense siga respondiendo durante la caída?", o:["Un respaldo con otro proveedor o un modelo local","Aumentar el tiempo de espera","Esperar a que vuelva"], e:"Con un respaldo probado, el servicio sigue aunque el proveedor principal falle."},
+ {t:"Error 429: el proveedor está saturado durante 10 minutos", loss:80, prot:17, q:"¿Cuál es la mejor reacción ante este error temporal?", o:["Reintentar con espera creciente y un poco de azar","Reintentar mil veces de inmediato","Desactivar la app"], e:"El backoff da tiempo al proveedor; el azar evita que todos reintenten a la vez."},
+ {t:"Miles de consultas quedan bloqueadas esperando a un proveedor lentísimo", loss:120, prot:19, q:"¿Qué evita que la lentitud del proveedor tumbe todo PlantSense?", o:["Un circuit breaker que corta las llamadas y responde de inmediato","Un tiempo de espera más largo","Más usuarias"], e:"El disyuntor aísla la falla en lugar de dejar que se propague."},
+ {t:"Una persona manda contextos gigantes toda la noche", loss:100, prot:1, q:"¿Cómo clasifica OWASP este riesgo?", o:["Consumo ilimitado","Inyección de prompt","Sesgo del modelo"], e:"Un límite de tokens por usuario corta el problema y protege la factura."},
+ {t:"Durante la caída, nadie sabe qué hacer primero", loss:90, prot:23, q:"¿Qué documento guía al ingeniero de guardia durante un incidente?", o:["El runbook","El SLA","El benchmark"], e:"Diagnóstico, primeras acciones y a quién escalar, escritos antes del incidente."},
+ {t:"Se enteran de la caída por una publicación de una usuaria, una hora después", loss:90, prot:25, q:"¿Qué habría detectado el problema en minutos?", o:["Alertas sobre los SLI y el SLO","Revisar redes sociales cada semana","Una encuesta mensual"], e:"Monitorear la tasa de errores y la latencia dispara la alerta antes que las quejas."},
+ {t:"Una ficha con texto oculto ordena a PlantSense recomendar un fertilizante", loss:80, prot:29, q:"¿Qué tipo de ataque es?", o:["Inyección de prompt indirecta","Consumo ilimitado","Shadow test"], e:"Un gateway con filtros de entrada y salida ayuda a detectarlo y bloquearlo."},
+ {t:"La factura del mes llega al doble y nadie lo notó", loss:100, prot:27, q:"¿Qué práctica de FinOps lo habría evitado?", o:["Una alerta al llegar al 80 % del presupuesto","Apagar todo cada noche","Ignorar la factura"], e:"Presupuestos con alertas y revisión mensual del gasto por función y por modelo."}
+];
+const EXPERIMENTS = [
+ {t:"Prompt nuevo: utilidad +0.15 puntos (p = 0.002). Mejora mínima que importa: 0.10. Guardarraíles sin cambios.", o:["Promover el prompt nuevo","Descartarlo","Seguir midiendo"], e:"Es real (p pequeño), suficientemente grande (≥ 0.10) y no rompe guardarraíles."},
+ {t:"Prompt nuevo: utilidad −0.10 puntos (p = 0.01).", o:["Descartar el prompt nuevo","Promoverlo","Seguir midiendo un año más"], e:"La diferencia es real y es en contra: la versión nueva es peor."},
+ {t:"Utilidad +0.08 con 150 usuarias, de las 2,000 planeadas (p = 0.20).", o:["Seguir midiendo hasta la muestra planeada","Promover ya","Descartar ya"], e:"Con tan pocos datos no se puede concluir; detenerse antes es «asomarse»."},
+ {t:"Haiku contra Sonnet en consultas simples: misma calidad (p = 0.45), costo 20 veces menor y la muestra planeada completa.", o:["Usar Haiku para las consultas simples","Mantener Sonnet para todo","Descartar el experimento por no tener ganador"], e:"Sin diferencia de calidad y con un gran ahorro, conviene el modelo barato."},
+ {t:"Utilidad +0.02 puntos (p = 0.03). La mejora mínima que importa era 0.10.", o:["No promoverlo: la mejora es real pero demasiado pequeña","Promoverlo porque p < 0.05","Descartarlo porque empeora"], e:"Significancia estadística sin significancia práctica."},
+ {t:"Quieren probar un modelo totalmente nuevo, muy distinto al actual.", o:["Hacer primero un shadow test, sin exponer a las usuarias","Darlo de inmediato al 100 %","Probarlo solo con el equipo de ventas"], e:"Para cambios riesgosos, primero en sombra: se mide costo, tiempo y calidad sin riesgo."},
+ {t:"Prompt nuevo: utilidad +0.12 (p = 0.001), pero el costo por consulta se triplicó.", o:["No promoverlo: rompe el guardarraíl de costo","Promoverlo","Seguir midiendo"], e:"Un guardarraíl roto cancela el cambio aunque gane en la métrica norte."},
+ {t:"Descubren que el experimento asignó los grupos por mensaje: una misma usuaria vio A y B.", o:["Rediseñarlo asignando por usuaria","Confiar en los resultados","Duplicar el tiempo del experimento sin cambios"], e:"La mezcla contamina ambos grupos; la unidad correcta es la usuaria o la sesión."}
+];
+/* ---------- tablero: 32 casillas alrededor de una cuadrícula de 9 × 9 ---------- */
+const GROUPS = {A:{name:"Ahorrar", cls:"gA", bank:"A"}, B:{name:"Experimentar", cls:"gB", bank:"B"}, C:{name:"Resistir", cls:"gC", bank:"C"}, D:{name:"Operar", cls:"gD", bank:null}};
+const SQ = [
+ {k:"go", n:"Cierre de mes", ic:"🏁"},
+ {k:"prop", n:"Límite de tokens por usuario", g:"A", price:60, bill:10},
+ {k:"exp", n:"Experimento A/B", ic:"🧪"},
+ {k:"prop", n:"Menos contexto", g:"A", price:80, bill:15},
+ {k:"tax", n:"Tokens de razonamiento", ic:"💸", amt:80, bank:"A", d:"Activaron el razonamiento extendido para todo y los tokens de pensamiento se cobran como salida."},
+ {k:"prop", n:"Caché de prompts", g:"A", price:120, bill:30},
+ {k:"inc", n:"Incidente", ic:"⚠"},
+ {k:"prop", n:"Modelo según la tarea", g:"A", price:140, bill:45},
+ {k:"jail", n:"Sala de pruebas", ic:"🔬"},
+ {k:"prop", n:"Árbol de métricas", g:"B", price:100},
+ {k:"exp", n:"Experimento A/B", ic:"🧪"},
+ {k:"prop", n:"Guardarraíles", g:"B", price:120},
+ {k:"tax", n:"GPU ociosa", ic:"💸", amt:80, bank:"A", d:"Rentaron una GPU que pasó la noche encendida sin recibir consultas."},
+ {k:"prop", n:"Cálculo de muestra", g:"B", price:140},
+ {k:"inc", n:"Incidente", ic:"⚠"},
+ {k:"prop", n:"Shadow test", g:"B", price:160},
+ {k:"pot", n:"Fondo de innovación", ic:"💰"},
+ {k:"prop", n:"Reintentos con backoff", g:"C", price:160},
+ {k:"exp", n:"Experimento A/B", ic:"🧪"},
+ {k:"prop", n:"Circuit breaker", g:"C", price:180},
+ {k:"tax", n:"Consumo ilimitado", ic:"💸", amt:100, bank:"C", exempt:1, d:"Un bot hizo miles de consultas enormes y disparó la factura."},
+ {k:"prop", n:"Respaldo multiproveedor", g:"C", price:200},
+ {k:"inc", n:"Incidente", ic:"⚠"},
+ {k:"prop", n:"Runbook y post-mortem", g:"C", price:200},
+ {k:"freeze", n:"Presupuesto de errores agotado", ic:"🧊"},
+ {k:"prop", n:"Monitoreo de SLO", g:"D", price:220, bank:"C"},
+ {k:"exp", n:"Experimento A/B", ic:"🧪"},
+ {k:"prop", n:"Alertas de presupuesto", g:"D", price:220, bank:"A", bill:15},
+ {k:"tax", n:"Tokenizador nuevo", ic:"💸", amt:60, bank:"A", d:"El modelo nuevo usa un tokenizador que produce cerca de 30 % más tokens para el mismo texto."},
+ {k:"prop", n:"Gateway de LLM", g:"D", price:260, bank:"C"},
+ {k:"inc", n:"Incidente", ic:"⚠"},
+ {k:"prop", n:"Modelo propio en GPU", g:"D", price:300, bank:"A", bill:35}
+];
+const N = SQ.length, START_MONEY = 1500, INCOME = 300, BASE_BILL = 200, JAIL = 8;
+const KIND = {go:"Cierre de mes", prop:"Optimización", exp:"Experimento A/B", inc:"Incidente", tax:"Cargo", jail:"Sala de pruebas", pot:"Fondo de innovación", freeze:"Presupuesto agotado", month:"Cierre de mes", buy:"Compra"};
 const COLORS = ["#22C7E8","#E8742C","#A48CFF","#35C27A","#F2C94C","#F07BA6","#7FD6C2","#F4A261","#8EB8FF","#C9E265","#FFB4A2","#B8A1E8","#5BC0EB","#FFD166","#9BE564","#F28FB0","#A0E7E5","#E9C46A","#CDB4DB","#90BE6D"];
 const PIPS = {1:[4],2:[0,8],3:[0,4,8],4:[0,2,6,8],5:[0,2,4,6,8],6:[0,2,3,5,6,8]};
-const KEY = "gran-premio-agentes-v1";
+const KEY = "monopoly-tokens-v1";
 
 let S = null, cardTimer = null, clockTimer = null, busy = false;
 const $ = id => document.getElementById(id);
@@ -434,183 +453,185 @@ const save = () => { try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e
 const load = () => { try{ const r = localStorage.getItem(KEY); return r ? JSON.parse(r) : null; }catch(e){ return null; } };
 const shuffle = a => { const b=a.slice(); for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]];} return b; };
 const esc = s => String(s).replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money = v => (v<0?"−$":"$")+Math.abs(Math.round(v)).toLocaleString("en-US");
 const reduceMotion = () => { try{ return matchMedia("(prefers-reduced-motion: reduce)").matches; }catch(e){ return false; } };
 function toast(msg, ms){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"), ms||2800); }
 function fmt(ms){ ms=Math.max(0,ms); const s=Math.round(ms/1000); return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"); }
 function elapsed(){ if(!S) return 0; return (S.pausedAt ? S.pausedAt : Date.now()) - S.startAt - S.pausedTotal; }
 const isTeam = () => S && S.config.mode==="team";
-const where = p => p===0 ? "la parrilla de salida" : "la casilla "+p;
-const kindOf = n => n===GOAL ? "meta" : TURBO[n] ? "turbo" : HAZARD[n] ? "hazard" : ITEMBOX.includes(n) ? "item" : "normal";
+const owns = (pi, sq) => S.owner[sq]===pi;
+const bill = pi => Math.max(0, BASE_BILL - SQ.reduce((s,q,i)=> s + (q.bill && owns(pi,i) ? q.bill : 0), 0));
+const worth = pi => S.teams[pi].money + SQ.reduce((s,q,i)=> s + (owns(pi,i) ? q.price : 0), 0);
+const groupOwned = (pi, g) => SQ.every((q,i)=> q.g!==g || owns(pi,i));
+const rentOf = i => { const o=S.owner[i]; const base=Math.round(SQ[i].price*0.2); return (o!=null && groupOwned(o, SQ[i].g)) ? base*2 : base; };
+const nExp = pi => SQ.reduce((s,q,i)=> s + (q.g==="B" && owns(pi,i) ? 1 : 0), 0);
 
-/* ---------- pista: 30 casillas alrededor de una cuadrícula de 10 × 7, en sentido horario ---------- */
-function cellRC(n){
-  if(n<=7) return {r:7-n+1, c:1};            // columna izquierda, de abajo hacia arriba (1..7)
-  if(n<=16) return {r:1, c:n-6};             // fila superior, de izquierda a derecha (8..16)
-  if(n<=22) return {r:n-15, c:10};           // columna derecha, de arriba hacia abajo (17..22)
-  return {r:7, c:10-(n-22)};                 // fila inferior, de derecha a izquierda (23..30)
+function cellRC(i){
+  if(i<=8) return {r:9, c:9-i};          // fila inferior, de derecha a izquierda (0 = esquina inferior derecha)
+  if(i<=16) return {r:9-(i-8), c:1};     // columna izquierda, de abajo hacia arriba
+  if(i<=24) return {r:1, c:1+(i-16)};    // fila superior, de izquierda a derecha
+  return {r:1+(i-24), c:9};              // columna derecha, de arriba hacia abajo
 }
 function buildBoard(){
   const b=$("board"); b.innerHTML="";
-  for(let n=1;n<=GOAL;n++){
-    const k=kindOf(n), rc=cellRC(n), d=document.createElement("div");
-    d.className="sq "+ZONES[zoneOf(n)].cls+" "+k; d.id="sq"+n;
+  SQ.forEach((q,i)=>{
+    const rc=cellRC(i), d=document.createElement("div");
+    const corner=[0,8,16,24].includes(i);
+    d.className="sq"+(corner?" corner":"")+(q.k==="prop"?" prop":"")+(q.k!=="prop"&&!corner?" special":""); d.id="sq"+i;
     d.style.gridRow=rc.r; d.style.gridColumn=rc.c;
-    let ic="", lbl="", aria="Casilla "+n+", sector "+ZONES[zoneOf(n)].name;
-    if(k==="meta"){ ic="🏁"; lbl="Meta"; aria+=": meta"; }
-    else if(k==="turbo"){ ic="⚡"; lbl="Turbo"; aria+=": turbo "+TURBO[n]; }
-    else if(k==="hazard"){ ic="⚠"; lbl=HAZARD[n]; aria+=": obstáculo "+HAZARD[n]; }
-    else if(k==="item"){ ic="❓"; lbl="Ítem"; aria+=": caja de ítem"; }
-    else if(n===1){ ic="🚦"; lbl="Arranque"; aria+=": primera casilla después de la salida"; }
-    d.innerHTML='<span class="num">'+n+(ic?'<span class="ic" aria-hidden="true">'+ic+'</span>':'')+'</span><span class="lbl">'+esc(lbl)+'</span><div class="tok"></div>';
-    d.setAttribute("aria-label",aria);
-    b.appendChild(d);
-  }
+    let h="", aria="Casilla "+i+": "+q.n;
+    if(q.k==="prop"){ h+='<div class="band '+GROUPS[q.g].cls+'"></div><span class="nm">'+esc(q.n)+'</span><span class="pr">'+money(q.price)+'</span>'; aria+=", optimización del grupo "+GROUPS[q.g].name+", precio "+money(q.price); }
+    else { h+='<span class="nm">'+esc(q.n)+'</span><div class="ic" aria-hidden="true">'+q.ic+'</div>'; if(q.amt) h+='<span class="pr">'+money(q.amt)+'</span>'; }
+    h+='<span class="own" hidden></span><div class="tok"></div>';
+    d.innerHTML=h; d.setAttribute("aria-label",aria); b.appendChild(d);
+  });
   const f=document.createElement("div"); f.className="infield";
-  f.innerHTML='<h2>Gran Premio de Agentes</h2>'+
-    '<p>Una vuelta en sentido de las manecillas del reloj: salen de la casilla 1 (abajo a la izquierda), suben, cruzan la recta superior, bajan y cierran la vuelta en la meta 30.</p>'+
-    '<div class="sectors">'+Object.keys(ZONES).map(z=>{ const r=[1,7,13,19,25][ZONES[z].n-1]; return '<div class="'+ZONES[z].cls+'"><b>'+ZONES[z].n+'. '+ZONES[z].name+'</b>Casillas '+r+'–'+(r+5)+'</div>'; }).join("")+'</div>'+
-    '<div class="legend2"><span><i>⚡</i>Turbo: si aciertas, +3 casillas</span><span><i>⚠</i>Obstáculo: si fallas, −3 casillas</span><span><i>❓</i>Caja: si aciertas, ganas un ítem</span><span><i>🏁</i>Meta: pregunta final</span>'+
-    '<span><i>🗺️</i>Plan: eliges el dado</span><span><i>⚡</i>Paralelo: dos dados, el mayor</span><span><i>🔧</i>Herramienta: quita una opción</span><span><i>🧠</i>Memoria: escudo contra un retroceso</span></div>';
+  f.innerHTML='<h2>Monopoly de Tokens</h2>'+
+    '<p>Cada quien dirige su PlantSense. Al pasar por el Cierre de mes cobran $300 de ingresos y pagan su factura de tokens. Gana el mayor patrimonio: dinero más optimizaciones.</p>'+
+    '<div class="decks"><div class="deck exp">🧪 Experimento A/B<small>Decidan con datos: promover, descartar o seguir midiendo.</small></div><div class="deck inc">⚠ Incidente<small>Algo falla en producción. ¿Tienen la protección?</small></div></div>'+
+    '<div class="groups"><span><i class="gA"></i>Ahorrar: baja tu factura</span><span><i class="gB"></i>Experimentar: más ganancia en A/B</span><span><i class="gC"></i>Resistir: protege de incidentes</span><span><i class="gD"></i>Operar: protección y ahorro</span></div>'+
+    '<div class="pot" id="potLbl">Fondo de innovación: $0</div>'+
+    '<p><b>Factura mensual</b> = $200 − los ahorros de sus optimizaciones de Ahorrar y Operar. <b>Consultoría</b> = 20 % del precio de la optimización, el doble si el dueño tiene todo el grupo.</p>'+
+    '<p>Las fichas avanzan en el sentido de las manecillas del reloj, desde el Cierre de mes (esquina inferior derecha).</p>';
   b.appendChild(f);
 }
 function tokenHTML(t,i,big){ return '<span class="token'+(big?" big":"")+'" style="background:'+t.color+'" title="'+esc(t.name)+'">'+(i+1)+'</span>'; }
 function speakerOf(t){ return (isTeam() && t.members.length) ? t.members[t.speaker % t.members.length] : t.name; }
-function rankOrder(){
-  return S.teams.map((t,i)=>i).sort((a,b)=>{ const A=S.teams[a],B=S.teams[b];
-    if(A.rank&&B.rank) return A.rank-B.rank; if(A.rank) return -1; if(B.rank) return 1;
-    return (B.pos-A.pos) || (B.points-A.points); });
-}
-function itemsHTML(t){
-  if(!t.items.length) return '<div class="none">Sin ítems. Ganen uno en una caja ❓.</div>';
-  const can = !busy && !S.over && !S.mod;
-  return t.items.map((k,j)=>{
-    const I=ITEMS[k]; let btn="";
-    if(k==="plan"||k==="par") btn='<button data-use="'+j+'"'+(can?"":" disabled")+'>Usar</button>';
-    else if(k==="tool") btn='<span style="font-size:13px;color:var(--muted)">en la tarjeta</span>';
-    else btn='<span style="font-size:13px;color:var(--muted)">automático</span>';
-    return '<div class="it"><span aria-hidden="true">'+I.ic+'</span><b>'+I.name+'</b>'+btn+'</div>'; }).join("");
-}
+function rankOrder(){ return S.teams.map((t,i)=>i).sort((a,b)=> (worth(b)-worth(a)) || (S.teams[b].ok-S.teams[a].ok)); }
 function render(){
   document.querySelectorAll(".sq .tok").forEach(x=>x.innerHTML="");
   document.querySelectorAll(".sq.active").forEach(x=>x.classList.remove("active"));
-  $("startTokens").innerHTML="";
-  $("physical").classList.remove("plan"); $("physLbl").textContent="¿Dado físico? Marquen el resultado:";
+  document.querySelectorAll(".sq .own").forEach(x=>{ x.hidden=true; });
   if(!S){
     $("turnToken").innerHTML=""; $("turnName").textContent="Sin partida"; $("turnMembers").textContent="";
-    $("turnStatus").textContent="Presionen «Nueva partida» para registrar a los pilotos.";
-    $("turnItems").innerHTML="";
+    $("turnMoney").hidden=true; $("turnProps").innerHTML="";
+    $("turnStatus").textContent="Presionen «Nueva partida» para registrar a los participantes.";
     $("btnRoll").textContent="Configurar partida"; $("btnRoll").disabled=false;
     document.querySelectorAll(".physical button").forEach(x=>x.disabled=true);
-    $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay pilotos.</li>';
+    $("standings").innerHTML='<li style="color:var(--muted)">Aún no hay participantes.</li>';
     $("log").innerHTML='<div>Aquí aparecerá cada jugada.</div>';
-    $("clock").textContent="--:--"; $("clock").classList.remove("low");
+    $("clock").textContent="--:--"; $("clock").classList.remove("low"); $("potLbl").textContent="Fondo de innovación: $0";
     return;
   }
-  S.teams.forEach((t,i)=>{
-    const h=tokenHTML(t,i);
-    if(t.pos===0) $("startTokens").insertAdjacentHTML("beforeend",h);
-    else $("sq"+t.pos).querySelector(".tok").insertAdjacentHTML("beforeend",h);
-  });
+  S.teams.forEach((t,i)=> $("sq"+t.pos).querySelector(".tok").insertAdjacentHTML("beforeend",tokenHTML(t,i)));
+  Object.keys(S.owner).forEach(sq=>{ const o=S.owner[sq]; if(o==null) return; const el=$("sq"+sq).querySelector(".own"); el.hidden=false; el.style.background=S.teams[o].color; el.textContent=o+1; el.title="Dueño: "+S.teams[o].name; });
   const cur=S.teams[S.turn];
-  if(cur.pos>0) $("sq"+cur.pos).classList.add("active");
+  $("sq"+cur.pos).classList.add("active");
   $("turnToken").innerHTML=tokenHTML(cur,S.turn,true);
   $("turnName").textContent=cur.name;
   $("turnMembers").textContent = (isTeam() && cur.members.length) ? "Responde: "+speakerOf(cur) : "";
-  let st = S.over ? "La carrera terminó. Pueden revisar la bitácora o iniciar una nueva." : "Está en "+where(cur.pos)+".";
-  if(!S.over && S.mod==="plan") st="🗺️ Plan activo: elijan el número del dado abajo.";
-  if(!S.over && S.mod==="par") st="⚡ Llamada en paralelo activa: al tirar se lanzan dos dados y se usa el mayor.";
+  $("turnMoney").hidden=false; $("mMoney").textContent=money(cur.money); $("mBill").textContent=money(bill(S.turn));
+  let st = S.over ? "La partida terminó. Pueden revisar la bitácora o iniciar una nueva." : "Está en «"+SQ[cur.pos].n+"».";
+  if(!S.over && cur.skip) st+=" Pierde su siguiente turno por el congelamiento.";
   $("turnStatus").textContent=st;
-  $("turnItems").innerHTML=itemsHTML(cur);
-  $("turnItems").querySelectorAll("[data-use]").forEach(b=>b.addEventListener("click",()=>useItem(+b.dataset.use)));
-  const planning = S.mod==="plan" && !S.over;
-  $("btnRoll").textContent = planning ? "Elijan el número abajo" : (S.mod==="par" ? "Tirar dos dados" : "Tirar el dado");
-  $("btnRoll").disabled = busy || S.over || planning;
-  if(planning){ $("physical").classList.add("plan"); $("physLbl").textContent="🗺️ Plan: ¿cuántas casillas avanzan?"; }
-  document.querySelectorAll(".physical button").forEach(x=>x.disabled = busy || S.over);
+  $("turnProps").innerHTML = SQ.map((q,i)=> owns(S.turn,i) ? '<span class="'+GROUPS[q.g].cls+'">'+esc(q.n)+'</span>' : "").join("");
+  $("btnRoll").textContent = cur.skip && !S.over ? "Pasar turno (congelado)" : "Tirar los dados"; $("btnRoll").disabled = busy || S.over;
+  document.querySelectorAll(".physical button").forEach(x=>x.disabled = busy || S.over || !!cur.skip);
+  $("potLbl").textContent="Fondo de innovación: "+money(S.pot);
   $("standings").innerHTML = rankOrder().map(i=>{ const t=S.teams[i];
-    const w = t.rank ? "Meta ("+t.rank+"º)" : (t.pos===0?"Salida":"Casilla "+t.pos);
-    const its = t.items.map(k=>ITEMS[k].ic).join(" ");
-    return '<li>'+tokenHTML(t,i)+'<span class="nm">'+esc(t.name)+(its?' <span aria-label="ítems">'+its+'</span>':'')+'</span><span class="meta2">'+w+'<br>'+t.points+' pts, '+t.ok+'/'+(t.ok+t.bad)+'</span></li>'; }).join("");
-  $("log").innerHTML = S.log.slice(-12).reverse().map(l=> l.kind==="use"
-      ? '<div><b>'+esc(l.player)+'</b> '+esc(l.effect)+'</div>'
-      : '<div><b>'+esc(l.player)+'</b> sacó '+l.die+': '+KIND[l.kind].toLowerCase()+' en '+l.at+', '+l.result.toLowerCase()+'. '+esc(l.effect)+'</div>').join("") || '<div>Aquí aparecerá cada jugada.</div>';
+    return '<li>'+tokenHTML(t,i)+'<span class="nm">'+esc(t.name)+'</span><span class="meta2">'+money(worth(i))+'<br>'+money(t.money)+' en caja · '+t.ok+'/'+(t.ok+t.bad)+'</span></li>'; }).join("");
+  $("log").innerHTML = S.log.slice(-12).reverse().map(l=>'<div><b>'+esc(l.player)+'</b> '+(l.dice?'sacó '+l.dice+', ':'')+esc(KIND[l.kind].toLowerCase())+(l.result&&l.result!=="—"?' ('+l.result.toLowerCase()+')':'')+'. '+esc(l.effect)+'</div>').join("") || '<div>Aquí aparecerá cada jugada.</div>';
 }
-function logUse(t, msg){
-  S.log.push({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), die:"", from:t.pos, at:t.pos, kind:"use", card:"", result:"—", effect:msg, end:t.pos, pts:0, item:""});
+function logRow(t, o){
+  S.log.push(Object.assign({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), dice:"", from:t.pos, at:t.pos, kind:"", topic:"", result:"—", effect:"", delta:0, money:t.money}, o, {money:t.money}));
 }
 
-/* ---------- ítems ---------- */
-function useItem(j){
-  if(busy||!S||S.over||S.mod) return;
-  const t=S.teams[S.turn], k=t.items[j];
-  if(k!=="plan" && k!=="par") return;
-  t.items.splice(j,1); S.mod=k;
-  logUse(t, "usó "+ITEMS[k].ic+" "+ITEMS[k].name+".");
-  save(); render();
-  toast(k==="plan" ? "Plan activado: elijan el número del dado." : "Llamada en paralelo: tiren dos dados.");
-}
-
-/* ---------- dado y movimiento ---------- */
-function showDie(v){ $("die").querySelectorAll("i").forEach((p,k)=>p.classList.toggle("on", PIPS[v].includes(k))); $("die").setAttribute("aria-label","Dado: "+v); }
+/* ---------- dados y movimiento ---------- */
+function showDie(id,v){ $(id).querySelectorAll("i").forEach((p,k)=>p.classList.toggle("on", PIPS[v].includes(k))); $(id).setAttribute("aria-label","Dado: "+v); }
 function rollAnimated(){
-  if(busy||!S||S.over||S.mod==="plan") return;
+  if(busy||!S||S.over) return;
+  const cur=S.teams[S.turn];
+  if(cur.skip){ cur.skip=false; logRow(cur,{kind:"jail", effect:"Pierde el turno por el congelamiento de cambios."}); nextTurn(); return; }
   busy=true; render();
-  $("die").classList.add("rolling");
+  ["die1","die2"].forEach(id=>$(id).classList.add("rolling"));
   let k=0; const n=reduceMotion()?1:9;
-  const it=setInterval(()=>{ showDie(1+Math.floor(Math.random()*6)); if(++k>=n){ clearInterval(it);
-    let v=1+Math.floor(Math.random()*6);
-    if(S.mod==="par"){ const w=1+Math.floor(Math.random()*6); toast("Dados en paralelo: "+v+" y "+w+". Avanzan "+Math.max(v,w)+".",3200); v=Math.max(v,w); S.mod=null; }
-    showDie(v); $("die").classList.remove("rolling"); move(v); } }, 70);
+  const it=setInterval(()=>{ showDie("die1",1+Math.floor(Math.random()*6)); showDie("die2",1+Math.floor(Math.random()*6));
+    if(++k>=n){ clearInterval(it); const a=1+Math.floor(Math.random()*6), b=1+Math.floor(Math.random()*6);
+      showDie("die1",a); showDie("die2",b); ["die1","die2"].forEach(id=>$(id).classList.remove("rolling")); move(a+b); } }, 70);
 }
 function move(v){
   busy=true;
-  const t=S.teams[S.turn], from=t.pos, path=[]; let p=from;
-  for(let s=0;s<v && p<GOAL;s++){ p++; path.push(p); }
-  if(!path.length){ land(from,v); return; }
-  const fast=reduceMotion(); let i=0;
-  const step=()=>{ t.pos=path[i]; render(); i++; if(i<path.length) setTimeout(step, fast?0:170); else setTimeout(()=>land(from,v), fast?0:250); };
+  const t=S.teams[S.turn], from=t.pos; let i=0;
+  const fast=reduceMotion();
+  const step=()=>{ t.pos=(t.pos+1)%N;
+    if(t.pos===0 && i<v-1) monthClose(t, false);
+    render(); i++;
+    if(i<v) setTimeout(step, fast?0:150); else setTimeout(()=>land(from,v), fast?0:250); };
   step();
 }
-function land(prev, die){
-  const n=S.teams[S.turn].pos, kind=kindOf(n);
-  const z = kind==="meta" ? "ABCDE"[Math.floor(Math.random()*5)] : zoneOf(n);
-  if(!S.decks[z] || !S.decks[z].length) S.decks[z]=shuffle(BANK[z].map((_,i)=>i));
-  S.pending={n, prev, die, kind, z, idx:S.decks[z].pop(), removed:null, toolUsed:false};
-  save(); openCard();
+function monthClose(t, exact){
+  const pi=S.teams.indexOf(t), b=bill(pi), net=INCOME-b+(exact?50:0);
+  t.money+=net;
+  logRow(t,{kind:"month", at:0, effect:"Ingresos $300 − factura de tokens "+money(b)+(exact?" + $50 por caer justo aquí":"")+" = "+(net>=0?"+":"")+money(net)+".", delta:net});
+  toast(t.name+": cierre de mes, "+(net>=0?"+":"")+money(net)+" (factura "+money(b)+").",3200);
+}
+function pickQ(bank){
+  if(!S.decks[bank] || !S.decks[bank].length) S.decks[bank]=shuffle(BANK[bank].map((_,i)=>i));
+  return S.decks[bank].pop();
+}
+function land(prev, dice){
+  const t=S.teams[S.turn], i=t.pos, q=SQ[i];
+  if(q.k==="go"){ monthClose(t, true); finishTurn(); return; }
+  if(q.k==="jail"){ logRow(t,{kind:"jail", dice, from:prev, at:i, effect:"Solo de visita en la Sala de pruebas."}); finishTurn(); return; }
+  if(q.k==="pot"){ const p=S.pot; t.money+=p; S.pot=0; logRow(t,{kind:"pot", dice, from:prev, at:i, effect:"Se lleva el Fondo de innovación: +"+money(p)+".", delta:p}); toast(t.name+" se lleva el Fondo de innovación: "+money(p)); finishTurn(); return; }
+  let P={sq:i, prev, dice, kind:q.k, phase:"q"};
+  if(q.k==="prop"){ const bank=q.bank||GROUPS[q.g].bank; P.bank=bank; P.idx=pickQ(bank); }
+  else if(q.k==="exp"){ if(!S.decks.E||!S.decks.E.length) S.decks.E=shuffle(EXPERIMENTS.map((_,j)=>j)); P.idx=S.decks.E.pop(); }
+  else if(q.k==="inc"){ if(!S.decks.I||!S.decks.I.length) S.decks.I=shuffle(INCIDENTS.map((_,j)=>j)); P.idx=S.decks.I.pop(); }
+  else if(q.k==="tax"){ P.bank=q.bank; P.idx=pickQ(q.bank); }
+  else if(q.k==="freeze"){ P.bank="C"; P.idx=pickQ("C"); }
+  S.pending=P; save(); openCard();
 }
 
 /* ---------- tarjetas ---------- */
+function cardItem(P){
+  if(P.kind==="exp"){ const x=EXPERIMENTS[P.idx]; return {q:"¿Qué decide el equipo?", o:x.o, e:x.e}; }
+  if(P.kind==="inc"){ const x=INCIDENTS[P.idx]; return {q:x.q, o:x.o, e:x.e}; }
+  return BANK[P.bank][P.idx];
+}
+const TOPIC = {A:"Ahorrar · tema 6.4", B:"Experimentar · tema 6.5", C:"Resistir · tema 6.6"};
+function ruleText(P){
+  const t=S.teams[S.turn], q=SQ[P.sq], pi=S.turn;
+  if(P.kind==="prop"){
+    const o=S.owner[P.sq];
+    if(o==null) return "Optimización libre. Si aciertan, pueden comprarla por "+money(q.price)+(q.bill?" y su factura mensual bajará "+money(q.bill):"")+". Si fallan, no pueden comprarla en este turno.";
+    if(o===pi) return "Es su propia optimización. Pregunta de repaso: si aciertan, +$20.";
+    return "Es de "+S.teams[o].name+". Le pagan consultoría de "+money(rentOf(P.sq))+(groupOwned(o,q.g)?" (doble: tiene todo el grupo)":"")+". Si aciertan, pagan la mitad.";
+  }
+  if(P.kind==="exp") return "Si deciden bien, ganan "+money(60+20*nExp(pi))+(nExp(pi)?" (incluye +$20 por cada optimización de Experimentar)":"")+". Si se equivocan, pierden $40.";
+  if(P.kind==="inc"){ const x=INCIDENTS[P.idx]; const prot=SQ[x.prot].n;
+    return owns(pi,x.prot) ? "¡Tienen «"+prot+"»! No pierden nada. Respondan para ganar +$20." : "Pérdida: "+money(x.loss)+". Los protegería «"+prot+"». Si aciertan, pierden la mitad."; }
+  if(P.kind==="tax"){ if(q.exempt!=null && owns(pi,q.exempt)) return "Cargo de "+money(q.amt)+", pero tienen «"+SQ[q.exempt].n+"»: no pagan. Respondan para ganar +$20.";
+    return "Cargo de "+money(q.amt)+" al Fondo de innovación. "+q.d+" Si aciertan, pagan la mitad."; }
+  if(P.kind==="freeze") return owns(pi,25) ? "Tienen Monitoreo de SLO: detectaron el problema a tiempo y no les pasa nada. Respondan para ganar +$20." : "Gastaron su presupuesto de errores. Si aciertan, siguen igual. Si fallan, van a la Sala de pruebas y pierden su siguiente turno.";
+  return "";
+}
 function openCard(){
   busy=true;
-  const P=S.pending, t=S.teams[S.turn], item=BANK[P.z][P.idx];
-  const opts=shuffle(item.o.map((txt,k)=>({txt, ok:k===0})));
-  $("cZone").textContent="Sector "+ZONES[P.z].n+": "+ZONES[P.z].name; $("cZone").className="chip "+ZONES[P.z].cls;
-  let type="Casilla "+P.n+" · "+KIND[P.kind];
-  if(P.kind==="turbo") type+=": "+TURBO[P.n]; if(P.kind==="hazard") type+=": "+HAZARD[P.n];
-  $("cType").textContent=type;
-  $("cRule").textContent=RULES[P.kind].replace("{t}",TURBO[P.n]||HAZARD[P.n]||"").replace("{d}",HAZDESC[P.n]||"");
+  const P=S.pending, t=S.teams[S.turn], q=SQ[P.sq], item=cardItem(P);
+  let chip, cls;
+  if(P.kind==="prop"){ chip=GROUPS[q.g].name+": "+q.n; cls=GROUPS[q.g].cls; }
+  else if(P.kind==="exp"){ chip="🧪 Experimento A/B · tema 6.5"; cls="gB"; }
+  else if(P.kind==="inc"){ chip="⚠ Incidente · tema 6.6"; cls="gA"; }
+  else if(P.kind==="tax"){ chip="💸 Cargo: "+q.n; cls="gD"; }
+  else { chip="🧊 Presupuesto de errores agotado"; cls="gC"; }
+  $("cZone").textContent=chip; $("cZone").className="chip "+cls;
+  $("cType").textContent = P.bank ? TOPIC[P.bank] : "Casilla "+P.sq;
+  $("cRule").textContent=ruleText(P);
+  const scen = P.kind==="exp" ? EXPERIMENTS[P.idx].t : P.kind==="inc" ? INCIDENTS[P.idx].t : "";
+  $("cScen").hidden=!scen; $("cScen").textContent=scen; $("cScen").className="scen"+(P.kind==="exp"?" exp":"");
   $("cWho").textContent = isTeam() ? t.name+(t.members.length?" · responde en voz alta: "+speakerOf(t):"") : "Responde: "+t.name;
   $("cq").textContent=item.q;
-  $("cOpts").innerHTML = opts.map((o,k)=>'<button class="opt" data-ok="'+(o.ok?1:0)+'" data-txt="'+esc(o.txt)+'"><span class="L">'+"ABC"[k]+'</span><span>'+esc(o.txt)+'</span></button>').join("");
-  $("cOpts").querySelectorAll(".opt").forEach(b=>{ b.addEventListener("click",()=>answer(b)); if(P.removed && b.dataset.txt===P.removed){ b.disabled=true; b.classList.add("gone"); } });
-  $("cFb").className="fb"; $("cNext").hidden=true;
-  $("cTool").hidden = !(t.items.includes("tool") && !P.toolUsed);
+  const opts=shuffle(item.o.map((txt,k)=>({txt, ok:k===0})));
+  $("cOpts").innerHTML = opts.map((o,k)=>'<button class="opt" data-ok="'+(o.ok?1:0)+'"><span class="L">'+"ABC"[k]+'</span><span>'+esc(o.txt)+'</span></button>').join("");
+  $("cOpts").querySelectorAll(".opt").forEach(b=>b.addEventListener("click",()=>answer(b)));
+  $("cFb").className="fb"; $("cNext").hidden=true; $("cBuy").hidden=true; $("cSkip").hidden=true;
   $("ovCard").classList.add("show");
-  const first=[...$("cOpts").querySelectorAll(".opt")].find(b=>!b.disabled); if(first) first.focus();
+  if(P.phase==="buy"){ showBuy(); return; }
+  $("cOpts").querySelector(".opt").focus();
   startCardTimer(S.config.secs);
   render();
 }
-$("cTool").onclick=()=>{
-  if(!S||!S.pending||S.pending.toolUsed) return;
-  const t=S.teams[S.turn], j=t.items.indexOf("tool"); if(j<0) return;
-  const wrong=[...$("cOpts").querySelectorAll('.opt[data-ok="0"]:not(:disabled)')];
-  if(!wrong.length) return;
-  const b=wrong[Math.floor(Math.random()*wrong.length)];
-  b.disabled=true; b.classList.add("gone");
-  t.items.splice(j,1); S.pending.toolUsed=true; S.pending.removed=b.dataset.txt;
-  logUse(t, "usó 🔧 Herramienta y quitó una opción incorrecta.");
-  $("cTool").hidden=true; save(); render();
-};
 function startCardTimer(total){
   clearInterval(cardTimer);
   let left=total, paused=false;
@@ -621,83 +642,99 @@ function startCardTimer(total){
   cardTimer=setInterval(()=>{ if(paused) return; left--; tick(); if(left<=0){ clearInterval(cardTimer); answer(null); } },1000);
 }
 function answer(btn){
-  if(!S || !S.pending) return;
-  clearInterval(cardTimer); $("cPause").hidden=true; $("cTool").hidden=true;
+  if(!S || !S.pending || S.pending.phase!=="q") return;
+  clearInterval(cardTimer); $("cPause").hidden=true;
   $("cOpts").querySelectorAll(".opt").forEach(b=>{ b.disabled=true; if(b.dataset.ok==="1") b.classList.add("right"); });
   const ok = !!(btn && btn.dataset.ok==="1");
   if(btn && !ok) btn.classList.add("wrong");
-  const item=BANK[S.pending.z][S.pending.idx];
-  const eff = applyEffect(ok, btn?null:"Sin respuesta");
+  const item=cardItem(S.pending);
+  const eff=applyEffect(ok, btn?null:"Sin respuesta");
   $("cFb").className="fb show "+(ok?"okk":"bad");
   $("cFbT").textContent = ok ? "Correcto" : (btn ? "Incorrecto" : "Se acabó el tiempo");
   $("cFbE").textContent = item.e;
   $("cFbX").textContent = eff;
-  $("cNext").hidden=false; $("cNext").focus();
+  if(S.pending && S.pending.phase==="buy") showBuy(); else { $("cNext").hidden=false; $("cNext").focus(); }
 }
-function retreat(t, to, why){
-  const j=t.items.indexOf("mem");
-  if(j>=0){ t.items.splice(j,1); return {msg:"🧠 La memoria lo protege: no retrocede ("+why+").", used:"🧠 Memoria"}; }
-  t.pos=to; return {msg:why.charAt(0).toUpperCase()+why.slice(1)+": queda en "+where(to)+".", used:""};
+function showBuy(){
+  const P=S.pending, q=SQ[P.sq], t=S.teams[S.turn];
+  $("cOpts").querySelectorAll(".opt").forEach(b=>{ b.disabled=true; if(b.dataset.ok==="1") b.classList.add("right"); });
+  $("cPause").hidden=true; $("cTime").textContent="—";
+  if(!$("cFb").classList.contains("show")){ $("cFb").className="fb show okk"; $("cFbT").textContent="Correcto"; $("cFbE").textContent=""; $("cFbX").textContent="Pueden comprar esta optimización."; }
+  $("cBuy").textContent="Comprar por "+money(q.price);
+  $("cBuy").disabled = t.money < q.price;
+  if(t.money < q.price) $("cFbX").textContent="No les alcanza: tienen "+money(t.money)+" y cuesta "+money(q.price)+".";
+  $("cBuy").hidden=false; $("cSkip").hidden=false; $("cNext").hidden=true;
+  (t.money>=q.price?$("cBuy"):$("cSkip")).focus();
 }
+function result(ok,label){ return ok?"Correcta":(label||"Incorrecta"); }
 function applyEffect(ok, label){
-  const t=S.teams[S.turn], P=S.pending; let msg="", pts=0, used=P.toolUsed?"🔧 Herramienta":"";
+  const P=S.pending, t=S.teams[S.turn], pi=S.turn, q=SQ[P.sq];
   if(ok) t.ok++; else t.bad++;
-  if(P.kind==="normal"){
-    if(ok){ pts=1; msg="Se queda en la casilla "+P.n+"."; } else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
-  } else if(P.kind==="item"){
-    if(ok){ pts=1; const k=Object.keys(ITEMS)[Math.floor(Math.random()*4)];
-      if(t.items.length<2){ t.items.push(k); msg="Gana el ítem "+ITEMS[k].ic+" "+ITEMS[k].name+": "+ITEMS[k].desc+"."; }
-      else { pts=2; msg="Garage lleno: en lugar del ítem recibe +1 punto extra."; } }
-    else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
-  } else if(P.kind==="turbo"){
-    if(ok){ pts=2; t.pos=Math.min(GOAL-1, P.n+3); msg="¡Turbo! Avanza a la casilla "+t.pos+"."; } else msg="Sin turbo: se queda en la casilla "+P.n+".";
-  } else if(P.kind==="hazard"){
-    if(ok){ pts=2; msg="Esquiva «"+HAZARD[P.n]+"» y se queda en la casilla "+P.n+"."; }
-    else { const r=retreat(t,Math.max(0,P.n-3),"derrapa 3 casillas por «"+HAZARD[P.n]+"»"); msg=r.msg; used=used||r.used; }
-  } else {
-    if(ok){ pts=3; S.finished=(S.finished||0)+1; t.rank=S.finished; msg="¡Cruza la meta en "+t.rank+"º lugar!"; }
-    else { const r=retreat(t,P.prev,"regresa a donde estaba"); msg=r.msg; used=used||r.used; }
+  let msg="", delta=0, topic = P.bank ? GROUPS[{A:"A",B:"B",C:"C"}[P.bank]].name : "";
+  if(P.kind==="prop"){
+    topic=GROUPS[q.g].name;
+    const o=S.owner[P.sq];
+    if(o==null){
+      if(ok){ P.phase="buy"; msg="Pueden comprar «"+q.n+"» por "+money(q.price)+"."; logRow(t,{kind:"prop", dice:P.dice, from:P.prev, at:P.sq, topic, result:result(ok,label), effect:msg}); save(); render(); return msg; }
+      msg="No pueden comprar «"+q.n+"» en este turno.";
+    } else if(o===pi){ if(ok){ delta=20; msg="Repaso correcto: +$20."; } else msg="Sin bonificación."; }
+    else { const r=rentOf(P.sq), pay=ok?Math.round(r/2):r; delta=-pay; S.teams[o].money+=pay; msg="Pagan "+money(pay)+" de consultoría a "+S.teams[o].name+"."; }
+  } else if(P.kind==="exp"){
+    topic="Experimentar";
+    if(ok){ delta=60+20*nExp(pi); msg="Buena decisión: +"+money(delta)+"."; } else { delta=-40; msg="Mala decisión: −$40."; }
+  } else if(P.kind==="inc"){
+    topic="Resistir"; const x=INCIDENTS[P.idx];
+    if(owns(pi,x.prot)){ delta=ok?20:0; msg="«"+SQ[x.prot].n+"» los protegió: no pierden nada"+(ok?" y ganan +$20.":"."); }
+    else { const l=ok?Math.round(x.loss/2):x.loss; delta=-l; msg="El incidente les cuesta "+money(l)+(ok?" (la mitad, por acertar).":".")+" Los habría protegido «"+SQ[x.prot].n+"»."; }
+  } else if(P.kind==="tax"){
+    if(q.exempt!=null && owns(pi,q.exempt)){ delta=ok?20:0; msg="Exentos gracias a «"+SQ[q.exempt].n+"»"+(ok?": +$20.":"."); }
+    else { const pay=ok?Math.round(q.amt/2):q.amt; delta=-pay; S.pot+=pay; msg="Pagan "+money(pay)+" al Fondo de innovación."; }
+  } else if(P.kind==="freeze"){
+    topic="Resistir";
+    if(owns(pi,25)){ delta=ok?20:0; msg="El Monitoreo de SLO los protegió"+(ok?": +$20.":"."); }
+    else if(ok) msg="Recuperan el control: siguen en juego normal.";
+    else { t.pos=JAIL; t.skip=true; msg="Van a la Sala de pruebas y pierden su siguiente turno."; }
   }
-  t.points+=pts;
-  S.log.push({n:S.log.length+1, time:fmt(elapsed()), player:t.name, who:speakerOf(t), die:P.die, from:P.prev, at:P.n, kind:P.kind,
-    card:ZONES[P.z].name, result: ok?"Correcta":(label||"Incorrecta"), effect:msg, end:t.pos, pts:pts, item:used});
-  S.lastKind=P.kind; S.pending=null;
+  t.money+=delta;
+  logRow(t,{kind:P.kind, dice:P.dice, from:P.prev, at:P.sq, topic, result:result(ok,label), effect:msg, delta});
+  S.pending.phase="done";
   save(); render();
   return msg;
 }
-function closeCard(){
-  $("ovCard").classList.remove("show");
-  const t=S.teams[S.turn];
-  t.speaker++; busy=false;
-  if(S.lastKind==="meta" && t.rank && !S.over){ S.lastKind=null; if(S.teams.every(x=>x.rank)){ endGame(); return; } showWin(t); }
+function buyDecision(buy){
+  const P=S.pending, t=S.teams[S.turn], q=SQ[P.sq];
+  if(buy && t.money>=q.price){ t.money-=q.price; S.owner[P.sq]=S.turn;
+    logRow(t,{kind:"buy", at:P.sq, topic:GROUPS[q.g].name, effect:"Compra «"+q.n+"» por "+money(q.price)+(q.bill?". Su factura baja "+money(q.bill)+".":"."), delta:-q.price});
+    toast(t.name+" compró «"+q.n+"».");
+  } else logRow(t,{kind:"buy", at:P.sq, topic:GROUPS[q.g].name, effect:"Decide no comprar «"+q.n+"»."});
+  closeCard();
+}
+function closeCard(){ $("ovCard").classList.remove("show"); S.pending=null; finishTurn(); }
+function finishTurn(){
+  const t=S.teams[S.turn]; t.speaker++; busy=false;
   nextTurn();
 }
 function nextTurn(){
   if(S.over){ render(); return; }
-  if(!S.teams.some(t=>!t.rank)){ endGame(); return; }
-  S.mod=null;
-  do{ S.turn=(S.turn+1)%S.teams.length; } while(S.teams[S.turn].rank);
+  S.turn=(S.turn+1)%S.teams.length;
   save(); render();
   if(S.timeUp) endGame();
 }
 
 /* ---------- fin ---------- */
 function podiumHTML(){
-  return rankOrder().map((i,k)=>{ const t=S.teams[i];
-    return '<div>'+tokenHTML(t,i)+'<b style="flex:1; overflow-wrap:anywhere">'+(k+1)+'. '+esc(t.name)+'</b><span>'+(t.rank?"Cruzó la meta":(t.pos===0?"Salida":"Casilla "+t.pos))+' · '+t.points+' pts</span></div>'; }).join("");
-}
-function showWin(t){
-  $("winT").textContent = t.rank===1 ? "🏁 ¡"+t.name+" ganó el Gran Premio!" : t.name+" cruzó la meta en "+t.rank+"º lugar";
-  $("winP").textContent = "Superó los cinco sectores y la pregunta final.";
-  $("podium").innerHTML=podiumHTML(); $("winContinue").hidden=false;
-  $("ovWin").classList.add("show");
+  return rankOrder().map((i,k)=>{ const t=S.teams[i]; const props=SQ.filter((q,j)=>owns(i,j)).length;
+    return '<div>'+tokenHTML(t,i)+'<b style="flex:1; overflow-wrap:anywhere">'+(k+1)+'. '+esc(t.name)+'</b><span>'+money(worth(i))+' · '+props+' optimizaciones · factura '+money(bill(i))+'</span></div>'; }).join("");
 }
 function endGame(){
   if(!S) return;
-  S.over=true; S.pending=null; S.mod=null; if(!S.pausedAt) S.pausedAt=Date.now(); save();
-  $("winT").textContent="Resultados finales";
-  $("winP").textContent="Gana quien cruzó la meta; si nadie llegó, quien esté más adelante y, en empate, quien tenga más puntos.";
-  $("podium").innerHTML=podiumHTML(); $("winContinue").hidden=true;
+  clearInterval(cardTimer); $("ovCard").classList.remove("show");
+  if(S.pending){ S.pending=null; }
+  S.over=true; busy=false; if(!S.pausedAt) S.pausedAt=Date.now(); save();
+  const w=rankOrder()[0];
+  $("winT").textContent="🏆 "+S.teams[w].name+" tiene el PlantSense más sólido";
+  $("winP").textContent="Gana el mayor patrimonio: dinero en caja más el valor de las optimizaciones compradas.";
+  $("podium").innerHTML=podiumHTML();
   $("ovWin").classList.add("show"); render();
 }
 
@@ -751,15 +788,15 @@ $("btnStart").onclick=()=>{
   let teams=[...document.querySelectorAll("#playerRows .prow")].map((r,i)=>({
     name:(r.querySelector(".tn").value.trim()||((team?"Equipo ":"Estudiante ")+(i+1))).slice(0,40),
     members: team ? r.querySelector(".tm").value.split(",").map(s=>s.trim()).filter(Boolean).slice(0,8) : [],
-    color:COLORS[i], pos:0, points:0, ok:0, bad:0, rank:0, speaker:0, items:[] }));
+    color:COLORS[i], pos:0, money:START_MONEY, ok:0, bad:0, speaker:0, skip:false }));
   if($("order").value==="random") teams=shuffle(teams);
   clearInterval(cardTimer);
-  S={config:{mode:team?"team":"solo", secs:+$("secs").value, mins:+$("mins").value}, teams, turn:0, decks:{}, log:[], startAt:Date.now(), pausedAt:null, pausedTotal:0, finished:0, over:false, timeUp:false, pending:null, mod:null};
+  S={config:{mode:team?"team":"solo", secs:+$("secs").value, mins:+$("mins").value}, teams, turn:0, owner:{}, pot:0, decks:{}, log:[], startAt:Date.now(), pausedAt:null, pausedTotal:0, over:false, timeUp:false, pending:null};
   save();
   ["ovSetup","ovCard","ovWin","ovLog"].forEach(id=>$(id).classList.remove("show"));
   $("btnPause").textContent="Pausar reloj";
-  busy=false; showDie(1); render(); startClock();
-  toast("¡Arranca la carrera! Empieza "+teams[0].name+".");
+  busy=false; showDie("die1",1); showDie("die2",1); render(); startClock();
+  toast("Empieza "+teams[0].name+". Cada quien tiene $1,500.");
 };
 function openSetup(){ if(!$("nPlayers").options.length) fillCount(); else playerRows(); $("ovSetup").classList.add("show"); }
 function twoStep(btn,label,ask,need,fn){
@@ -773,49 +810,45 @@ twoStep($("btnReset"),"Nueva partida","Se borrará la actual. Clic otra vez",()=
 twoStep($("btnEnd"),"Terminar partida","¿Seguro? Clic otra vez",()=>!!(S && !S.over),()=>{
   if(!S){ toast("Todavía no hay partida."); return; }
   if(S.over){ $("ovWin").classList.add("show"); return; }
-  clearInterval(cardTimer); $("ovCard").classList.remove("show");
-  if(S.pending){ S.teams[S.turn].pos=S.pending.prev; S.pending=null; }
-  busy=false; endGame();
+  endGame();
 });
 $("btnCancelSetup").onclick=()=>$("ovSetup").classList.remove("show");
 $("btnRules").onclick=()=>$("ovRules").classList.add("show");
 document.querySelectorAll(".ov").forEach(o=>o.addEventListener("click",e=>{ if(e.target===o && o.id!=="ovCard") o.classList.remove("show"); }));
 document.querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",()=>$(b.dataset.close).classList.remove("show")));
-$("winContinue").onclick=()=>$("ovWin").classList.remove("show");
 $("winLog").onclick=()=>{ $("ovWin").classList.remove("show"); openLog(); };
 $("cNext").onclick=closeCard;
+$("cBuy").onclick=()=>buyDecision(true);
+$("cSkip").onclick=()=>buyDecision(false);
 $("btnRoll").onclick=()=>{ if(!S){ openSetup(); return; } rollAnimated(); };
 document.querySelectorAll(".physical button").forEach(b=>b.addEventListener("click",()=>{
-  if(busy||!S||S.over) return;
-  const v=+b.dataset.v;
-  if(S.mod==="plan"){ const t=S.teams[S.turn]; S.mod=null; logUse(t,"eligió avanzar "+v+" con 🗺️ Plan."); }
-  else if(S.mod==="par"){ S.mod=null; }
-  showDie(v); move(v);
+  if(busy||!S||S.over||S.teams[S.turn].skip) return;
+  const v=+b.dataset.v; showDie("die1",Math.min(6,v-1)); showDie("die2",v-Math.min(6,v-1)); move(v);
 }));
 
 /* ---------- bitácora ---------- */
 function unit(){ return isTeam() ? "Equipo" : "Estudiante"; }
-function logRows(){ return S.log.map(r=>[r.n, r.time, r.player, r.who, r.die, r.from, r.at, KIND[r.kind], r.card, r.result, r.effect, r.item||"", r.end, r.pts]); }
-const LOGHEAD = () => ["#","Tiempo",unit(),"Respondió","Dado","Desde","Casilla","Tipo","Sector","Resultado","Efecto","Ítem usado","Termina en","Puntos"];
-function posRows(){ return rankOrder().map((i,k)=>{ const t=S.teams[i]; return [k+1, t.name, isTeam()?t.members.join("; "):"", t.rank?"Meta ("+t.rank+"º)":(t.pos===0?"Salida":"Casilla "+t.pos), t.points, t.ok, t.bad, t.items.map(x=>ITEMS[x].name).join("; ")]; }); }
-const POSHEAD = () => ["Lugar",unit(),"Integrantes","Posición","Puntos","Correctas","Incorrectas","Ítems guardados"];
+const LOGHEAD = () => ["#","Tiempo",unit(),"Respondió","Dados","Desde","Casilla","Tipo","Tema","Resultado","Efecto","Cambio ($)","Dinero final ($)"];
+function logRows(){ return S.log.map(r=>[r.n, r.time, r.player, r.who, r.dice, r.from, SQ[r.at].n, KIND[r.kind], r.topic, r.result, r.effect, r.delta, r.money]); }
+function posRows(){ return rankOrder().map((i,k)=>{ const t=S.teams[i]; return [k+1, t.name, isTeam()?t.members.join("; "):"", worth(i), t.money, bill(i), SQ.filter((q,j)=>owns(i,j)).map(q=>q.n).join("; "), t.ok, t.bad]; }); }
+const POSHEAD = () => ["Lugar",unit(),"Integrantes","Patrimonio ($)","Dinero ($)","Factura mensual ($)","Optimizaciones","Correctas","Incorrectas"];
 function logCSV(){
   const q=v=>'"'+String(v).replace(/"/g,'""')+'"';
   return [POSHEAD()].concat(posRows()).map(r=>r.map(q).join(",")).join("\n")+"\n\n"+[LOGHEAD()].concat(logRows()).map(r=>r.map(q).join(",")).join("\n");
 }
 function logText(){
   const tab=rows=>rows.map(r=>r.join("\t")).join("\n");
-  return "Gran Premio de Agentes\n\nPosiciones\n"+tab([POSHEAD()].concat(posRows()))+"\n\nJugadas\n"+tab([LOGHEAD()].concat(logRows()));
+  return "Monopoly de Tokens\n\nPosiciones\n"+tab([POSHEAD()].concat(posRows()))+"\n\nJugadas\n"+tab([LOGHEAD()].concat(logRows()));
 }
 function openLog(){
   if(!S){ toast("Todavía no hay partida. Presionen «Nueva partida»."); return; }
   $("expText").hidden=true;
   const th=h=>'<tr>'+h.map(x=>'<th>'+x+'</th>').join("")+'</tr>';
-  let ph=POSHEAD(), pr=posRows();
+  let ph=POSHEAD(), pr=posRows().map(r=>r.map((v,j)=>[3,4,5].includes(j)?money(v):v));
   if(!isTeam()){ ph=ph.filter((_,i)=>i!==2); pr=pr.map(r=>r.filter((_,i)=>i!==2)); }
   $("posTable").innerHTML=th(ph)+pr.map(r=>'<tr>'+r.map(v=>'<td>'+esc(v)+'</td>').join("")+'</tr>').join("");
-  const head=["#","Tiempo",unit()].concat(isTeam()?["Respondió"]:[]).concat(["Dado","Casilla","Tipo","Sector","Resultado","Efecto","Ítem"]);
-  $("logTable").innerHTML=th(head)+(S.log.length ? S.log.map(r=>'<tr><td>'+r.n+'</td><td>'+r.time+'</td><td>'+esc(r.player)+'</td>'+(isTeam()?'<td>'+esc(r.who)+'</td>':'')+'<td>'+r.die+'</td><td>'+(r.kind==="use"?r.at:r.from+' → '+r.at)+'</td><td>'+KIND[r.kind]+'</td><td>'+esc(r.card)+'</td><td class="'+(r.result==="Correcta"?"res-ok":r.result==="—"?"":"res-no")+'">'+r.result+'</td><td>'+esc(r.effect)+'</td><td>'+esc(r.item||"")+'</td></tr>').join("") : '<tr><td colspan="'+head.length+'">Aún no hay jugadas registradas. Tiren el dado para empezar.</td></tr>');
+  const head=["#","Tiempo",unit()].concat(isTeam()?["Respondió"]:[]).concat(["Dados","Casilla","Tipo","Tema","Resultado","Efecto","Dinero"]);
+  $("logTable").innerHTML=th(head)+(S.log.length ? S.log.map(r=>'<tr><td>'+r.n+'</td><td>'+r.time+'</td><td>'+esc(r.player)+'</td>'+(isTeam()?'<td>'+esc(r.who)+'</td>':'')+'<td>'+r.dice+'</td><td>'+esc(SQ[r.at].n)+'</td><td>'+KIND[r.kind]+'</td><td>'+esc(r.topic)+'</td><td class="'+(r.result==="Correcta"?"res-ok":r.result==="—"?"":"res-no")+'">'+r.result+'</td><td>'+esc(r.effect)+'</td><td>'+money(r.money)+'</td></tr>').join("") : '<tr><td colspan="'+head.length+'">Aún no hay jugadas registradas. Tiren los dados para empezar.</td></tr>');
   $("ovLog").classList.add("show");
 }
 $("btnLog").onclick=openLog; $("btnLog2").onclick=openLog;
@@ -826,7 +859,7 @@ $("logCopy").onclick=async()=>{
 };
 function nativeCsv(){
   try{ const blob=new Blob(["﻿"+logCSV()],{type:"text/csv;charset=utf-8"}); const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob); a.download="bitacora-gran-premio-agentes.csv"; document.body.appendChild(a); a.click();
+    a.href=URL.createObjectURL(blob); a.download="bitacora-monopoly-tokens.csv"; document.body.appendChild(a); a.click();
     setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1000);
   }catch(e){ toast("No se pudo descargar aquí. Usen «Copiar»."); }
 }
@@ -834,19 +867,22 @@ let saver=null;
 $("logCsv").onclick=async()=>{
   if(!S) return;
   if(!saver){ nativeCsv(); return; }
-  try{ await saver.save({filename:"bitacora-gran-premio-agentes.csv", data:"﻿"+logCSV()}); }
+  try{ await saver.save({filename:"bitacora-monopoly-tokens.csv", data:"﻿"+logCSV()}); }
   catch(e){ if(e && e.code==="declined") return; toast("No se pudo descargar aquí. Usen «Copiar»."); }
 };
 (async()=>{ try{ if(window.claude && window.claude.use){ saver = await window.claude.use("downloads"); } }catch(e){ saver=null; } })();
 
-/* ---------- inicio: siempre se muestra la pista ---------- */
-buildBoard(); showDie(1); fillCount();
+/* ---------- inicio: siempre se muestra el tablero ---------- */
+buildBoard(); showDie("die1",1); showDie("die2",1); fillCount();
 S = load();
 if(S && S.teams && S.config){
-  busy=false; S.log=S.log||[]; S.decks=S.decks||{}; S.teams.forEach(t=>{ t.items=t.items||[]; });
+  busy=false; S.log=S.log||[]; S.decks=S.decks||{}; S.owner=S.owner||{};
   render(); startClock();
   $("btnPause").textContent = (S.pausedAt && !S.over) ? "Reanudar reloj" : "Pausar reloj";
-  if(S.pending && !S.over) openCard();
+  if(S.pending && !S.over){
+    if(S.pending.phase==="done"){ S.pending=null; finishTurn(); }
+    else openCard();
+  }
 } else { S=null; render(); }
 document.addEventListener("keydown",e=>{
   const typing=/INPUT|SELECT|TEXTAREA|BUTTON/.test((document.activeElement||{}).tagName||"");
@@ -861,3 +897,5 @@ document.addEventListener("keydown",e=>{
 </script>
 </body>
 </html>
+
+</body></html>
